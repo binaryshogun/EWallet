@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Navigation;
 using System.Windows.Threading;
 
 namespace _119_Karpovich.ViewModel
@@ -11,7 +12,7 @@ namespace _119_Karpovich.ViewModel
     {
         public DisplayViewModel()
         {
-            timeNow = DateTime.Now.ToString("G");
+            timeNow = DateTime.Now.ToString("g");
 
             updateTimer = new DispatcherTimer();
             updateTimer.Interval = TimeSpan.FromSeconds(1);
@@ -21,7 +22,7 @@ namespace _119_Karpovich.ViewModel
 
         private void UpdateTime(object sender, EventArgs e)
         {
-            TimeNow = DateTime.Now.ToString("G");
+            TimeNow = DateTime.Now.ToString("g");
         }
 
         public string TimeNow

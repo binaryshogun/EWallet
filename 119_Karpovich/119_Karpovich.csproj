@@ -38,8 +38,17 @@
     <ApplicationIcon>icon.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Security" />
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Core" />
@@ -62,10 +71,49 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Model\Card.cs">
+      <DependentUpon>WalletEntities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\Operation.cs">
+      <DependentUpon>WalletEntities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\Passport.cs">
+      <DependentUpon>WalletEntities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\Role.cs">
+      <DependentUpon>WalletEntities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\Service.cs">
+      <DependentUpon>WalletEntities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\ServiceType.cs">
+      <DependentUpon>WalletEntities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\sysdiagrams.cs">
+      <DependentUpon>WalletEntities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\User.cs">
+      <DependentUpon>WalletEntities.tt</DependentUpon>
+    </Compile>
     <Compile Include="ViewModel\DisplayViewModel.cs" />
     <Compile Include="ViewModel\ViewModelBase.cs" />
     <Compile Include="View\DisplayWindow.xaml.cs">
       <DependentUpon>DisplayWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Model\WalletEntities.Context.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>WalletEntities.Context.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\WalletEntities.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>WalletEntities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\WalletEntities.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>WalletEntities.edmx</DependentUpon>
     </Compile>
   </ItemGroup>
   <ItemGroup>
@@ -86,9 +134,17 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <EntityDeploy Include="Model\WalletEntities.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>WalletEntities.Designer.cs</LastGenOutput>
+    </EntityDeploy>
+    <None Include="Model\WalletEntities.edmx.diagram">
+      <DependentUpon>WalletEntities.edmx</DependentUpon>
     </None>
   </ItemGroup>
   <ItemGroup>
@@ -99,16 +155,34 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="View\Resources\AppTheme.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <Resource Include="View\Resources\icon.ico" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Model\" />
     <Folder Include="View\Pages\" />
   </ItemGroup>
   <ItemGroup>
     <Resource Include="icon.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Model\WalletEntities.Context.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>WalletEntities.Context.cs</LastGenOutput>
+      <DependentUpon>WalletEntities.edmx</DependentUpon>
+    </Content>
+    <Content Include="Model\WalletEntities.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>WalletEntities.edmx</DependentUpon>
+      <LastGenOutput>WalletEntities.cs</LastGenOutput>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

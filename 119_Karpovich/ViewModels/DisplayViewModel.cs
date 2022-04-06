@@ -6,12 +6,14 @@ using System.Threading.Tasks;
 using System.Windows.Navigation;
 using System.Windows.Threading;
 
-namespace _119_Karpovich.ViewModel
+namespace _119_Karpovich.ViewModels
 {
     class DisplayViewModel : ViewModelBase
     {
         public DisplayViewModel()
         {
+            CurrentViewModel = new AuthorizationViewModel();
+
             timeNow = DateTime.Now.ToString("g");
 
             updateTimer = new DispatcherTimer();
@@ -37,5 +39,7 @@ namespace _119_Karpovich.ViewModel
 
         DispatcherTimer updateTimer;
         private string timeNow;
+
+        public ViewModelBase CurrentViewModel { get; }
     }
 }

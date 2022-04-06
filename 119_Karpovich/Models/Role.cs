@@ -7,19 +7,23 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace _119_Karpovich.Model
+namespace _119_Karpovich.Models
 {
     using System;
     using System.Collections.Generic;
     
-    public partial class Card
+    public partial class Role
     {
-        public int ID { get; set; }
-        public string Number { get; set; }
-        public System.DateTime ValidThru { get; set; }
-        public int CVC { get; set; }
-        public int UserID { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public Role()
+        {
+            this.User = new HashSet<User>();
+        }
     
-        public virtual User User { get; set; }
+        public int ID { get; set; }
+        public string Name { get; set; }
+    
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<User> User { get; set; }
     }
 }

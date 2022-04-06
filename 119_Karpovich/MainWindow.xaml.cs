@@ -18,9 +18,9 @@ namespace _119_Karpovich
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
-    public partial class DisplayWindow : Window
+    public partial class MainWindow : Window
     {
-        public DisplayWindow()
+        public MainWindow()
         {
             InitializeComponent();
         }

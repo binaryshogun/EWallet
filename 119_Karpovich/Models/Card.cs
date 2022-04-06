@@ -7,23 +7,19 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace _119_Karpovich.Model
+namespace _119_Karpovich.Models
 {
     using System;
     using System.Collections.Generic;
     
-    public partial class Operation
+    public partial class Card
     {
         public int ID { get; set; }
-        public int Number { get; set; }
-        public System.DateTime Date { get; set; }
-        public double Sum { get; set; }
+        public string Number { get; set; }
+        public System.DateTime ValidThru { get; set; }
+        public int CVC { get; set; }
         public int UserID { get; set; }
-        public int ToUserID { get; set; }
-        public int ServiceID { get; set; }
     
-        public virtual Service Service { get; set; }
         public virtual User User { get; set; }
-        public virtual User User1 { get; set; }
     }
 }

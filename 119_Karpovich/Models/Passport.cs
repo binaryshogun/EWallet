@@ -7,23 +7,22 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace _119_Karpovich.Model
+namespace _119_Karpovich.Models
 {
     using System;
     using System.Collections.Generic;
     
-    public partial class Role
+    public partial class Passport
     {
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public Role()
-        {
-            this.User = new HashSet<User>();
-        }
-    
         public int ID { get; set; }
-        public string Name { get; set; }
+        public string FirstName { get; set; }
+        public string LastName { get; set; }
+        public string Patronymic { get; set; }
+        public int SerialNumber { get; set; }
+        public int Number { get; set; }
+        public int DivisionCode { get; set; }
+        public int UserID { get; set; }
     
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<User> User { get; set; }
+        public virtual User User { get; set; }
     }
 }

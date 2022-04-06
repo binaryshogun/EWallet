@@ -7,7 +7,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace _119_Karpovich.Model
+namespace _119_Karpovich.Models
 {
     using System;
     using System.Collections.Generic;

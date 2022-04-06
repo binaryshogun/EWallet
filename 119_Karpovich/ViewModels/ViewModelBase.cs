@@ -6,7 +6,7 @@ using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace _119_Karpovich.ViewModel
+namespace _119_Karpovich.ViewModels
 {
     class ViewModelBase : INotifyPropertyChanged
     {

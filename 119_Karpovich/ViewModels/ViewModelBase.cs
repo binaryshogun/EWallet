@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace _119_Karpovich.ViewModels
 {
-    class ViewModelBase : INotifyPropertyChanged
+    public abstract class ViewModelBase : INotifyPropertyChanged
     {
 
         public event PropertyChangedEventHandler PropertyChanged;

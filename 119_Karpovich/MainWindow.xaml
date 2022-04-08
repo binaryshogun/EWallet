@@ -8,14 +8,10 @@
         xmlns:views="clr-namespace:_119_Karpovich.Views"
         mc:Ignorable="d"
         Title="E-Wallet" 
-        MinHeight="450" MinWidth="800"
+        MinHeight="450" MinWidth="450"
+        Height="450" Width="450"
         WindowStartupLocation="CenterScreen" 
         WindowState="Minimized">
-    
-    <Window.DataContext>
-        <viewmodels:DisplayViewModel/>
-    </Window.DataContext>
-    
     <ContentControl Content="{Binding CurrentViewModel}" Grid.Row="1">
         <ContentControl.Resources>
             <DataTemplate DataType="{x:Type viewmodels:AuthorizationViewModel}">

@@ -1,45 +1,28 @@
-﻿using System;
+﻿using _119_Karpovich.Stores;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using System.Windows.Navigation;
-using System.Windows.Threading;
 
 namespace _119_Karpovich.ViewModels
 {
     class DisplayViewModel : ViewModelBase
     {
-        public DisplayViewModel()
+        public DisplayViewModel(NavigationStore navigationStore)
         {
-            CurrentViewModel = new AuthorizationViewModel();
+            _navigationStore = navigationStore;
 
-            timeNow = DateTime.Now.ToString("g");
-
-            updateTimer = new DispatcherTimer();
-            updateTimer.Interval = TimeSpan.FromSeconds(1);
-            updateTimer.Tick += new EventHandler(UpdateTime);
-            updateTimer.Start();
+            _navigationStore.CurrentViewModelChanged += OnCurrentViewModelChanged;
         }
 
-        private void UpdateTime(object sender, EventArgs e)
+        private void OnCurrentViewModelChanged()
         {
-            TimeNow = DateTime.Now.ToString("g");
+            OnPropertyChanged(nameof(CurrentViewModel));
         }
 
-        public string TimeNow
-        {
-            get { return timeNow; }
-            set
-            {
-                timeNow = value;
-                OnPropertyChanged(nameof(TimeNow));
-            }
-        }
+        public ViewModelBase CurrentViewModel => _navigationStore.CurrentViewModel;
 
-        DispatcherTimer updateTimer;
-        private string timeNow;
-
-        public ViewModelBase CurrentViewModel { get; }
+        private readonly NavigationStore _navigationStore;
     }
 }

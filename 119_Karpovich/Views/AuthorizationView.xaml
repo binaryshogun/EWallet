@@ -3,7 +3,8 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:local="clr-namespace:_119_Karpovich.Views"
+             xmlns:local="clr-namespace:_119_Karpovich.Views" 
+             xmlns:components="clr-namespace:_119_Karpovich.Components"
              mc:Ignorable="d" 
              d:DesignHeight="450" 
              d:DesignWidth="450">
@@ -12,57 +13,117 @@
             Grid.Row="1" 
             Grid.Column="1" 
             VerticalAlignment="Center">
-            
+
             <TextBlock 
                 Text="Авторизация" 
-                HorizontalAlignment="Center"/>
-            
+                HorizontalAlignment="Center"
+                FontSize="18" 
+                FontWeight="Bold"
+                Foreground="#000"/>
+
             <Grid>
                 <TextBlock 
                     Text="Логин" 
-                    HorizontalAlignment="Right"/>
-                
+                    HorizontalAlignment="Left"/>
+
+                <TextBlock 
+                    x:Name="LoginHint"
+                    Text="Логин"
+                    Grid.Column="1"
+                    Background="White"
+                    Foreground="Gray"
+                    Margin="11"/>
+
                 <TextBox 
+                    x:Name="LoginBox"
                     Grid.Column="1" 
-                    Text="{Binding Login}"/>
+                    Text="{Binding Login, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+                    ToolTip="Уникальный логин пользователя."
+                    Background="{x:Null}" 
+                    TextChanged="Login_TextChanged"/>
+
+                <x:Code>
+                    <![CDATA[
+                        private void Login_TextChanged(object sender, RoutedEventArgs e)
+                        {
+                            LoginHint.Visibility = LoginBox.Text.Length == 0 ? Visibility.Visible : Visibility.Hidden;
+                            LoginBox.Background = LoginBox.Text.Length == 0 ? null : new SolidColorBrush(Colors.White); 
+                        }
+                    ]]>
+                </x:Code>
 
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition/>
-                    <ColumnDefinition Width="2*"/>
+                    <ColumnDefinition Width="3*"/>
                 </Grid.ColumnDefinitions>
             </Grid>
-            
+
             <Grid>
                 <TextBlock 
                     Text="Пароль" 
-                    HorizontalAlignment="Right"/>
-                
-                <PasswordBox 
-                    Grid.Column="1" 
-                    Password=""/>
+                    HorizontalAlignment="Left"/>
 
+                <TextBlock 
+                    x:Name="PasswordHint"
+                    Text="Пароль"
+                    Grid.Column="1"
+                    Background="White"
+                    Foreground="Gray"
+                    Margin="11"/>
+
+                <components:BindablePasswordBox 
+                    x:Name="PasswordBox"
+                    Grid.Column="1" 
+                    Password="{Binding Password}"
+                    ToolTip="Пароль, длиной не более 16 символов"
+                    Background="Transparent"
+                    PasswordChanged="Password_PasswordChanged"/>
+
+                <x:Code>
+                    <![CDATA[
+                        private void Password_PasswordChanged(object sender, RoutedEventArgs e)
+                        {
+                            PasswordHint.Visibility = PasswordBox.Password.Length == 0 ? Visibility.Visible : Visibility.Hidden;
+                            PasswordBox.Background = PasswordBox.Password.Length == 0 ? null : new SolidColorBrush(Colors.White);
+                        }
+                    ]]>
+                </x:Code>
+                
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition/>
-                    <ColumnDefinition Width="2*"/>
+                    <ColumnDefinition Width="3*"/>
                 </Grid.ColumnDefinitions>
             </Grid>
 
             <Button 
-                Content="Не зарегестрированы?" Command="{Binding }"/>
-            
+                Content="Не зарегестрированы?" 
+                Command="{Binding NavigateCommand}" 
+                Style="{StaticResource SmallButtonStyle}"
+                ToolTip="Переход на страницу регистрации."/>
+
             <Button 
-                Content="Войти"/>
-            
+                Content="Войти"
+                ToolTip="Вход в систему."/>
+
         </StackPanel>
-        
+
+        <TextBlock 
+            Text="{Binding TimeNow}"
+            TextWrapping="Wrap"
+            Grid.ColumnSpan="2"
+            Grid.Row="2"
+            Grid.Column="1"
+            VerticalAlignment="Bottom"
+            HorizontalAlignment="Right"/>
+
         <Grid.RowDefinitions>
             <RowDefinition/>
-            <RowDefinition Height="4*"/>
+            <RowDefinition Height="6*"/>
             <RowDefinition/>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition/>
-            <ColumnDefinition Width="6*"/>
+            <ColumnDefinition Width="4*"/>
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
     </Grid>

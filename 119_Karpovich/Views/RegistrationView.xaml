@@ -6,7 +6,8 @@
              xmlns:local="clr-namespace:_119_Karpovich.Views" xmlns:components="clr-namespace:_119_Karpovich.Components"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="450">
-    <Grid FocusManager.FocusedElement="{Binding ElementName=LoginBox}">
+    
+    <Grid>
         <StackPanel 
             Grid.Row="1" 
             Grid.Column="1" 
@@ -37,7 +38,9 @@
                     Grid.Column="1" 
                     Text="{Binding Login, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
                     ToolTip="Уникальный логин пользователя."
-                    Background="{x:Null}" TextChanged="Login_TextChanged"/>
+                    Background="{x:Null}" 
+                    TextChanged="Login_TextChanged"
+                    MaxLength="16"/>
 
                 <x:Code>
                     <![CDATA[
@@ -74,7 +77,8 @@
                     Password="{Binding Password}"
                     ToolTip="Пароль, длиной не более 16 символов"
                     Background="Transparent"
-                    PasswordChanged="Password_PasswordChanged"/>
+                    PasswordChanged="Password_PasswordChanged"
+                    MaxLength="16"/>
 
                 <x:Code>
                     <![CDATA[
@@ -113,7 +117,8 @@
                     Password="{Binding RepeatedPassword}"
                     ToolTip="Повторно введённый пароль"
                     Background="Transparent"
-                    PasswordChanged="RepeatedPassword_PasswordChanged"/>
+                    PasswordChanged="RepeatedPassword_PasswordChanged"
+                    MaxLength="16"/>
 
                 <x:Code>
                     <![CDATA[
@@ -139,6 +144,8 @@
 
             <Button 
                 Content="Зарегистрироваться"
+                IsEnabled="{Binding IsRegistrationButtonEnabled}"
+                Command="{Binding RegisterUserCommand}"
                 ToolTip="Регистрация в системе."/>
 
         </StackPanel>

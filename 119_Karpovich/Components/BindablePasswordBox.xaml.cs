@@ -24,6 +24,7 @@ namespace _119_Karpovich.Components
         {
             InitializeComponent();
             passwordBox.Background = new SolidColorBrush(Colors.AliceBlue);
+            passwordBox.MaxLength = 0;
         }
 
         private void PasswordBox_PasswordChanged(object sender, RoutedEventArgs e)
@@ -40,7 +41,6 @@ namespace _119_Karpovich.Components
             {
                 passwordBox.UpdatePassword();
             }
-            
         }
 
         private void UpdatePassword()
@@ -66,6 +66,36 @@ namespace _119_Karpovich.Components
         {
             passwordBox.Background = Background;
         }
+
+        private void PasswordBox_MaxLengthChanged(object sender, RoutedEventArgs e)
+        {
+            MaxLength = passwordBox.MaxLength;
+        }
+
+        private static void MaxLengthPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            if (d is BindablePasswordBox passwordBox)
+            {
+                passwordBox.UpdateMaxLength();
+            }
+        }
+
+        private void UpdateMaxLength()
+        {
+            passwordBox.MaxLength = MaxLength;
+        }
+
+        public int MaxLength 
+        {
+            get { return (int)GetValue(MaxLengthProperty); }
+            set { SetValue(MaxLengthProperty, value); }
+        }
+
+        // Using a DependencyProperty as the backing store for MaxLength.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty MaxLengthProperty =
+            DependencyProperty.Register("MaxLength", typeof(int), typeof(BindablePasswordBox), 
+                new FrameworkPropertyMetadata(0, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault,
+                    MaxLengthPropertyChanged, null, false, UpdateSourceTrigger.PropertyChanged));
 
         public new Brush Background
         {

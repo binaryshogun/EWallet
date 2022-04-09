@@ -26,17 +26,21 @@
                             HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
                             VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
                         <VisualStateManager.VisualStateGroups>
-                            <VisualStateGroup Name="Common">
-                                <VisualState Name="MouseOver">
+                            <VisualStateGroup x:Name="Common">
+                                <VisualState x:Name="MouseOver">
                                     <Storyboard>
                                         <ColorAnimation
                                             Storyboard.TargetName="Border"
                                             Storyboard.TargetProperty="(Button.Background).(SolidColorBrush.Color)"
                                             To="{DynamicResource MouseOver.Background.Color}"/>
+                                    </Storyboard>
+                                </VisualState>
+                                <VisualState x:Name="Disabled">
+                                    <Storyboard>
                                         <ColorAnimation
                                             Storyboard.TargetName="Border"
                                             Storyboard.TargetProperty="(Button.Background).(SolidColorBrush.Color)"
-                                            To="{DynamicResource MouseOver.Background.Color}"/>
+                                            To="{DynamicResource Disabled.Background.Color}"/>
                                     </Storyboard>
                                 </VisualState>
                             </VisualStateGroup>
@@ -50,6 +54,9 @@
                 <Setter Property="FontWeight" Value="SemiBold"/>
                 <Setter Property="Cursor" Value="Hand"/>
                 <Setter Property="Background" Value="#FFFFC2C9"/>
+            </Trigger>
+            <Trigger Property="IsEnabled" Value="False">
+                <Setter Property="Background" Value="#FFDCD2D4"/>
             </Trigger>
         </Style.Triggers>
     </Style>
@@ -111,6 +118,7 @@
         <Setter Property="Padding" Value="5"/>
         <Setter Property="FontSize" Value="14"/>
         <Setter Property="FontFamily" Value="Bahnschrift"/>
+        <Setter Property="TextWrapping" Value="WrapWithOverflow"/>
     </Style>
 
     <Style TargetType="{x:Type TextBox}">
@@ -118,6 +126,7 @@
         <Setter Property="Padding" Value="5"/>
         <Setter Property="FontSize" Value="14"/>
         <Setter Property="FontFamily" Value="Bahnschrift"/>
+        <Setter Property="MaxHeight" Value="30"/>
     </Style>
 
     <Style TargetType="{x:Type components:BindablePasswordBox}">
@@ -125,6 +134,7 @@
         <Setter Property="Foreground" Value="Black"/>
         <Setter Property="FontSize" Value="14"/>
         <Setter Property="FontFamily" Value="Georgia"/>
+        <Setter Property="MaxHeight" Value="30"/>
     </Style>
 
 </ResourceDictionary>

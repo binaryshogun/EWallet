@@ -98,8 +98,10 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Commands\AuthorizeUserCommand.cs" />
     <Compile Include="Commands\CommandBase.cs" />
     <Compile Include="Commands\NavigateCommand.cs" />
+    <Compile Include="Commands\RegisterUserCommand.cs" />
     <Compile Include="Components\BindablePasswordBox.xaml.cs">
       <DependentUpon>BindablePasswordBox.xaml</DependentUpon>
     </Compile>
@@ -127,7 +129,9 @@
     <Compile Include="Models\User.cs">
       <DependentUpon>WalletEntities.tt</DependentUpon>
     </Compile>
+    <Compile Include="Services\NavigationService.cs" />
     <Compile Include="Stores\NavigationStore.cs" />
+    <Compile Include="ViewModels\AccountViewModel.cs" />
     <Compile Include="ViewModels\AuthorizationViewModel.cs" />
     <Compile Include="ViewModels\DisplayViewModel.cs" />
     <Compile Include="ViewModels\RegistrationViewModel.cs" />
@@ -149,6 +153,9 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>WalletEntities.edmx</DependentUpon>
+    </Compile>
+    <Compile Include="Views\AccountView.xaml.cs">
+      <DependentUpon>AccountView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\AuthorizationView.xaml.cs">
       <DependentUpon>AuthorizationView.xaml</DependentUpon>
@@ -199,6 +206,10 @@
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\AccountView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\AuthorizationView.xaml">
       <SubType>Designer</SubType>

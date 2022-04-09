@@ -40,7 +40,8 @@
                     Text="{Binding Login, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
                     ToolTip="Уникальный логин пользователя."
                     Background="{x:Null}" 
-                    TextChanged="Login_TextChanged"/>
+                    TextChanged="Login_TextChanged"
+                    MaxLength="16"/>
 
                 <x:Code>
                     <![CDATA[
@@ -61,7 +62,8 @@
             <Grid>
                 <TextBlock 
                     Text="Пароль" 
-                    HorizontalAlignment="Left"/>
+                    HorizontalAlignment="Left"
+                    Margin="10 10 0 10"/>
 
                 <TextBlock 
                     x:Name="PasswordHint"
@@ -77,7 +79,8 @@
                     Password="{Binding Password}"
                     ToolTip="Пароль, длиной не более 16 символов"
                     Background="Transparent"
-                    PasswordChanged="Password_PasswordChanged"/>
+                    PasswordChanged="Password_PasswordChanged"
+                    MaxLength="16"/>
 
                 <x:Code>
                     <![CDATA[
@@ -103,6 +106,8 @@
 
             <Button 
                 Content="Войти"
+                IsEnabled="{Binding IsEnterButtonEnabled, Mode=OneWay}"
+                Command="{Binding AuthorizeUserCommand}"
                 ToolTip="Вход в систему."/>
 
         </StackPanel>

@@ -12,7 +12,6 @@ namespace _119_Karpovich.ViewModels
         public DisplayViewModel(NavigationStore navigationStore)
         {
             _navigationStore = navigationStore;
-
             _navigationStore.CurrentViewModelChanged += OnCurrentViewModelChanged;
         }
 

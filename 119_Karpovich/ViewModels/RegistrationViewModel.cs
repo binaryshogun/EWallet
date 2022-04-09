@@ -1,22 +1,20 @@
 ﻿using _119_Karpovich.Commands;
 using _119_Karpovich.Stores;
+using _119_Karpovich.Services;
 using System;
-using System.Collections.Generic;
-using System.Globalization;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Data;
 using System.Windows.Input;
 using System.Windows.Threading;
 
 namespace _119_Karpovich.ViewModels
 {
-    internal class RegistrationViewModel : ViewModelBase
+    public class RegistrationViewModel : ViewModelBase
     {
         public RegistrationViewModel(NavigationStore navigationStore)
         {
-            NavigateCommand = new NavigateCommand<AuthorizationViewModel>(navigationStore, () => new AuthorizationViewModel(navigationStore));
+            NavigateCommand = new NavigateCommand<AuthorizationViewModel>(new NavigationService<AuthorizationViewModel>(
+                navigationStore, () => new AuthorizationViewModel(navigationStore)));
+            RegisterUserCommand = new RegisterUserCommand(this, new NavigationService<AuthorizationViewModel>(
+                navigationStore, () => new AuthorizationViewModel(navigationStore)));
 
             _timeNow = DateTime.Now.ToString("g");
 
@@ -46,7 +44,19 @@ namespace _119_Karpovich.ViewModels
             }
         }
 
-        private string _password;
+        private string _login = "";
+        public string Login
+        {
+            get { return _login; }
+            set
+            {
+                _login = value;
+                OnPropertyChanged(nameof(Login));
+                IsRegistrationButtonEnabled = EnableRegistrationButton();
+            }
+        }
+
+        private string _password = "";
         public string Password
         {
             get { return _password; }
@@ -54,30 +64,47 @@ namespace _119_Karpovich.ViewModels
             {
                 _password = value;
                 OnPropertyChanged(nameof(Password));
+                IsRegistrationButtonEnabled = EnableRegistrationButton();
             }
         }
 
-        private string _repeatedPassword;
+        private string _repeatedPassword = "";
 
         public string RepeatedPassword
         {
             get { return _repeatedPassword; }
-            set { _repeatedPassword = value; }
+            set 
+            { 
+                _repeatedPassword = value;
+                OnPropertyChanged(nameof(RepeatedPassword));
+                IsRegistrationButtonEnabled = EnableRegistrationButton();
+            }
         }
 
+        private bool isRegistrationButtonEnabled;
+
+        public bool IsRegistrationButtonEnabled
+        {
+            get { return isRegistrationButtonEnabled; }
+            set
+            {
+                isRegistrationButtonEnabled = value;
+                OnPropertyChanged(nameof(IsRegistrationButtonEnabled));
+            }
+        }
+
+        private bool EnableRegistrationButton()
+        {
+            if (_login != "" 
+                && _password != "" 
+                && _repeatedPassword != "" 
+                && _password == _repeatedPassword)
+                return true;
+            else
+                return false;
+        }
+
+        public ICommand RegisterUserCommand { get; }
         public ICommand NavigateCommand { get; }
-    }
-
-    public class IsEmptyConverter : IValueConverter
-    {
-        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
-        {
-            return string.IsNullOrEmpty((string)value);
-        }
-
-        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
-        {
-            throw new InvalidOperationException("IsEmptyConverter can only be used OneWay.");
-        }
     }
 }

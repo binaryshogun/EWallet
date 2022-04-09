@@ -100,6 +100,8 @@
     </Compile>
     <Compile Include="Commands\AuthorizeUserCommand.cs" />
     <Compile Include="Commands\CommandBase.cs" />
+    <Compile Include="Commands\DoOperationCommand.cs" />
+    <Compile Include="Commands\ExitAccountCommand.cs" />
     <Compile Include="Commands\NavigateCommand.cs" />
     <Compile Include="Commands\RegisterUserCommand.cs" />
     <Compile Include="Components\BindablePasswordBox.xaml.cs">

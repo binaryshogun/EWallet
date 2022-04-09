@@ -69,7 +69,6 @@ namespace _119_Karpovich.ViewModels
         }
 
         private string _repeatedPassword = "";
-
         public string RepeatedPassword
         {
             get { return _repeatedPassword; }
@@ -82,7 +81,6 @@ namespace _119_Karpovich.ViewModels
         }
 
         private bool isRegistrationButtonEnabled;
-
         public bool IsRegistrationButtonEnabled
         {
             get { return isRegistrationButtonEnabled; }

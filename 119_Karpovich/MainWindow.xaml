@@ -10,7 +10,7 @@
         Title="E-Wallet" 
         MinHeight="450" MinWidth="450"
         Height="450" Width="450"
-        WindowStartupLocation="CenterScreen" 
+        WindowStartupLocation="CenterOwner" 
         WindowState="Minimized">
     <ContentControl Content="{Binding CurrentViewModel}" Grid.Row="1">
         <ContentControl.Resources>

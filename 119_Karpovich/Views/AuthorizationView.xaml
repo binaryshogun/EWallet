@@ -108,7 +108,8 @@
                 Content="Войти"
                 IsEnabled="{Binding IsEnterButtonEnabled, Mode=OneWay}"
                 Command="{Binding AuthorizeUserCommand}"
-                ToolTip="Вход в систему."/>
+                ToolTip="Вход в систему."
+                IsDefault="True"/>
 
         </StackPanel>
 

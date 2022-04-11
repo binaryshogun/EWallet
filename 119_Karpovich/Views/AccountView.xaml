@@ -4,34 +4,36 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:_119_Karpovich.Views"
+             xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="450">
+
     <Grid>
         <TextBlock 
-            Text="{Binding StringBalance, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" 
+            Text="{Binding StringBalance, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}" 
             TextWrapping="WrapWithOverflow"
             HorizontalAlignment="Center" 
             VerticalAlignment="Center"
             Margin="0 10"/>
 
         <Grid Grid.Column="2" Grid.RowSpan="2" VerticalAlignment="Top">
-
             <Button 
                 Style="{StaticResource SmallButtonStyle}"
-                HorizontalAlignment="Center" 
+                HorizontalAlignment="Right" 
                 VerticalAlignment="Center"
                 Margin="0"
                 ToolTip="Редактирование или добавление персональных данных.">
                 <Button.Content>
                     <TextBlock
                         Text="Профиль"
-                        Margin="0 10 0 0"/>
+                        Margin="0 10 10 0"
+                        TextAlignment="Center"/>
                 </Button.Content>
             </Button>
 
             <Button 
                 Style="{StaticResource SmallButtonStyle}"
-                HorizontalAlignment="Center" 
+                HorizontalAlignment="Right" 
                 VerticalAlignment="Center"
                 Grid.Row="1"
                 Margin="0"
@@ -40,7 +42,8 @@
                 <Button.Content>
                     <TextBlock
                         Text="Выйти"
-                        Margin="0 0 0 0"/>
+                        Margin="0 0 15 0"
+                        TextAlignment="Center"/>
                 </Button.Content>
             </Button>
 
@@ -64,14 +67,19 @@
                         <ComboBox 
                             x:Name="SelectService"
                             ItemsSource="{Binding ListServices}"
-                            DisplayMemberPath="Name"
                             SelectedValuePath="Name"
-                            SelectedValue="{Binding Path=SelectedService}"
-                            Grid.Column="1" 
-                            Margin="10" 
-                            Padding="3"
-                            MaxHeight="30"
-                            ToolTip="Список доступных услуг."/>
+                            SelectedValue="{Binding SelectedService}"
+                            Grid.Column="1"
+                            ToolTip="Список доступных услуг.">
+                            <ComboBox.ItemTemplate>
+                                <DataTemplate>
+                                    <TextBlock
+                                            Text="{Binding Name}"
+                                            Margin="0"
+                                            Padding="0"/>
+                                </DataTemplate>
+                            </ComboBox.ItemTemplate>
+                        </ComboBox>
 
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="0.6*"/>
@@ -99,11 +107,11 @@
 
                         <TextBox 
                             x:Name="CardNumber" 
-                            Text="{Binding CardNumber}" 
+                            Text="{Binding CardNumber, UpdateSourceTrigger=PropertyChanged}" 
                             Grid.Row="0" 
                             Grid.Column="1"
                             VerticalAlignment="Center"
-                            ToolTip="Номер карты получателя денежных средств."
+                            ToolTip="Номер карты получателя денежных средств (16 цифр)."
                             Background="Transparent"
                             TextChanged="CardNumber_TextChanged"/>
 
@@ -120,6 +128,7 @@
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="0.6*"/>
                             <ColumnDefinition/>
+                            <ColumnDefinition Width="0.1*"/>
                         </Grid.ColumnDefinitions>
                     </Grid>
 
@@ -133,16 +142,16 @@
 
                         <TextBlock
                             x:Name="OperationBalanceHint"
-                            Text="100.00"
+                            Text="100,00"
                             Grid.Column="1"
                             Background="White"
                             Foreground="Gray"
                             MaxHeight="28"
                             Margin="11"/>
-                        
+
                         <TextBox 
                             x:Name="OperationBalance" 
-                            Text="{Binding OperationBalance}"
+                            Text="{Binding OperationBalance, UpdateSourceTrigger=PropertyChanged}"
                             VerticalAlignment="Center"
                             Grid.Row="0"
                             Grid.Column="1"
@@ -159,10 +168,20 @@
                                 }
                             ]]>
                         </x:Code>
-                        
+
+                        <Button 
+                            Style="{StaticResource ImageButtonStyle}"
+                            Command="{Binding OpenCalculatorCommand}"
+                            Grid.Column="2" >
+                            <Button.Content>
+                                <Image Source="../Resources/icon_calculator.png"/>
+                            </Button.Content>
+                        </Button>
+
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="0.6*"/>
                             <ColumnDefinition/>
+                            <ColumnDefinition Width="0.1*"/>
                         </Grid.ColumnDefinitions>
                     </Grid>
 
@@ -176,9 +195,18 @@
             </Border>
         </Grid>
 
+        <TextBlock 
+            Text="{Binding TimeNow}"
+            Grid.Column="1"
+            Grid.ColumnSpan="2"
+            Grid.Row="2"
+            VerticalAlignment="Bottom"
+            HorizontalAlignment="Right"
+            Margin="10 0"/>
+
         <Grid.ColumnDefinitions>
             <ColumnDefinition/>
-            <ColumnDefinition Width="3*"/>
+            <ColumnDefinition Width="4*"/>
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>

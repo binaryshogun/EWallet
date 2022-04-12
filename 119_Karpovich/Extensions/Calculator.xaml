@@ -15,7 +15,10 @@
         Deactivated="Calculator_Deactivated"
         Icon="{x:Null}">
 
-    <Grid Background="LightGray">
+    <Grid 
+        Background="LightGray" 
+        MouseLeftButtonDown="Window_MouseLeftButtonDown"
+        >
         
         <TextBlock 
             x:Name="resultBlock" 

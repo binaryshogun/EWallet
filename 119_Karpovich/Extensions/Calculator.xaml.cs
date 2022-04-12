@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Input;
 
 namespace _119_Karpovich.Extensions
 {
@@ -9,18 +10,27 @@ namespace _119_Karpovich.Extensions
     /// </summary>
     public partial class Calculator : Window
     {
-        public Calculator()
+        public Calculator(Point startupPoint)
         {
             InitializeComponent();
 
             var uri = new Uri("Resources/CalculatorTheme.xaml", UriKind.Relative);
             ResourceDictionary resourceDictionary = Application.LoadComponent(uri) as ResourceDictionary;
             Resources.MergedDictionaries.Add(resourceDictionary);
+
+            WindowStartupLocation = WindowStartupLocation.Manual;
+            Top = startupPoint.Y - 350;
+            Left = startupPoint.X;
         }
 
         private void Calculator_Deactivated(object sender, EventArgs e)
         {
-            Visibility = Visibility.Hidden;
+            Close();
+        }
+
+        private void Window_MouseLeftButtonDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        {
+            DragMove();
         }
 
         private void Number_Click(object sender, RoutedEventArgs e)

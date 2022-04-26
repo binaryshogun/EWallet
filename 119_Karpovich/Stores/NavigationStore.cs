@@ -1,9 +1,5 @@
 ﻿using _119_Karpovich.ViewModels;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace _119_Karpovich.Stores
 {
@@ -11,10 +7,10 @@ namespace _119_Karpovich.Stores
     {
         public ViewModelBase CurrentViewModel 
         {
-            get => _currentViewModel;
+            get => currentViewModel;
             set
             {
-                _currentViewModel = value;
+                currentViewModel = value;
                 OnCurrentViewModelChanged();
             }
         }
@@ -26,6 +22,6 @@ namespace _119_Karpovich.Stores
 
         public event Action CurrentViewModelChanged;
 
-        private ViewModelBase _currentViewModel;
+        private ViewModelBase currentViewModel;
     }
 }

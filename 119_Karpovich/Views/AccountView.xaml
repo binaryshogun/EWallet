@@ -90,7 +90,7 @@
                     <Grid>
                         <TextBlock 
                             x:Name="FirstServiceBlock" 
-                            Text="Номер карты получателя:" 
+                            Text="Номер карты:" 
                             HorizontalAlignment="Left" 
                             VerticalAlignment="Center"
                             Grid.Column="0"
@@ -98,7 +98,7 @@
 
                         <TextBlock
                             x:Name="CardNumberHint"
-                            Text="1111222233334444"
+                            Text="0000 0000 0000 0000"
                             Grid.Column="1"
                             Background="White"
                             Foreground="Gray"
@@ -110,8 +110,9 @@
                             Text="{Binding CardNumber, UpdateSourceTrigger=PropertyChanged}" 
                             Grid.Row="0" 
                             Grid.Column="1"
+                            MaxLength="19"
                             VerticalAlignment="Center"
-                            ToolTip="Номер карты получателя денежных средств (16 цифр)."
+                            ToolTip="Номер карты для выполнения операции (16 цифр)."
                             Background="Transparent"
                             TextChanged="CardNumber_TextChanged"/>
 
@@ -155,6 +156,7 @@
                             VerticalAlignment="Center"
                             Grid.Row="0"
                             Grid.Column="1"
+                            MaxLength="6"
                             ToolTip="Сумма перечисляемых денежных средств."
                             Background="Transparent"
                             TextChanged="OperationBalance_TextChanged"/>
@@ -188,7 +190,8 @@
                     <Button 
                         x:Name="ConfirmButton" 
                         Content="Оплатить"
-                        Command="{Binding ConfirmCommand}"
+                        Command="{Binding DoOperationCommand}"
+                        IsEnabled="{Binding IsConfirmButtonEnabled}"
                         Margin="0 20"
                         ToolTip="Провести денежную операцию."/>
                 </StackPanel>

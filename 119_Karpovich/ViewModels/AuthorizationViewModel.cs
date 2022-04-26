@@ -2,10 +2,6 @@
 using _119_Karpovich.Services;
 using _119_Karpovich.Stores;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Input;
 using System.Windows.Threading;
 
@@ -19,54 +15,54 @@ namespace _119_Karpovich.ViewModels
                 navigationStore, () => new RegistrationViewModel(navigationStore)));
             AuthorizeUserCommand = new AuthorizeUserCommand(this, navigationStore);
 
-            _timeNow = DateTime.Now.ToString("g");
+            timeNow = DateTime.Now.ToString("g");
 
-            _updateTimer = new DispatcherTimer
+            updateTimer = new DispatcherTimer
             {
                 Interval = TimeSpan.FromSeconds(1)
             };
-            _updateTimer.Tick += new EventHandler(UpdateTime);
-            _updateTimer.Start();
+            updateTimer.Tick += new EventHandler(UpdateTime);
+            updateTimer.Start();
         }
 
-        private readonly DispatcherTimer _updateTimer;
+        private readonly DispatcherTimer updateTimer;
         private void UpdateTime(object sender, EventArgs e)
         {
             TimeNow = DateTime.Now.ToString("g");
         }
 
 
-        private string _timeNow;
+        private string timeNow;
         public string TimeNow
         {
-            get { return _timeNow; }
+            get { return timeNow; }
             set
             {
-                _timeNow = value;
+                timeNow = value;
                 OnPropertyChanged(nameof(TimeNow));
             }
         }
 
-        private string _login = "";
+        private string login = "";
         public string Login
         {
-            get { return _login; }
+            get { return login; }
             set 
             { 
-                _login = value;
+                login = value;
                 OnPropertyChanged(nameof(Login));
                 IsEnterButtonEnabled = EnableEnterButton();
             }
         }
 
 
-        private string _password = "";
+        private string password = "";
         public string Password
         {
-            get { return _password; }
+            get { return password; }
             set 
             { 
-                _password = value;
+                password = value;
                 OnPropertyChanged(nameof(Password));
                 IsEnterButtonEnabled = EnableEnterButton();
             }
@@ -86,7 +82,7 @@ namespace _119_Karpovich.ViewModels
 
         private bool EnableEnterButton()
         {
-            if (_login != "" && _password != "")
+            if (login != "" && password != "")
                 return true;
             else 
                 return false;

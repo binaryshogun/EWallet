@@ -2,45 +2,53 @@
 using _119_Karpovich.Services;
 using _119_Karpovich.ViewModels;
 using System;
-using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography;
 using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 
 namespace _119_Karpovich.Commands
 {
     public class RegisterUserCommand : CommandBase
     {
-        private readonly RegistrationViewModel _viewModel;
-        private readonly NavigationService<AuthorizationViewModel> _navigationService;
+        private readonly RegistrationViewModel viewModel;
+        private readonly NavigationService<AuthorizationViewModel> navigationService;
+        private readonly WalletEntities dataBase;
 
         public RegisterUserCommand(RegistrationViewModel viewModel, NavigationService<AuthorizationViewModel> navigationService)
         {
-            _viewModel = viewModel;
-            _navigationService = navigationService;
+            this.viewModel = viewModel;
+            this.navigationService = navigationService;
+            dataBase = new WalletEntities();
         }
 
         public override void Execute(object parameter)
         {
-            using (var db = new WalletEntities())
+            using (dataBase)
             {
                 try
                 {
-                    int length = 16;
-                    if (_viewModel.Password.Length < 16)
-                        length = _viewModel.Password.Length;
+                    User user = dataBase.User.AsNoTracking().FirstOrDefault(u => u.Login == viewModel.Login);
 
-                    User user = new User()
+                    if (user == null)
                     {
-                        Login = _viewModel.Login,
-                        Password = _viewModel.Password.GetHashCode().ToString().Substring(0, length),
-                        RoleID = 1,
-                        Balance = 0
-                    };
+                        int length = 16;
+                        if (viewModel.Password.Length < 16)
+                            length = viewModel.Password.Length;
 
-                    db.User.Add(user);
-                    db.SaveChanges();
+                        user = new User()
+                        {
+                            Login = viewModel.Login,
+                            Password = GetHash(viewModel.Password, length),
+                            RoleID = 1,
+                            Balance = 0
+                        };
+
+                        dataBase.User.Add(user);
+                        dataBase.SaveChanges();
+                    }
+                    else
+                        MessageBox.Show("Пользователь уже зарегистрирован в системе!", "Ошибка регистрации", MessageBoxButton.OK, MessageBoxImage.Information);
                 }
                 catch (Exception ex)
                 {
@@ -51,7 +59,15 @@ namespace _119_Karpovich.Commands
                         "Перенаправление на страницу авторизации...", "Успешно", MessageBoxButton.OK, MessageBoxImage.Information);
             }
 
-            _navigationService.Navigate();
+            navigationService.Navigate();
+        }
+
+        public static string GetHash(string password, int length)
+        {
+            using (var hash = SHA1.Create())
+            {
+                return string.Concat(hash.ComputeHash(Encoding.UTF8.GetBytes(password)).Select(x => x.ToString("X2"))).Substring(0, length);
+            }
         }
     }
 }

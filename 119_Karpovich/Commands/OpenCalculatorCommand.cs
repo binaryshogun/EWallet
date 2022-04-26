@@ -1,13 +1,7 @@
 ﻿using _119_Karpovich.Extensions;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Runtime.InteropServices;
-using System.Text;
-using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Threading;
 
 namespace _119_Karpovich.Commands
 {
@@ -18,13 +12,13 @@ namespace _119_Karpovich.Commands
 
         public async override void Execute(object parameter)
         {
-            _calculator = new Calculator(FindPoint.GetCursorPosition());
+            calculator = new Calculator(FindPoint.GetCursorPosition());
             await Task.Run(
                 () => Application.Current.Dispatcher.Invoke(
-                    () => _calculator.Show()));
+                    () => calculator.Show()));
         }
 
-        private Calculator _calculator;
+        private Calculator calculator;
     }
 
     class FindPoint

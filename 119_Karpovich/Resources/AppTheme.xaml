@@ -2,12 +2,12 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:components="clr-namespace:_119_Karpovich.Components">
     <Style TargetType="{x:Type Grid}">
-        <Setter Property="Background" Value="#FFB5D5CA"/>
+        <Setter Property="Background" Value="#FFBDB5D5"/>
     </Style>
 
     <Style TargetType="{x:Type Button}">
-        <Setter Property="Background" Value="#FFE0A9AF"/>
-        <Setter Property="BorderBrush" Value="#000000"/>
+        <Setter Property="Background" Value="#FF85CAD8"/>
+        <Setter Property="BorderBrush" Value="#FF6C5279"/>
         <Setter Property="BorderThickness" Value="1"/>
         <Setter Property="MaxHeight" Value="50"/>
         <Setter Property="MaxWidth" Value="210"/>
@@ -53,10 +53,10 @@
             <Trigger Property="IsMouseOver" Value="True">
                 <Setter Property="FontWeight" Value="SemiBold"/>
                 <Setter Property="Cursor" Value="Hand"/>
-                <Setter Property="Background" Value="#FFFFC2C9"/>
+                <Setter Property="Background" Value="#FF96E7F7"/>
             </Trigger>
             <Trigger Property="IsEnabled" Value="False">
-                <Setter Property="Background" Value="#FFDCD2D4"/>
+                <Setter Property="Background" Value="#FFBADBE2"/>
             </Trigger>
         </Style.Triggers>
     </Style>

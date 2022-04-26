@@ -1,5 +1,4 @@
-﻿using _119_Karpovich.Extensions;
-using _119_Karpovich.Stores;
+﻿using _119_Karpovich.Stores;
 using _119_Karpovich.ViewModels;
 using System.Windows;
 

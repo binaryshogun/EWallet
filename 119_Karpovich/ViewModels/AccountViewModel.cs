@@ -4,13 +4,7 @@ using _119_Karpovich.Models;
 using _119_Karpovich.Services;
 using _119_Karpovich.Stores;
 using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
 using System.Windows.Data;
 using System.Windows.Input;
 using System.Windows.Threading;
@@ -21,8 +15,8 @@ namespace _119_Karpovich.ViewModels
     {
         public AccountViewModel(User user, NavigationStore navigationStore)
         {
-            _user = user;
-            Balance = _user.Balance;
+            this.user = user;
+            Balance = user.Balance;
             StringBalance = string.Format($"Баланс: {Balance}");
 
             using (var db = new WalletEntities())
@@ -31,26 +25,27 @@ namespace _119_Karpovich.ViewModels
                     new ObservableCollection<Service>(db.Service));
             }
 
+            DoOperationCommand = new DoOperationCommand(this);
             OpenCalculatorCommand = new OpenCalculatorCommand<Calculator>();
-            ExitAccountCommand = new NavigateCommand<AuthorizationViewModel>(new NavigationService<AuthorizationViewModel>(
+            ExitAccountCommand = new ExitAccountCommand<AuthorizationViewModel>(new NavigationService<AuthorizationViewModel>(
                navigationStore, () => new AuthorizationViewModel(navigationStore)));
 
-            _timeNow = DateTime.Now.ToString("g");
+            timeNow = DateTime.Now.ToString("g");
 
-            _updateTimer = new DispatcherTimer
+            updateTimer = new DispatcherTimer
             {
                 Interval = TimeSpan.FromSeconds(1)
             };
-            _updateTimer.Tick += new EventHandler(UpdateTime);
-            _updateTimer.Start();
+            updateTimer.Tick += new EventHandler(UpdateTime);
+            updateTimer.Start();
         }
 
         public double Balance
         {
-            get { return _balance; }
+            get { return balance; }
             set
             {
-                _balance = value;
+                balance = value;
                 StringBalance = string.Format($"Баланс: {Balance}");
                 OnPropertyChanged(nameof(Balance));
             }
@@ -58,82 +53,113 @@ namespace _119_Karpovich.ViewModels
 
         public string StringBalance
         {
-            get { return _stringBalance; }
+            get { return stringBalance; }
             set
             {
-                _stringBalance = value;
+                stringBalance = value;
                 OnPropertyChanged(nameof(StringBalance));
             }
         }
 
         public CollectionView ListServices
         {
-            get { return _listServices; }
+            get { return listServices; }
             set
             {
-                _listServices = value;
+                listServices = value;
                 OnPropertyChanged(nameof(ListServices));
             }
         }
 
         public string SelectedService
         {
-            get { return _selectedService; }
+            get { return selectedService; }
             set
             {
-                _selectedService = value;
+                selectedService = value;
                 OnPropertyChanged(nameof(SelectedService));
+                if (selectedService != null && cardNumber != "" && operationBalance != 0) IsConfirmButtonEnabled = true;
             }
         }
 
         public string CardNumber
         {
-            get { return _cardNumber; }
+            get 
+            {
+                return cardNumber; 
+            }
             set
             {
-                _cardNumber = value;
+                long number;
+                long.TryParse(value.Replace(" ", ""), out number);
+
+                if (value.Length <= 4)
+                    cardNumber = value;
+                else if (value.Length <= 8)
+                    cardNumber = string.Format($"{number:#### ####}");
+                else if (value.Length <= 12)
+                    cardNumber = string.Format($"{number:#### #### ####}");
+                else
+                    cardNumber = string.Format($"{number:#### #### #### ####}");
+
                 OnPropertyChanged(nameof(CardNumber));
+                if (cardNumber != "" && operationBalance != 0 && selectedService != null) IsConfirmButtonEnabled = true;
             }
         }
 
-        public string OperationBalance
+        public double OperationBalance
         {
-            get { return _operationBalance; }
+            get { return operationBalance; }
             set
             {
-                _operationBalance = value;
+                operationBalance = value;
                 OnPropertyChanged(nameof(OperationBalance));
+                if (cardNumber != "" && operationBalance != 0 && selectedService != null) IsConfirmButtonEnabled = true;
             }
         }
 
-        private readonly DispatcherTimer _updateTimer;
+        private readonly DispatcherTimer updateTimer;
         private void UpdateTime(object sender, EventArgs e)
         {
             TimeNow = DateTime.Now.ToString("g");
         }
 
-        private string _timeNow;
+        private string timeNow;
         public string TimeNow
         {
-            get { return _timeNow; }
+            get { return timeNow; }
             set
             {
-                _timeNow = value;
+                timeNow = value;
                 OnPropertyChanged(nameof(TimeNow));
             }
         }
+
+        private bool isConfirmButtonEnabled = false;
+
+        public bool IsConfirmButtonEnabled
+        {
+            get { return isConfirmButtonEnabled; }
+            set
+            { 
+                isConfirmButtonEnabled = value;
+                OnPropertyChanged(nameof(IsConfirmButtonEnabled));
+            }
+        }
+
 
         public ICommand OpenCalculatorCommand { get; }
         public ICommand DoOperationCommand { get; }
         public ICommand ExitAccountCommand { get; }
 
-        readonly private User _user;
-        private CollectionView _listServices;
+        readonly public User user;
+        private CollectionView listServices;
+        private WalletEntities db;
 
-        private double _balance;
-        private string _selectedService;
-        private string _operationBalance;
-        private string _stringBalance;
-        private string _cardNumber;
+        private double balance;
+        private double operationBalance;
+        private string selectedService;
+        private string stringBalance;
+        private string cardNumber;
     }
 }

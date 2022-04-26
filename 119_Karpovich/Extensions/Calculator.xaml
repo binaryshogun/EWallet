@@ -15,10 +15,7 @@
         Deactivated="Calculator_Deactivated"
         Icon="{x:Null}">
 
-    <Grid 
-        Background="LightGray" 
-        MouseLeftButtonDown="Window_MouseLeftButtonDown"
-        >
+    <Grid MouseLeftButtonDown="Window_MouseLeftButtonDown">
         
         <TextBlock 
             x:Name="resultBlock" 
@@ -31,7 +28,7 @@
             FontWeight="SemiBold" 
             Text="0"/>
 
-        <Grid Grid.Row="1" Background="Gray">
+        <Grid Grid.Row="1" Background="#FF7E72A2">
             <Button 
                 x:Name="clearButton" 
                 Click="Operator_Click" 

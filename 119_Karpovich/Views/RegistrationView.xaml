@@ -143,6 +143,7 @@
                 ToolTip="Переход на страницу авторизации."/>
 
             <Button 
+                IsDefault="True"
                 Content="Зарегистрироваться"
                 IsEnabled="{Binding IsRegistrationButtonEnabled}"
                 Command="{Binding RegisterUserCommand}"

@@ -38,5 +38,17 @@ namespace _119_Karpovich.Models
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Passport> Passport { get; set; }
         public virtual Role Role { get; set; }
+
+        public void UpdateUserBalance(double sum)
+        {
+            using (WalletEntities db = new WalletEntities())
+            {
+                if (db.User.Find(ID) != null)
+                {
+                    db.User.Find(ID).Balance += sum;
+                    db.SaveChanges();
+                }
+            }
+        }
     }
 }

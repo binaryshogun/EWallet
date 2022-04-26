@@ -9,10 +9,9 @@
         mc:Ignorable="d"
         Title="E-Wallet" 
         MinHeight="450" MinWidth="450"
-        MaxHeight="450" MaxWidth="800"
         Height="450" Width="450"
         WindowStartupLocation="CenterOwner" 
-        WindowState="Minimized">
+        WindowState="Normal">
     <ContentControl Content="{Binding CurrentViewModel}" Grid.Row="1">
         <ContentControl.Resources>
             <DataTemplate DataType="{x:Type viewmodels:AuthorizationViewModel}">

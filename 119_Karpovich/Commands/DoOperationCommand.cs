@@ -23,15 +23,19 @@ namespace _119_Karpovich.Commands
                 { "Вывод средств", Withdraw},
                 { "Пополнение баланса", TopUp }
             };
-
-            dataBase = new WalletEntities();
         }
 
         public override void Execute(object parameter)
         {
-            if (MessageBox.Show($"Вы хотите выполнить {viewmodel.SelectedService.ToLower()} на сумму {viewmodel.OperationBalance}?",
-                "Подтвердите операцию", MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes)
-            operations[viewmodel.SelectedService]?.Invoke(viewmodel.CardNumber.Replace(" ", ""), viewmodel.OperationBalance);
+            using (var dataBase = new WalletEntities())
+            {
+                string messageBoxMessage = $"Вы хотите выполнить {viewmodel.SelectedService.ToLower()}?\n" +
+                    $"Карта получателя: {viewmodel.CardNumber}?\n" +
+                    $"Сумма операции: {viewmodel.OperationBalance}\n";
+
+                if (MessageBox.Show(messageBoxMessage, "Подтвердите операцию", MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes)
+                        operations[viewmodel.SelectedService]?.Invoke(viewmodel.CardNumber.Replace(" ", ""), viewmodel.OperationBalance);
+            }        
         }
 
         private void Remmitance(string cardNumber, double operationBalance)

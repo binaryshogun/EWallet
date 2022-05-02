@@ -9,22 +9,34 @@ using System.Windows;
 
 namespace _119_Karpovich.Commands
 {
-    public class RegisterUserCommand : CommandBase
+    /// <summary>
+    /// Команда регистрации пользователя.
+    /// </summary>
+    internal class RegisterUserCommand : CommandBase
     {
+        #region Fields
         private readonly RegistrationViewModel viewModel;
         private readonly NavigationService<AuthorizationViewModel> navigationService;
-        private readonly WalletEntities dataBase;
+        #endregion
 
+        #region Constructors
+        /// <summary>
+        /// Инициализирует команду регистрации пользователя.
+        /// </summary>
+        /// <param name="viewModel">ViewModel страницы регистрации пользователя.</param>
+        /// <param name="navigationService">Сервис навигации, привязанный к AuthorizationViewModel.</param>
         public RegisterUserCommand(RegistrationViewModel viewModel, NavigationService<AuthorizationViewModel> navigationService)
         {
             this.viewModel = viewModel;
             this.navigationService = navigationService;
-            dataBase = new WalletEntities();
         }
+        #endregion
 
+        #region Methods
+        ///<inheritdoc cref="CommandBase.Execute(object)"/>
         public override void Execute(object parameter)
         {
-            using (dataBase)
+            using (var dataBase = new WalletEntities())
             {
                 try
                 {
@@ -62,6 +74,7 @@ namespace _119_Karpovich.Commands
             navigationService.Navigate();
         }
 
+        /// <inheritdoc cref="AuthorizeUserCommand.GetHash(string, int)"/>
         public static string GetHash(string password, int length)
         {
             using (var hash = SHA1.Create())
@@ -69,5 +82,6 @@ namespace _119_Karpovich.Commands
                 return string.Concat(hash.ComputeHash(Encoding.UTF8.GetBytes(password)).Select(x => x.ToString("X2"))).Substring(0, length);
             }
         }
+        #endregion
     }
 }

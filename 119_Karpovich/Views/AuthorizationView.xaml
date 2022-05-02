@@ -6,9 +6,19 @@
              xmlns:local="clr-namespace:_119_Karpovich.Views" 
              xmlns:components="clr-namespace:_119_Karpovich.Components"
              mc:Ignorable="d" 
-             d:DesignHeight="450" 
-             d:DesignWidth="450">
+             d:DesignHeight="600" 
+             d:DesignWidth="800">
     <Grid>
+        <Button 
+            Content="Выйти"
+            Command="{Binding ExitAppCommand}"
+            Style="{DynamicResource SmallButtonStyle}"
+            ToolTip="Выйти из приложения"
+            Grid.Column="2"
+            VerticalAlignment="Center"
+            HorizontalAlignment="Right"
+            Margin="10"/>
+
         <StackPanel 
             Grid.Row="1" 
             Grid.Column="1" 
@@ -17,9 +27,8 @@
             <TextBlock 
                 Text="Авторизация" 
                 HorizontalAlignment="Center"
-                FontSize="18" 
-                FontWeight="Bold"
-                Foreground="#000"/>
+                FontSize="24" 
+                FontWeight="Bold"/>
 
             <Grid>
                 <TextBlock 
@@ -32,7 +41,7 @@
                     Grid.Column="1"
                     Background="White"
                     Foreground="Gray"
-                    Margin="11"/>
+                    MaxHeight="28"/>
 
                 <TextBox 
                     x:Name="LoginBox"

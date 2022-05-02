@@ -39,6 +39,10 @@ namespace _119_Karpovich.Models
         public virtual ICollection<Passport> Passport { get; set; }
         public virtual Role Role { get; set; }
 
+        /// <summary>
+        /// Метод, обновляющий баланс пользователя.
+        /// </summary>
+        /// <param name="sum">Сумма увеличения баланса пользователя.</param>
         public void UpdateUserBalance(double sum)
         {
             using (WalletEntities db = new WalletEntities())

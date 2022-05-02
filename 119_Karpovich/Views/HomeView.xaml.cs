@@ -16,10 +16,13 @@ using System.Windows.Shapes;
 namespace _119_Karpovich.Views
 {
     /// <summary>
-    /// Логика взаимодействия для UserProfileView.xaml
+    /// Логика взаимодействия для HomeView.xaml
     /// </summary>
-    public partial class UserProfileView : UserControl
+    public partial class HomeView : Page
     {
-        public UserProfileView() => InitializeComponent();
+        public HomeView()
+        {
+            InitializeComponent();
+        }
     }
 }

@@ -8,8 +8,7 @@
         xmlns:views="clr-namespace:_119_Karpovich.Views"
         mc:Ignorable="d"
         Title="E-Wallet" 
-        MinHeight="450" MinWidth="450"
-        Height="450" Width="450"
+        MinHeight="600" MinWidth="800"
         WindowStartupLocation="CenterOwner" 
         WindowState="Normal">
     <ContentControl Content="{Binding CurrentViewModel}" Grid.Row="1">
@@ -22,6 +21,9 @@
             </DataTemplate>
             <DataTemplate DataType="{x:Type viewmodels:AccountViewModel}">
                 <views:AccountView/>
+            </DataTemplate>
+            <DataTemplate DataType="{x:Type viewmodels:UserProfileViewModel}">
+                <views:UserProfileView/>
             </DataTemplate>
         </ContentControl.Resources>
     </ContentControl>

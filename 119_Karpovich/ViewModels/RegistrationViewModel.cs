@@ -7,14 +7,32 @@ using System.Windows.Threading;
 
 namespace _119_Karpovich.ViewModels
 {
+    /// <summary>
+    /// ViewModel страницы регистрации пользователей.
+    /// </summary>
     public class RegistrationViewModel : ViewModelBase
     {
+        #region Fields
+        private string login = "";
+        private string password = "";
+        private string repeatedPassword = "";
+        private string timeNow; 
+        private bool isRegistrationButtonEnabled;
+        private readonly DispatcherTimer updateTimer;
+        #endregion
+
+        #region Constructors
+        /// <summary>
+        /// Инициализирует объект класса RegistrationViewModel.
+        /// </summary>
+        /// <param name="navigationStore">Навигационное хранилище.</param>
         public RegistrationViewModel(NavigationStore navigationStore)
         {
             NavigateCommand = new NavigateCommand<AuthorizationViewModel>(new NavigationService<AuthorizationViewModel>(
                 navigationStore, () => new AuthorizationViewModel(navigationStore)));
             RegisterUserCommand = new RegisterUserCommand(this, new NavigationService<AuthorizationViewModel>(
                 navigationStore, () => new AuthorizationViewModel(navigationStore)));
+            ExitAppCommand = new ExitAppCommand();
 
             timeNow = DateTime.Now.ToString("g");
 
@@ -25,29 +43,18 @@ namespace _119_Karpovich.ViewModels
             updateTimer.Tick += new EventHandler(UpdateTime);
             updateTimer.Start();
         }
+        #endregion
 
-        private readonly DispatcherTimer updateTimer;
-        private void UpdateTime(object sender, EventArgs e)
-        {
-            TimeNow = DateTime.Now.ToString("g");
-        }
-
-
-        private string timeNow;
-        public string TimeNow
-        {
-            get { return timeNow; }
-            set
-            {
-                timeNow = value;
-                OnPropertyChanged(nameof(TimeNow));
-            }
-        }
-
-        private string login = "";
+        #region Properties
+        /// <summary>
+        /// Логин пользователя.
+        /// </summary>
+        /// <value>
+        /// Строковое представление логина пользователя.
+        /// </value>
         public string Login
         {
-            get { return login; }
+            get => login;
             set
             {
                 login = value;
@@ -56,10 +63,15 @@ namespace _119_Karpovich.ViewModels
             }
         }
 
-        private string password = "";
+        /// <summary>
+        /// Пароль пользователя.
+        /// </summary>
+        /// <value>
+        /// Строковое представление пароля пользователя.
+        /// </value>
         public string Password
         {
-            get { return password; }
+            get => password;
             set
             {
                 password = value;
@@ -68,22 +80,32 @@ namespace _119_Karpovich.ViewModels
             }
         }
 
-        private string repeatedPassword = "";
+        /// <summary>
+        /// Повторно введённый пароль пользователя.
+        /// </summary>
+        /// <value>
+        /// Строковое представление повторного пароля пользователя.
+        /// </value>
         public string RepeatedPassword
         {
-            get { return repeatedPassword; }
-            set 
-            { 
+            get => repeatedPassword;
+            set
+            {
                 repeatedPassword = value;
                 OnPropertyChanged(nameof(RepeatedPassword));
                 IsRegistrationButtonEnabled = EnableRegistrationButton();
             }
         }
 
-        private bool isRegistrationButtonEnabled;
+        /// <summary>
+        /// Флаг, отвечающий за включение и отключение кнопки регистрации.
+        /// </summary>
+        /// <value>
+        /// Булева переменная, содержащая состояние кнопки регистрации.
+        /// </value>
         public bool IsRegistrationButtonEnabled
         {
-            get { return isRegistrationButtonEnabled; }
+            get => isRegistrationButtonEnabled;
             set
             {
                 isRegistrationButtonEnabled = value;
@@ -91,18 +113,47 @@ namespace _119_Karpovich.ViewModels
             }
         }
 
-        private bool EnableRegistrationButton()
+        /// <summary>
+        /// Текущее локальное время.
+        /// </summary>
+        /// <value>
+        /// Строка, содержащее текущее время.
+        /// </value>
+        public string TimeNow
         {
-            if (login != "" 
-                && password != "" 
-                && repeatedPassword != "" 
-                && password == repeatedPassword)
-                return true;
-            else
-                return false;
+            get => timeNow;
+            set
+            {
+                timeNow = value;
+                OnPropertyChanged(nameof(TimeNow));
+            }
         }
+        #endregion
 
+        #region Commands
         public ICommand RegisterUserCommand { get; }
         public ICommand NavigateCommand { get; }
+        public ICommand ExitAppCommand { get; }
+        #endregion
+
+        #region Methods
+        /// <summary>
+        /// Обработчик события обновления времени в таймере.
+        /// </summary>
+        /// <param name="sender">Объект, вызвавший событие.</param>
+        /// <param name="e">Данные события.</param>
+        private void UpdateTime(object sender, EventArgs e)
+            => TimeNow = DateTime.Now.ToString("g");
+
+        /// <summary>
+        /// Метод, получающий значение, ответственное за включение 
+        /// кнопки регистрации.
+        /// </summary>
+        /// <returns>Булево значение, показывающее, необходимо ли 
+        /// активировать кнопку регистрации.</returns>
+        private bool EnableRegistrationButton()
+            => login != "" && password != "" &&
+                repeatedPassword != "" && password == repeatedPassword;
+        #endregion
     }
 }

@@ -15,8 +15,9 @@
         Deactivated="Calculator_Deactivated"
         Icon="{x:Null}">
 
-    <Grid MouseLeftButtonDown="Window_MouseLeftButtonDown">
-        
+    <Grid 
+        MouseLeftButtonDown="Window_MouseLeftButtonDown">
+
         <TextBlock 
             x:Name="resultBlock" 
             VerticalAlignment="Center" 
@@ -28,7 +29,10 @@
             FontWeight="SemiBold" 
             Text="0"/>
 
-        <Grid Grid.Row="1" Background="#FF7E72A2">
+        <Grid 
+            Grid.Row="1" 
+            Background="#FF7E72A2">
+            
             <Button 
                 x:Name="clearButton" 
                 Click="Operator_Click" 
@@ -180,7 +184,7 @@
                 Content="-" 
                 Grid.Column="4" 
                 Grid.Row="2"
-                ToolTip="Вычетание"/>
+                ToolTip="Вычитание"/>
 
             <Button 
                 x:Name="multiplyButton" 

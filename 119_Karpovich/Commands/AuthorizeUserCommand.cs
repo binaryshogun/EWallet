@@ -1,6 +1,7 @@
 ﻿using _119_Karpovich.Models;
 using _119_Karpovich.Stores;
 using _119_Karpovich.ViewModels;
+using _119_Karpovich.Services;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
@@ -8,42 +9,60 @@ using System.Windows;
 
 namespace _119_Karpovich.Commands
 {
-    public class AuthorizeUserCommand : CommandBase
+    /// <summary>
+    /// Команда авторизации пользователя.
+    /// </summary>
+    internal class AuthorizeUserCommand : CommandBase
     {
-        private readonly AuthorizationViewModel _viewModel;
-        private readonly NavigationStore _navigationStore;
-        private readonly WalletEntities dataBase;
+        #region Fields
+        private readonly AuthorizationViewModel viewModel;
+        private readonly ParameterNavigationService<User, AccountViewModel> navigationService;
+        #endregion
 
-        public AuthorizeUserCommand(AuthorizationViewModel viewModel, NavigationStore navigationStore)
+        #region Constructors
+        /// <summary>
+        /// Инициализирует команду авторизации.
+        /// </summary>
+        /// <param name="viewModel">ViewModel данных авторизации.</param>
+        /// <param name="navigationStore">Хранилище данных.</param>
+        public AuthorizeUserCommand(AuthorizationViewModel viewModel, ParameterNavigationService<User, AccountViewModel> navigationService)
         {
-            _viewModel = viewModel;
-            _navigationStore = navigationStore;
-            dataBase = new WalletEntities();
+            this.viewModel = viewModel;
+            this.navigationService = navigationService;
         }
+        #endregion
 
+        #region Methods
+        /// <inheritdoc cref="CommandBase.Execute(object)"/>
         public override void Execute(object parameter)
         {
-            using (dataBase)
+            using (var dataBase = new WalletEntities())
             {
                 int length = 16;
-                if (_viewModel.Password.Length < 16)
-                    length = _viewModel.Password.Length;
+                if (viewModel.Password.Length < 16)
+                    length = viewModel.Password.Length;
 
-                string tempPassword = GetHash(_viewModel.Password, length);
+                string tempPassword = GetHash(viewModel.Password, length);
 
                 User user = dataBase.User
                     .AsNoTracking()
                     .FirstOrDefault(
-                    u => u.Login == _viewModel.Login
+                    u => u.Login == viewModel.Login
                     && (u.Password == tempPassword || u.Password == "default"));
 
                 if (user != null)
-                    _navigationStore.CurrentViewModel = new AccountViewModel(user, _navigationStore);
+                    navigationService.Navigate(user);
                 else
                     MessageBox.Show("Неверно введён логин или пароль!", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Information);
             }
         }
 
+        /// <summary>
+        /// Хэширует строку, используя криптографический алгоритм SHA-1.
+        /// </summary>
+        /// <param name="password">Пароль для хэширования.</param>
+        /// <param name="length">Длина возвращаемой строки.</param>
+        /// <returns>Хэшированный пароль.</returns>
         public static string GetHash(string password, int length)
         {
             using (var hash = SHA1.Create())
@@ -51,5 +70,6 @@ namespace _119_Karpovich.Commands
                 return string.Concat(hash.ComputeHash(Encoding.UTF8.GetBytes(password)).Select(x => x.ToString("X2"))).Substring(0, length);
             }
         }
+        #endregion
     }
 }

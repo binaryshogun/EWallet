@@ -7,9 +7,6 @@ namespace _119_Karpovich
     /// </summary>
     public partial class MainWindow : Window
     {
-        public MainWindow() 
-        {
-            InitializeComponent();
-        }
+        public MainWindow() => InitializeComponent();
     }
 }

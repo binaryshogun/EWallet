@@ -6,17 +6,48 @@ using System.Windows.Media;
 namespace _119_Karpovich.Components
 {
     /// <summary>
-    /// Логика взаимодействия для BindablePasswordBox.xaml
+    /// PasswordBox с возможностью привязки данных.
     /// </summary>
     public partial class BindablePasswordBox : UserControl
     {
-        public BindablePasswordBox()
+        #region Fields
+        private bool _isPasswordChanging;
+        public event RoutedEventHandler PasswordChanged;
+        #endregion
+
+        #region Constructors
+        /// <summary>
+        /// Инициализирует PasswordBox с возможностью привязки.
+        /// </summary>
+        public BindablePasswordBox() => InitializeComponent();
+        #endregion
+
+        #region Methods
+        /// <summary>
+        /// Метод, обновляющий свойство пароля PasswordBox из BindablePasswordBox.
+        /// </summary>
+        private void UpdatePassword()
         {
-            InitializeComponent();
-            passwordBox.Background = new SolidColorBrush(Colors.AliceBlue);
-            passwordBox.MaxLength = 0;
+            if (!_isPasswordChanging)
+                passwordBox.Password = Password;
         }
 
+        /// <summary>
+        /// Метод, обновляющий свойство фона PasswordBox из BindablePasswordBox.
+        /// </summary>
+        public void UpdateBackground() 
+            => passwordBox.Background = Background;
+
+        /// <summary>
+        /// Метод, обновляющий свойство максимальной длины PasswordBox из BindablePasswordBox.
+        /// </summary>
+        private void UpdateMaxLength() 
+            => passwordBox.MaxLength = MaxLength;
+        #endregion
+
+        #region MethodsRoutedEventHandlers
+        #region EventHandlers working with PasswordProperty
+        /// <inheritdoc cref="RoutedEventHandler"/>
         private void PasswordBox_PasswordChanged(object sender, RoutedEventArgs e)
         {
             _isPasswordChanging = true;
@@ -25,6 +56,7 @@ namespace _119_Karpovich.Components
             PasswordChanged?.Invoke(this, new RoutedEventArgs());
         }
 
+        /// <inheritdoc cref="PropertyChangedCallback"/>
         private static void PasswordPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             if(d is BindablePasswordBox passwordBox)
@@ -32,18 +64,14 @@ namespace _119_Karpovich.Components
                 passwordBox.UpdatePassword();
             }
         }
+        #endregion
 
-        private void UpdatePassword()
-        {
-            if (!_isPasswordChanging)
-                passwordBox.Password = Password;
-        }
+        #region EventHandlers working with BackgroundProperty
+        /// <inheritdoc cref="RoutedEventHandler"/>
+        private void PasswordBox_BackgroundChanged(object sender, RoutedEventArgs e) 
+            => Background = passwordBox.Background;
 
-        private void PasswordBox_BackgroundChanged(object sender, RoutedEventArgs e)
-        {
-            Background = passwordBox.Background;
-        }
-
+        /// <inheritdoc cref="PropertyChangedCallback"/>
         private static void BackgroundPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             if (d is BindablePasswordBox passwordBox)
@@ -51,17 +79,14 @@ namespace _119_Karpovich.Components
                 passwordBox.UpdateBackground();
             }
         }
+        #endregion
 
-        public void UpdateBackground()
-        {
-            passwordBox.Background = Background;
-        }
+        #region EventHandlers working with MaxLengthProperty
+        /// <inheritdoc cref="RoutedEventHandler"/>
+        private void PasswordBox_MaxLengthChanged(object sender, RoutedEventArgs e) 
+            => MaxLength = passwordBox.MaxLength;
 
-        private void PasswordBox_MaxLengthChanged(object sender, RoutedEventArgs e)
-        {
-            MaxLength = passwordBox.MaxLength;
-        }
-
+        /// <inheritdoc cref="PropertyChangedCallback"/>
         private static void MaxLengthPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             if (d is BindablePasswordBox passwordBox)
@@ -69,29 +94,38 @@ namespace _119_Karpovich.Components
                 passwordBox.UpdateMaxLength();
             }
         }
+        #endregion
+        #endregion
 
-        private void UpdateMaxLength()
+        #region Properties
+        /// <inheritdoc cref="PasswordBox.Password"/>
+        public string Password
         {
-            passwordBox.MaxLength = MaxLength;
+            get => (string)GetValue(PasswordProperty);
+            set => SetValue(PasswordProperty, value);
         }
 
-        public int MaxLength 
-        {
-            get { return (int)GetValue(MaxLengthProperty); }
-            set { SetValue(MaxLengthProperty, value); }
-        }
-
-        // Using a DependencyProperty as the backing store for MaxLength.  This enables animation, styling, binding, etc...
-        public static readonly DependencyProperty MaxLengthProperty =
-            DependencyProperty.Register("MaxLength", typeof(int), typeof(BindablePasswordBox), 
-                new FrameworkPropertyMetadata(0, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault,
-                    MaxLengthPropertyChanged, null, false, UpdateSourceTrigger.PropertyChanged));
-
+        /// <inheritdoc cref="TextBlock.Background"/>
         public new Brush Background
         {
-            get { return (Brush)GetValue(BackgroundProperty); }
-            set { SetValue(BackgroundProperty, value); }
+            get => (Brush)GetValue(BackgroundProperty);
+            set => SetValue(BackgroundProperty, value);
         }
+
+        /// <inheritdoc cref="TextBox.MaxLength"/>
+        public int MaxLength
+        {
+            get => (int)GetValue(MaxLengthProperty);
+            set => SetValue(MaxLengthProperty, value);
+        }
+        #endregion
+
+        #region DependencyProperties
+        // Using a DependencyProperty as the backing store for MyProperty.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty PasswordProperty =
+            DependencyProperty.Register("Password", typeof(string), typeof(BindablePasswordBox),
+                new FrameworkPropertyMetadata(null, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault,
+                    PasswordPropertyChanged, null, false, UpdateSourceTrigger.PropertyChanged));
 
         // Using a DependencyProperty as the backing store for Background.  This enables animation, styling, binding, etc...
         public static new readonly DependencyProperty BackgroundProperty =
@@ -99,19 +133,11 @@ namespace _119_Karpovich.Components
                 new FrameworkPropertyMetadata(null, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault,
                     BackgroundPropertyChanged, null, false, UpdateSourceTrigger.PropertyChanged));
 
-        public string Password
-        {
-            get { return (string)GetValue(PasswordProperty); }
-            set { SetValue(PasswordProperty, value); }
-        }
-
-        // Using a DependencyProperty as the backing store for MyProperty.  This enables animation, styling, binding, etc...
-        public static readonly DependencyProperty PasswordProperty =
-            DependencyProperty.Register("Password", typeof(string), typeof(BindablePasswordBox), 
-                new FrameworkPropertyMetadata(null, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault, 
-                    PasswordPropertyChanged, null, false, UpdateSourceTrigger.PropertyChanged));
-
-        public event RoutedEventHandler PasswordChanged;
-        private bool _isPasswordChanging;
+        // Using a DependencyProperty as the backing store for MaxLength.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty MaxLengthProperty =
+            DependencyProperty.Register("MaxLength", typeof(int), typeof(BindablePasswordBox), 
+                new FrameworkPropertyMetadata(0, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault,
+                    MaxLengthPropertyChanged, null, false, UpdateSourceTrigger.PropertyChanged));
+        #endregion
     }
 }

@@ -7,9 +7,6 @@ namespace _119_Karpovich.Views
     /// </summary>
     public partial class RegistrationView : UserControl
     {
-        public RegistrationView()
-        {
-            InitializeComponent();
-        }
+        public RegistrationView() => InitializeComponent();
     }
 }

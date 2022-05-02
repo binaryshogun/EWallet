@@ -7,9 +7,6 @@ namespace _119_Karpovich.Views
     /// </summary>
     public partial class AccountView : UserControl
     {
-        public AccountView()
-        {
-            InitializeComponent();
-        }
+        public AccountView() => InitializeComponent();
     }
 }

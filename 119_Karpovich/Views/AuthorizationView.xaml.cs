@@ -7,9 +7,6 @@ namespace _119_Karpovich.Views
     /// </summary>
     public partial class AuthorizationView : UserControl
     {
-        public AuthorizationView()
-        {
-            InitializeComponent();
-        }
+        public AuthorizationView() => InitializeComponent();
     }
 }

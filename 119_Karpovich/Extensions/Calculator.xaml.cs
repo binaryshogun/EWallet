@@ -34,10 +34,6 @@ namespace _119_Karpovich.Extensions
         {
             InitializeComponent();
 
-            var uri = new Uri("Resources/CalculatorTheme.xaml", UriKind.Relative);
-            ResourceDictionary resourceDictionary = Application.LoadComponent(uri) as ResourceDictionary;
-            Resources.MergedDictionaries.Add(resourceDictionary);
-
             WindowStartupLocation = WindowStartupLocation.Manual;
             Top = startupPoint.Y - 350;
             Left = startupPoint.X;
@@ -51,7 +47,7 @@ namespace _119_Karpovich.Extensions
         private void ClearAll()
         {
             temp = 0;
-            resultBlock.Text = "0";
+            resultBlock.Content = "0";
             operation = null;
             singleOperation = null;
             isNewOperation = false;
@@ -113,7 +109,7 @@ namespace _119_Karpovich.Extensions
         #region EventHandlers
         /// <inheritdoc cref="Window.Deactivated"/>
         private void Calculator_Deactivated(object sender, EventArgs e)
-        { }
+            => Close();
 
         /// <inheritdoc cref="MouseButtonEventHandler"/>
         private void Window_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
@@ -124,14 +120,14 @@ namespace _119_Karpovich.Extensions
         {
             var button = sender as Button;
 
-            if (resultBlock.Text == "0" || isNewOperation == true)
-                resultBlock.Text = button.Content.ToString();
-            else if (resultBlock.Text.Length == 6) {} 
-            else if (resultBlock.Text.Contains(",") && button.Content.ToString() == ",") {}
+            if (resultBlock.Content.ToString() == "0" || isNewOperation == true)
+                resultBlock.Content = button.Content.ToString().ToString();
+            else if (resultBlock.Content.ToString().Length == 6) {} 
+            else if (resultBlock.Content.ToString().Contains(",") && button.Content.ToString().ToString() == ",") {}
             else
-                resultBlock.Text += button.Content.ToString();
+                resultBlock.Content += button.Content.ToString().ToString();
 
-            result = double.Parse(resultBlock.Text);
+            result = double.Parse(resultBlock.Content.ToString());
             isNewOperation = false;
         }
 
@@ -144,14 +140,14 @@ namespace _119_Karpovich.Extensions
             if (tempOp != null)
                 operationButton.Background = button.Background;
 
-            if (operation == null && resultBlock.Text != "0")
-                temp = Convert.ToDouble(resultBlock.Text);
+            if (operation == null && resultBlock.Content.ToString() != "0")
+                temp = Convert.ToDouble(resultBlock.Content.ToString());
 
             operationButton = button;
             isNewOperation = true;
-            double.TryParse(resultBlock.Text, out result);
+            double.TryParse(resultBlock.Content.ToString(), out result);
 
-            switch (button.Content.ToString())
+            switch (button.Content.ToString().ToString())
             {
                 case "CE":
                     if (operationButton != null)
@@ -172,24 +168,24 @@ namespace _119_Karpovich.Extensions
                 case "√":
                     button.Background = Brushes.White;
                     singleOperation = Sqrt;
-                    resultBlock.Text = Math.Round(singleOperation(result), 6).ToString();
+                    resultBlock.Content = Math.Round(singleOperation(result), 6).ToString();
                     break;
 
                 case "x²":
                     singleOperation = Sqr;
-                    resultBlock.Text = Math.Round(singleOperation(result), 6).ToString();
+                    resultBlock.Content = Math.Round(singleOperation(result), 6).ToString();
                     break;
 
                 case "x³":
                     button.Background = Brushes.White;
                     singleOperation = Pow;
-                    resultBlock.Text = Math.Round(singleOperation(result), 6).ToString();
+                    resultBlock.Content = Math.Round(singleOperation(result), 6).ToString();
                     break;
 
                 case "±":
                     button.Background = Brushes.White;
                     singleOperation = ChangeSign;
-                    resultBlock.Text = Math.Round(singleOperation(result), 6).ToString();
+                    resultBlock.Content = Math.Round(singleOperation(result), 6).ToString();
                     break;
 
                 case "×":
@@ -210,7 +206,7 @@ namespace _119_Karpovich.Extensions
                 temp = Math.Round(tempOp(temp, Convert.ToDouble(result)), 6);
 
             if (singleOperation != null)
-                result = double.Parse(resultBlock.Text);
+                result = double.Parse(resultBlock.Content.ToString());
 
             singleOperation = null;
         }
@@ -222,12 +218,12 @@ namespace _119_Karpovich.Extensions
             operationButton.Background = button.Background;
 
             if (isNewOperation == false)
-                double.TryParse(resultBlock.Text, out result);
+                double.TryParse(resultBlock.Content.ToString(), out result);
 
             if (operation != null)
             {
-                resultBlock.Text = Math.Round(operation(temp, result), 6).ToString();
-                temp = Convert.ToDouble(resultBlock.Text);
+                resultBlock.Content = Math.Round(operation(temp, result), 6).ToString();
+                temp = Convert.ToDouble(resultBlock.Content.ToString());
             }
 
             isNewOperation = true;

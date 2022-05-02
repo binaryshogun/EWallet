@@ -2,20 +2,122 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:components="clr-namespace:_119_Karpovich.Components">
     <Style TargetType="{x:Type Grid}">
-        <Setter Property="Background" Value="#773997" />
+        <Setter
+            Property="Background"
+            Value="White" />
     </Style>
 
-    <Style TargetType="{x:Type Button}">
-        <Setter Property="Background" Value="#15031F" />
-        <Setter Property="BorderBrush" Value="#15031F"/>
-        <Setter Property="BorderThickness" Value="1"/>
-        <Setter Property="MaxHeight" Value="50"/>
-        <Setter Property="MaxWidth" Value="210"/>
+    <Style TargetType="{x:Type PasswordBox}">
+        <Setter Property="BorderThickness" Value="0 0 0 1"/>
+        <Setter Property="VerticalAlignment" Value="Center"/>
+        <Setter Property="PasswordChar" Value="●"/>
+        <Setter Property="Background" Value="{DynamicResource {x:Static SystemColors.WindowBrushKey}}"/>
+        <Setter Property="BorderBrush" Value="#000"/>
+        <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}"/>
+        <Setter Property="KeyboardNavigation.TabNavigation" Value="None"/>
+        <Setter Property="HorizontalContentAlignment" Value="Left"/>
+        <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
+        <Setter Property="AllowDrop" Value="true"/>
+        <Setter Property="ScrollViewer.PanningMode" Value="VerticalFirst"/>
+        <Setter Property="Stylus.IsFlicksEnabled" Value="False"/>
         <Setter Property="Template">
             <Setter.Value>
-                <ControlTemplate TargetType="{x:Type Button}">
-                    <Border 
-                        x:Name="Border" 
+                <ControlTemplate TargetType="{x:Type PasswordBox}">
+                    <Border x:Name="border" Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" SnapsToDevicePixels="True">
+                        <ScrollViewer x:Name="PART_ContentHost" Focusable="false" HorizontalScrollBarVisibility="Hidden" VerticalScrollBarVisibility="Hidden"/>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsEnabled" Value="false">
+                            <Setter Property="Opacity" TargetName="border" Value="0.56"/>
+                        </Trigger>
+                        <Trigger Property="IsMouseOver" Value="true">
+                            <Setter Property="BorderBrush" TargetName="border" Value="#FFB32BF9"/>
+                        </Trigger>
+                        <Trigger Property="IsKeyboardFocused" Value="true">
+                            <Setter Property="BorderBrush" TargetName="border" Value="#773997"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+        <Style.Triggers>
+            <MultiTrigger>
+                <MultiTrigger.Conditions>
+                    <Condition Property="IsInactiveSelectionHighlightEnabled" Value="true"/>
+                    <Condition Property="IsSelectionActive" Value="false"/>
+                </MultiTrigger.Conditions>
+                <Setter Property="SelectionBrush" Value="{DynamicResource {x:Static SystemColors.InactiveSelectionHighlightBrushKey}}"/>
+            </MultiTrigger>
+        </Style.Triggers>
+    </Style>
+    
+    <Style TargetType="{x:Type TextBox}">
+        <Setter Property="Margin" Value="10"/>
+        <Setter Property="Padding" Value="5"/>
+        <Setter Property="FontSize" Value="24"/>
+        <Setter Property="FontFamily" Value="Cascadia Mono"/>
+        <Setter Property="VerticalAlignment" Value="Center"/>
+        <Setter Property="FontWeight" Value="Light"/>
+        <Setter Property="BorderThickness" Value="0 0 0 1"/>
+        <Setter Property="VerticalAlignment" Value="Center"/>
+        <Setter Property="BorderBrush" Value="#000"/>
+        <Setter Property="Background" Value="{DynamicResource {x:Static SystemColors.WindowBrushKey}}"/>
+        <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}"/>
+        <Setter Property="KeyboardNavigation.TabNavigation" Value="None"/>
+        <Setter Property="HorizontalContentAlignment" Value="Left"/>
+        <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
+        <Setter Property="AllowDrop" Value="true"/>
+        <Setter Property="ScrollViewer.PanningMode" Value="VerticalFirst"/>
+        <Setter Property="Stylus.IsFlicksEnabled" Value="False"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type TextBox}">
+                    <Border x:Name="border" Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" SnapsToDevicePixels="True">
+                        <ScrollViewer x:Name="PART_ContentHost" Focusable="false" HorizontalScrollBarVisibility="Hidden" VerticalScrollBarVisibility="Hidden"/>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsEnabled" Value="false">
+                            <Setter Property="Opacity" TargetName="border" Value="0.56"/>
+                        </Trigger>
+                        <Trigger Property="IsMouseOver" Value="true">
+                            <Setter Property="BorderBrush" TargetName="border" Value="#FFB32BF9"/>
+                        </Trigger>
+                        <Trigger Property="IsKeyboardFocused" Value="true">
+                            <Setter Property="BorderBrush" TargetName="border" Value="#773997"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+        <Style.Triggers>
+            <MultiTrigger>
+                <MultiTrigger.Conditions>
+                    <Condition Property="IsInactiveSelectionHighlightEnabled" Value="true"/>
+                    <Condition Property="IsSelectionActive" Value="false"/>
+                </MultiTrigger.Conditions>
+                <Setter Property="SelectionBrush" Value="{DynamicResource {x:Static SystemColors.InactiveSelectionHighlightBrushKey}}"/>
+            </MultiTrigger>
+        </Style.Triggers>
+    </Style>
+    
+    <Style TargetType="{x:Type Button}">
+        <Setter Property="FontSize" Value="24"/>
+        <Setter Property="Background" Value="#000" />
+        <Setter Property="BorderBrush" Value="#000"/>
+        <Setter Property="FontWeight" Value="SemiBold"/>
+        <Setter Property="Foreground" Value="White"/>
+        <Setter Property="BorderThickness" Value="1"/>
+        <Setter Property="MaxHeight" Value="70"/>
+        <Setter Property="MaxWidth" Value="250"/>
+        <Setter Property="Margin" Value="10"/>
+        <Setter Property="Padding" Value="5"/>
+        <Setter
+            Property="Template">
+            <Setter.Value>
+                <ControlTemplate
+                    TargetType="{x:Type Button}">
+                    <Border
+                        x:Name="Border"
                         Padding="{TemplateBinding Padding}"
                         Background="{TemplateBinding Background}"
                         BorderBrush="{TemplateBinding BorderBrush}"
@@ -24,23 +126,26 @@
                         <ContentPresenter
                             x:Name="ButtonPresenter"
                             HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
-                            VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
+                            VerticalAlignment="{TemplateBinding VerticalContentAlignment}" />
                         <VisualStateManager.VisualStateGroups>
-                            <VisualStateGroup x:Name="Common">
-                                <VisualState x:Name="MouseOver">
+                            <VisualStateGroup
+                                x:Name="Common">
+                                <VisualState
+                                    x:Name="MouseOver">
                                     <Storyboard>
                                         <ColorAnimation
                                             Storyboard.TargetName="Border"
                                             Storyboard.TargetProperty="(Button.Background).(SolidColorBrush.Color)"
-                                            To="{DynamicResource MouseOver.Background.Color}"/>
+                                            To="{DynamicResource MouseOver.Background.Color}" />
                                     </Storyboard>
                                 </VisualState>
-                                <VisualState x:Name="Disabled">
+                                <VisualState
+                                    x:Name="Disabled">
                                     <Storyboard>
                                         <ColorAnimation
                                             Storyboard.TargetName="Border"
                                             Storyboard.TargetProperty="(Button.Background).(SolidColorBrush.Color)"
-                                            To="{DynamicResource Disabled.Background.Color}"/>
+                                            To="{DynamicResource Disabled.Background.Color}" />
                                     </Storyboard>
                                 </VisualState>
                             </VisualStateGroup>
@@ -51,65 +156,43 @@
         </Setter>
         <Style.Triggers>
             <Trigger Property="IsMouseOver" Value="True">
-                <Setter Property="FontWeight" Value="SemiBold"/>
                 <Setter Property="Cursor" Value="Hand"/>
-                <Setter Property="Background" Value="#FF96E7F7"/>
+                <Setter Property="Background" Value="#FF232323" />
             </Trigger>
             <Trigger Property="IsEnabled" Value="False">
-                <Setter Property="Background" Value="#FFBADBE2"/>
+                <Setter Property="Background"
+                    Value="#FF797979" />
             </Trigger>
         </Style.Triggers>
     </Style>
     
     <Style TargetType="Button" x:Key="SmallButtonStyle">
         <Setter Property="Background" Value="Transparent"/>
-        <Setter Property="Foreground"
-            Value="#FFE0E0E0" />
-        <Setter Property="FontSize" Value="18"/>
-        <Setter Property="Margin" Value="0 0 0 10"/>
-        <Setter Property="Padding" Value="0"/>
-        <Setter Property="MaxWidth" Value="210"/>
+        <Setter Property="Foreground" Value="#000" />
+        <Setter Property="FontSize" Value="24"/>
+        <Setter Property="Margin" Value="2"/>
         <Setter Property="VerticalAlignment" Value="Top"/>
         <Setter Property="HorizontalAlignment" Value="Left"/>
+        <Setter Property="Margin" Value="10 0"/>
+        <Setter Property="Padding" Value="2"/>
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type Button}">
-                    <Border
-                        x:Name="Border"
-                        Padding="{TemplateBinding Padding}"
-                        Background="{TemplateBinding Background}"
-                        BorderBrush="{TemplateBinding BorderBrush}"
-                        BorderThickness="0"
-                        CornerRadius="2">
-                        <ContentPresenter
-                            x:Name="ButtonPresenter"
-                            HorizontalAlignment="{TemplateBinding HorizontalAlignment}"
-                            VerticalAlignment="{TemplateBinding VerticalAlignment}"/>
-                        <VisualStateManager.VisualStateGroups>
-                            <VisualStateGroup x:Name="Common">
-                                <VisualState x:Name="MouseOver">
-                                    <Storyboard>
-                                        <ColorAnimation
-                                            Storyboard.TargetName="Border"
-                                            Storyboard.TargetProperty="(Button.Background).(SolidColorBrush.Color)"
-                                            To="{DynamicResource MouseOver.Background.Color}"/>
-                                        <ColorAnimation
-                                            Storyboard.TargetName="Border"
-                                            Storyboard.TargetProperty="(Button.Background).(SolidColorBrush.Color)"
-                                            To="{DynamicResource MouseOver.Background.Color}"/>
-                                    </Storyboard>
-                                </VisualState>
-                            </VisualStateGroup>
-                        </VisualStateManager.VisualStateGroups>
-                    </Border>
+                    <TextBlock Text="{TemplateBinding Content}"/>
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
         <Style.Triggers>
             <Trigger Property="IsMouseOver" Value="True">
-                <Setter Property="FontWeight" Value="SemiBold"/>
                 <Setter Property="Cursor" Value="Hand"/>
                 <Setter Property="Background" Value="Transparent"/>
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="{x:Type Button}">
+                            <TextBlock Text="{TemplateBinding Content}" TextDecorations="Underline"/>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
             </Trigger>
         </Style.Triggers>
     </Style>
@@ -164,32 +247,28 @@
     </Style>
 
     <Style TargetType="{x:Type TextBlock}">
-        <Setter Property="Margin" Value="10"/>
-        <Setter Property="Padding" Value="5"/>
-        <Setter Property="FontSize" Value="18"/>
-        <Setter Property="FontFamily" Value="Bahnschrift"/>
         <Setter Property="TextWrapping" Value="WrapWithOverflow"/>
-        <Setter Property="Foreground" Value="#FFFFFF"/>
     </Style>
-
-    <Style TargetType="{x:Type TextBox}">
-        <Setter Property="Margin" Value="10"/>
+    
+    <Style TargetType="{x:Type Label}">
+        <Setter Property="FontSize" Value="24"/>
+        <Setter Property="FontFamily" Value="Cascadia Mono"/>
+        <Setter Property="FontWeight" Value="Light"/>
         <Setter Property="Padding" Value="5"/>
-        <Setter Property="FontSize" Value="18"/>
-        <Setter Property="FontFamily" Value="Bahnschrift"/>
-        <Setter Property="VerticalAlignment" Value="Center"/>
+        <Setter Property="Margin" Value="10"/>
     </Style>
 
     <Style TargetType="{x:Type components:BindablePasswordBox}">
-        <Setter Property="Margin" Value="10 9"/>
+        <Setter Property="Margin" Value="10"/>
         <Setter Property="Foreground" Value="Black"/>
-        <Setter Property="FontSize" Value="18"/>
-        <Setter Property="FontFamily" Value="Georgia"/>
-        <Setter Property="VerticalAlignment" Value="Center"/>
+        <Setter Property="FontSize" Value="24"/>
+        <Setter Property="FontFamily" Value="Cascadia Mono"/>
+        <Setter Property="FontWeight" Value="Light"/>
     </Style>
 
     <Style TargetType="{x:Type ComboBox}">
-        <Setter Property="MaxHeight" Value="30" />
+        <Setter Property="MaxHeight" Value="45" />
+        <Setter Property="Margin" Value="10"/>
     </Style>
 
 </ResourceDictionary>

@@ -22,15 +22,17 @@ namespace _119_Karpovich.ViewModels
         #endregion
 
         #region Constructors
-        public AuthorizationViewModel(NavigationStore navigationStore)
+        /// <summary>
+        /// Инициализирует объект класса AuthorizationViewModel.
+        /// </summary>
+        /// <param name="navigationBarViewModel">ViewModel страницы регистрации.</param>
+        /// <param name="navigationStore">Навигационное хранилище.</param>
+        public AuthorizationViewModel(UserStore userStore, NavigationBarViewModel navigationBarViewModel, NavigationService<AccountViewModel> accountNavigationService, NavigationService<RegistrationViewModel> registrationNavigationService)
         {
-            ParameterNavigationService<User, AccountViewModel> navigationService = new ParameterNavigationService<User, AccountViewModel>(
-                navigationStore, (parameter) => new AccountViewModel(parameter, navigationStore));
+            NavigationBarViewModel = navigationBarViewModel;
 
-            NavigateCommand = new NavigateCommand<RegistrationViewModel>(new NavigationService<RegistrationViewModel>(
-                navigationStore, () => new RegistrationViewModel(navigationStore)));
-            AuthorizeUserCommand = new AuthorizeUserCommand(this, navigationService);
-            ExitAppCommand = new ExitAppCommand();
+            NavigateCommand = new NavigateCommand<RegistrationViewModel>(registrationNavigationService);
+            AuthorizeUserCommand = new AuthorizeUserCommand(this, accountNavigationService, userStore);
 
             timeNow = DateTime.Now.ToString("g");
 
@@ -109,6 +111,11 @@ namespace _119_Karpovich.ViewModels
                 OnPropertyChanged(nameof(TimeNow));
             }
         }
+
+        /// <summary>
+        /// ViewModel панели навигации.
+        /// </summary>
+        public NavigationBarViewModel NavigationBarViewModel { get; }
         #endregion
 
         #region Commands

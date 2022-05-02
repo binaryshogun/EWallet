@@ -12,7 +12,6 @@ namespace _119_Karpovich.ViewModels
     public class UserProfileViewModel : ViewModelBase
     {
         #region Fields
-        private readonly NavigationStore navigationStore;
         private readonly Passport passport;
 
         private string firstName;
@@ -27,18 +26,22 @@ namespace _119_Karpovich.ViewModels
         #endregion
 
         #region Constructors
-        public UserProfileViewModel(User user, NavigationStore navigationStore)
+        public UserProfileViewModel(UserStore userStore, NavigationBarViewModel navigationBarViewModel, NavigationService<AccountViewModel> accountNavigationService, NavigationService<AuthorizationViewModel> authorizationNavigationService)
         {
-            this.navigationStore = navigationStore;
+            NavigationBarViewModel = navigationBarViewModel;
 
             using (var dataBase = new WalletEntities())
             {
                 passport = dataBase.Passport.AsNoTracking().
-                    Where(p => p.UserID == user.ID).FirstOrDefault();
+                    Where(p => p.UserID == userStore.CurrentUser.ID).FirstOrDefault();
             }
 
-            NavigateCommand = new NavigateCommand<AccountViewModel>(new NavigationService<AccountViewModel>(
-                navigationStore, () => new AccountViewModel(user, navigationStore)));
+            FirstName = passport.FirstName == null ? "" : passport.FirstName;
+            LastName = passport.LastName == null ? "" : passport.LastName;
+            Patronymic = passport.Patronymic == null ? "" : passport.LastName;
+
+            NavigateCommand = new NavigateCommand<AccountViewModel>(accountNavigationService);
+            ExitAccountCommand = new ExitAccountCommand<AuthorizationViewModel>(userStore, authorizationNavigationService);
 
             timeNow = DateTime.Now.ToString("g");
 
@@ -127,10 +130,14 @@ namespace _119_Karpovich.ViewModels
                 OnPropertyChanged(nameof(TimeNow));
             }
         }
+
+        public NavigationBarViewModel NavigationBarViewModel { get; }
         #endregion
 
         #region Commands
         public ICommand NavigateCommand { get; }
+
+        public ICommand ExitAccountCommand { get; }
         #endregion
 
         #region Methods

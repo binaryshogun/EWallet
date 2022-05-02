@@ -5,7 +5,6 @@ using _119_Karpovich.Services;
 using _119_Karpovich.Stores;
 using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Windows.Data;
 using System.Windows.Input;
@@ -19,7 +18,7 @@ namespace _119_Karpovich.ViewModels
     public class AccountViewModel : ViewModelBase
     {
         #region Fields
-        public readonly User user;
+        public readonly UserStore userStore;
         private ICollectionView listServices;
 
         private double balance;
@@ -39,10 +38,10 @@ namespace _119_Karpovich.ViewModels
         /// </summary>
         /// <param name="user">Пользователь, прошедший авторизацию в системе.</param>
         /// <param name="navigationStore">Хранилище данных, содержащее данные о текущей ViewModel.</param>
-        public AccountViewModel(User user, NavigationStore navigationStore)
+        public AccountViewModel(UserStore userStore, NavigationBarViewModel navigationBarViewModel, NavigationService<AuthorizationViewModel> authorizationNavigationService)
         {
-            this.user = user;
-            Balance = user.Balance;
+            this.userStore = userStore;
+            Balance = userStore.CurrentUser.Balance;
             StringBalance = string.Format($"Баланс: {Balance}");
 
             using (var db = new WalletEntities())
@@ -51,12 +50,11 @@ namespace _119_Karpovich.ViewModels
                 ListServices = CollectionViewSource.GetDefaultView(services);
             }
 
+            NavigationBarViewModel = navigationBarViewModel;
+
             DoOperationCommand = new DoOperationCommand(this);
             OpenCalculatorCommand = new OpenCalculatorCommand<Calculator>();
-            ExitAccountCommand = new ExitAccountCommand<AuthorizationViewModel>(new NavigationService<AuthorizationViewModel>(
-               navigationStore, () => new AuthorizationViewModel(navigationStore)));
-            NavigateCommand = new NavigateCommand<UserProfileViewModel>(new NavigationService<UserProfileViewModel>(
-                navigationStore, () => new UserProfileViewModel(user, navigationStore)));
+            ExitAccountCommand = new ExitAccountCommand<AuthorizationViewModel>(userStore, authorizationNavigationService);
 
             timeNow = DateTime.Now.ToString("g");
 
@@ -81,7 +79,7 @@ namespace _119_Karpovich.ViewModels
             set
             {
                 balance = value;
-                StringBalance = string.Format($"Баланс: {Balance}");
+                StringBalance = string.Format($"Баланс:\n{Balance}");
                 OnPropertyChanged(nameof(Balance));
             }
         }
@@ -150,17 +148,21 @@ namespace _119_Karpovich.ViewModels
 
                 if (number != 0 || value != " ")
                 {
-                    if (value.Length <= 4)
+                    int length = value.Replace(" ", "").Length;
+                    if (length <= 4)
                         cardNumber = value;
-                    else if (value.Length <= 8)
+                    else if (length <= 8)
                         cardNumber = string.Format($"{number:#### ####}");
-                    else if (value.Length <= 12)
+                    else if (length <= 12)
                         cardNumber = string.Format($"{number:#### #### ####}");
                     else
                         cardNumber = string.Format($"{number:#### #### #### ####}");
                 }
 
-                cardNumber.Trim(' ');
+                if (cardNumber != null)
+                {
+                    cardNumber.Trim(' ');
+                }
 
                 OnPropertyChanged(nameof(CardNumber));
                 if (cardNumber != "" && operationBalance != 0 && selectedService != null)
@@ -217,13 +219,14 @@ namespace _119_Karpovich.ViewModels
                 OnPropertyChanged(nameof(IsConfirmButtonEnabled));
             }
         }
+
+        public NavigationBarViewModel NavigationBarViewModel { get; }
         #endregion
 
         #region Commands
         public ICommand OpenCalculatorCommand { get; }
         public ICommand DoOperationCommand { get; }
         public ICommand ExitAccountCommand { get; }
-        public ICommand NavigateCommand { get; }
         #endregion
 
         #region EventHandlers

@@ -4,34 +4,39 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:_119_Karpovich.Views"
+             xmlns:components="clr-namespace:_119_Karpovich.Components"
              mc:Ignorable="d" 
-             d:DesignHeight="600" d:DesignWidth="800">
+             d:DesignHeight="800" d:DesignWidth="800">
     <Grid>
-        <Button
-            x:Name="backButton"
-            Style="{StaticResource SmallButtonStyle}"
-            Content="Назад"
-            Command="{Binding NavigateCommand}" 
-            VerticalAlignment="Center"/>
 
-        <Button
-            x:Name="supervisorButton"
-            Style="{StaticResource SmallButtonStyle}"
-            Command="{Binding }"
-            Grid.Column="2"
-            Visibility="{Binding IsSupervisor}"
-            HorizontalAlignment="Right"
-            VerticalAlignment="Center">
-            <Button.Content>
-                <TextBlock 
-                    TextAlignment="Center"
-                    TextWrapping="Wrap">
-                    Режим администратора
-                </TextBlock>
-            </Button.Content>
-        </Button>
+        <components:NavigationBar DataContext="{Binding NavigationBarViewModel}" />
 
-        <Grid
+        <Grid Grid.Row="1">
+
+            <Button
+                x:Name="supervisorButton"
+                Style="{StaticResource SmallButtonStyle}"
+                Command="{Binding }"
+                Visibility="{Binding IsSupervisor}"
+                VerticalAlignment="Top"
+                Content="Режим администратора"
+                TextBlock.TextAlignment="Center"
+                Margin="15 15 15 0" />
+
+            <Button
+                x:Name="logOutButton"
+                Style="{StaticResource ImageButtonStyle}"
+                Command="{Binding ExitAccountCommand}"
+                VerticalAlignment="Top"
+                HorizontalAlignment="Right"
+                Grid.Column="2"
+                Margin="15 15 15 0">
+                <Button.Content>
+                    <Image Source="../Resources/icon_exitButton.png"/>
+                </Button.Content>
+            </Button>
+
+            <Grid
             Grid.Row="1"
             Grid.ColumnSpan="3">
 
@@ -45,17 +50,17 @@
 
                     <StackPanel>
 
-                        <TextBlock
-                            Text="ФИО"
+                        <Label
+                            Content="ФИО"
                             FontWeight="Bold"
-                            FontSize="24"
+                            FontSize="32"
                             Margin="10 2" />
 
                         <Grid
                             Margin="5 0">
 
-                            <TextBlock
-                                Text="Фамилия" />
+                            <Label
+                                Content="Фамилия" />
 
                             <TextBox
                                 Text="{Binding LastName}"
@@ -73,8 +78,8 @@
                         <Grid
                             Margin="5 0">
 
-                            <TextBlock
-                                Text="Имя" />
+                            <Label
+                                Content="Имя" />
 
                             <TextBox
                                 Text="{Binding FirstName}"
@@ -92,12 +97,13 @@
                         <Grid
                             Margin="5 0">
 
-                            <TextBlock
-                                Text="Отчество" />
+                            <Label
+                                Content="Отчество" />
 
                             <TextBox
                                 Text="{Binding Patronymic}"
-                                Grid.Column="1" />
+                                Grid.Column="1"
+                                IsEnabled="{Binding DoUserHavePatronymic}"/>
 
                             <CheckBox
                                 IsChecked="{Binding DoUserHavePatronymic}"
@@ -113,20 +119,21 @@
                             </Grid.ColumnDefinitions>
                         </Grid>
 
-                        <TextBlock 
-                            Text="Паспортные данные"
-                            FontWeight="Bold"
-                            FontSize="24"/>
+                        <Label 
+                            Content="Паспортные данные"
+                            FontWeight="ExtraBold"
+                            FontSize="32"/>
 
                         <Grid
                             Margin="5 0">
 
-                            <TextBlock
-                                Text="Серия" />
+                            <Label
+                                Content="Серия" />
 
                             <TextBox
-                                Text="{Binding SerialNumber}"
-                                Grid.Column="1" />
+                                Text="{Binding SerialNumber, UpdateSourceTrigger=PropertyChanged}"
+                                Grid.Column="1" 
+                                MaxLength="4"/>
 
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition />
@@ -140,12 +147,13 @@
                         <Grid
                             Margin="5 0">
 
-                            <TextBlock
-                                Text="Номер" />
+                            <Label
+                                Content="Номер" />
 
                             <TextBox
-                                Text="{Binding Number}"
-                                Grid.Column="1" />
+                                Text="{Binding Number, UpdateSourceTrigger=PropertyChanged}"
+                                Grid.Column="1" 
+                                MaxLength="6"/>
 
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition />
@@ -159,13 +167,14 @@
                         <Grid
                             Margin="5 0">
 
-                            <TextBlock
-                                Text="Код подразделения"
-                                Margin="10 10 0 10" />
+                            <Label
+                                Content="Код подразделения"
+                                Margin="10 10 0 10"/>
 
                             <TextBox
-                                Text="{Binding DivisionCode}"
-                                Grid.Column="1" />
+                                Text="{Binding DivisionCode, UpdateSourceTrigger=PropertyChanged}"
+                                Grid.Column="1" 
+                                MaxLength="3"/>
 
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition />
@@ -184,17 +193,21 @@
             
             <Grid.ColumnDefinitions>
                 <ColumnDefinition />
-                <ColumnDefinition Width="8*"/>
+                <ColumnDefinition Width="12*"/>
                 <ColumnDefinition />
             </Grid.ColumnDefinitions>
         </Grid>
 
-        <TextBlock 
-            Text="{Binding TimeNow}"
-            Grid.Row="2"
+        <Label 
+            Content="{Binding TimeNow}"
+            Grid.Row="1"
+            Grid.RowSpan="2"
             Grid.Column="2"
             Grid.ColumnSpan="2"
-            HorizontalAlignment="Right"/>
+            HorizontalAlignment="Right"
+            VerticalAlignment="Bottom"
+            Margin="2"
+            Padding="0"/>
 
         <Grid.RowDefinitions>
             <RowDefinition />
@@ -206,5 +219,12 @@
             <ColumnDefinition Width="1*"/>
             <ColumnDefinition />
         </Grid.ColumnDefinitions>
+        </Grid>
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        
     </Grid>
 </UserControl>

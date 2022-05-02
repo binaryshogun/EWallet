@@ -7,9 +7,10 @@
         xmlns:viewmodels="clr-namespace:_119_Karpovich.ViewModels"
         xmlns:views="clr-namespace:_119_Karpovich.Views"
         mc:Ignorable="d"
-        Title="E-Wallet" 
+        Title="E-Money" 
         MinHeight="600" MinWidth="800"
         WindowStartupLocation="CenterOwner" 
+        WindowStyle="None"
         WindowState="Normal">
     <ContentControl Content="{Binding CurrentViewModel}" Grid.Row="1">
         <ContentControl.Resources>
@@ -24,6 +25,9 @@
             </DataTemplate>
             <DataTemplate DataType="{x:Type viewmodels:UserProfileViewModel}">
                 <views:UserProfileView/>
+            </DataTemplate>
+            <DataTemplate DataType="{x:Type viewmodels:HomeViewModel}">
+                <views:HomeView />
             </DataTemplate>
         </ContentControl.Resources>
     </ContentControl>

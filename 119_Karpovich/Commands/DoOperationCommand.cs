@@ -69,7 +69,7 @@ namespace _119_Karpovich.Commands
                 {
                     User user = dataBase.User.AsNoTracking().FirstOrDefault(u => u.ID == card.UserID);
                     user.UpdateUserBalance(operationBalance);
-                    viewmodel.user.UpdateUserBalance(-operationBalance);
+                    viewmodel.userStore.CurrentUser.UpdateUserBalance(-operationBalance);
                     viewmodel.Balance -= operationBalance;
                 }
                 else
@@ -94,7 +94,7 @@ namespace _119_Karpovich.Commands
             }
 
             viewmodel.Balance -= operationBalance;
-            viewmodel.user.UpdateUserBalance(-operationBalance);
+            viewmodel.userStore.CurrentUser.UpdateUserBalance(-operationBalance);
             return;
         }
 
@@ -106,7 +106,7 @@ namespace _119_Karpovich.Commands
         private void TopUp(string cardNumber, double operationBalance)
         {
             viewmodel.Balance += operationBalance;
-            viewmodel.user.UpdateUserBalance(operationBalance);
+            viewmodel.userStore.CurrentUser.UpdateUserBalance(operationBalance);
         }
         #endregion
     }

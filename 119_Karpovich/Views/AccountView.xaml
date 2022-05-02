@@ -4,234 +4,228 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:_119_Karpovich.Views"
-             xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+             xmlns:components="clr-namespace:_119_Karpovich.Components"
              mc:Ignorable="d" 
              d:DesignHeight="600" d:DesignWidth="800">
-
     <Grid>
-        <TextBlock 
-            Text="{Binding StringBalance, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}" 
-            TextWrapping="WrapWithOverflow"
-            HorizontalAlignment="Left" 
-            VerticalAlignment="Center"
-            Margin="10 10"
-            Grid.ColumnSpan="2"/>
+        
+        <components:NavigationBar DataContext="{Binding NavigationBarViewModel}"/>
 
-        <Grid 
-            Grid.Column="2" 
-            Grid.RowSpan="2" 
-            VerticalAlignment="Top">
-            
-            <Button 
-                Command="{Binding NavigateCommand}"
-                Style="{StaticResource SmallButtonStyle}"
-                HorizontalAlignment="Right" 
-                VerticalAlignment="Center"
-                Margin="0"
-                ToolTip="Редактирование или добавление персональных данных.">
-                <Button.Content>
-                    <TextBlock
-                        Text="Профиль"
-                        Margin="0 10 10 0"
-                        TextAlignment="Center"/>
-                </Button.Content>
-            </Button>
+        <Grid
+            Grid.Row="1">
+            <Label
+                Content="{Binding StringBalance, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"
+                HorizontalAlignment="Left"
+                VerticalAlignment="Top"
+                TextBlock.TextAlignment="Center"
+                Margin="10" />
 
-            <Button 
-                Style="{StaticResource SmallButtonStyle}"
-                HorizontalAlignment="Right" 
-                VerticalAlignment="Center"
-                Grid.Row="1"
-                Margin="0"
+            <Button
+                x:Name="logOutButton"
+                Style="{StaticResource ImageButtonStyle}"
                 Command="{Binding ExitAccountCommand}"
-                ToolTip="Выход на страницу авторизации.">
+                VerticalAlignment="Top"
+                HorizontalAlignment="Right"
+                Grid.Column="2"
+                Margin="15 15 15 0">
                 <Button.Content>
-                    <TextBlock
-                        Text="Выйти"
-                        Margin="0 0 15 0"
-                        TextAlignment="Center"/>
+                    <Image
+                        Source="../Resources/icon_exitButton.png" />
                 </Button.Content>
             </Button>
 
-            <Grid.RowDefinitions>
-                <RowDefinition/>
-                <RowDefinition/>
-            </Grid.RowDefinitions>
-        </Grid>
+            <Grid
+                Grid.Row="1"
+                Grid.Column="1">
 
-        <Grid 
-            Grid.Row="1" 
-            Grid.Column="1">
-            
-            <Border 
-                BorderThickness="1" 
-                BorderBrush="Black">
-                
-                <StackPanel>
-                    <Grid>
-                        <TextBlock 
-                            Text="Выберите услугу:" 
-                            HorizontalAlignment="Left" 
-                            VerticalAlignment="Center"
-                            TextWrapping="WrapWithOverflow"
-                            Margin="0 10"/>
+                <Border
+                    BorderThickness="1"
+                    BorderBrush="Black">
 
-                        <ComboBox 
-                            x:Name="SelectService"
-                            ItemsSource="{Binding ListServices}"
-                            SelectedValuePath="Name"
-                            SelectedValue="{Binding SelectedService}"
-                            Grid.Column="1"
-                            ToolTip="Список доступных услуг."
-                            IsSynchronizedWithCurrentItem="True">
-                            <ComboBox.ItemTemplate>
-                                <DataTemplate>
-                                    <TextBlock
-                                            Text="{Binding Name}"
+                    <StackPanel>
+                        <Grid>
+                            <Label
+                                Content="Выберите услугу:"
+                                HorizontalAlignment="Left"
+                                VerticalAlignment="Center"
+                                MaxWidth="200" />
+
+                            <ComboBox
+                                x:Name="SelectService"
+                                ItemsSource="{Binding ListServices}"
+                                SelectedValuePath="Name"
+                                SelectedValue="{Binding SelectedService}"
+                                Grid.Column="1"
+                                ToolTip="Список доступных услуг."
+                                IsSynchronizedWithCurrentItem="True">
+                                <ComboBox.ItemTemplate>
+                                    <DataTemplate>
+                                        <Label
+                                            Content="{Binding Name}" 
                                             Margin="0"
                                             Padding="0"/>
-                                </DataTemplate>
-                            </ComboBox.ItemTemplate>
-                        </ComboBox>
+                                    </DataTemplate>
+                                </ComboBox.ItemTemplate>
+                            </ComboBox>
 
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="0.6*"/>
-                            <ColumnDefinition/>
-                        </Grid.ColumnDefinitions>
-                    </Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition
+                                    Width="auto" />
+                                <ColumnDefinition
+                                    Width="*" />
+                            </Grid.ColumnDefinitions>
+                        </Grid>
 
-                    <Grid>
-                        <TextBlock 
-                            x:Name="FirstServiceBlock" 
-                            Text="Номер карты:" 
-                            HorizontalAlignment="Left" 
-                            VerticalAlignment="Center"
-                            Grid.Column="0"
-                            Margin="0"/>
+                        <Grid>
+                            <Label
+                                x:Name="FirstServiceBlock"
+                                Content="Номер карты:"
+                                HorizontalAlignment="Left"
+                                VerticalAlignment="Center"
+                                Grid.Column="0" />
 
-                        <TextBlock
-                            x:Name="CardNumberHint"
-                            Text="0000 0000 0000 0000"
-                            Grid.Column="1"
-                            Background="White"
-                            Foreground="Gray"
-                            MaxHeight="28"
-                            Margin="11"/>
+                            <Label
+                                x:Name="CardNumberHint"
+                                Content="0000 0000 0000 0000"
+                                Grid.Column="1"
+                                Background="White"
+                                Foreground="Gray"
+                                VerticalAlignment="Center" />
 
-                        <TextBox 
-                            x:Name="CardNumber" 
-                            Text="{Binding CardNumber, 
-                                UpdateSourceTrigger=PropertyChanged}" 
-                            Grid.Row="0" 
-                            Grid.Column="1"
-                            MaxLength="19"
-                            VerticalAlignment="Center"
-                            ToolTip="Номер карты для выполнения операции (16 цифр)."
-                            Background="Transparent"
-                            TextChanged="CardNumber_TextChanged"/>
+                            <TextBox
+                                x:Name="CardNumber"
+                                Text="{Binding CardNumber, 
+                                UpdateSourceTrigger=PropertyChanged}"
+                                Grid.Row="0"
+                                Grid.Column="1"
+                                MaxLength="19"
+                                VerticalAlignment="Center"
+                                ToolTip="Номер карты для выполнения операции (16 цифр)."
+                                Background="Transparent"
+                                TextChanged="CardNumber_TextChanged" 
+                                PreviewTextInput="CardNumber_PreviewTextInput"/>
 
-                        <x:Code>
-                            <![CDATA[
+                            <x:Code>
+                                <![CDATA[
                                 private void CardNumber_TextChanged(object sender, RoutedEventArgs e)
                                 {
                                     CardNumberHint.Visibility = CardNumber.Text.Length == 0 ? Visibility.Visible : Visibility.Hidden;
                                     CardNumber.Background = CardNumber.Text.Length == 0 ? null : new SolidColorBrush(Colors.White); 
                                 }
+                                
+                                private void CardNumber_PreviewTextInput(object sender, TextCompositionEventArgs e)
+                                {
+                                    e.Handled = "0123456789".IndexOf(e.Text) < 0;
+                                }
                             ]]>
-                        </x:Code>
+                            </x:Code>
 
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="0.6*"/>
-                            <ColumnDefinition/>
-                            <ColumnDefinition Width="0.1*"/>
-                        </Grid.ColumnDefinitions>
-                    </Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition
+                                    Width="0.6*" />
+                                <ColumnDefinition />
+                                <ColumnDefinition
+                                    Width="0.1*" />
+                            </Grid.ColumnDefinitions>
+                        </Grid>
 
-                    <Grid>
-                        <TextBlock 
-                            Text="Сумма операции:" 
-                            HorizontalAlignment="Left" 
-                            VerticalAlignment="Center"
-                            Grid.Column="0"
-                            Margin="0 10"/>
+                        <Grid>
+                            <Label
+                                Content="Сумма операции:"
+                                HorizontalAlignment="Left"
+                                VerticalAlignment="Center"
+                                Grid.Column="0" />
 
-                        <TextBlock
-                            x:Name="OperationBalanceHint"
-                            Text="100,00"
-                            Grid.Column="1"
-                            Background="White"
-                            Foreground="Gray"
-                            MaxHeight="28"
-                            Margin="11"/>
+                            <Label
+                                x:Name="OperationBalanceHint"
+                                Content="100,00"
+                                Grid.Column="1"
+                                Background="White"
+                                Foreground="Gray"
+                                VerticalAlignment="Center" />
 
-                        <TextBox 
-                            x:Name="OperationBalance" 
-                            Text="{Binding OperationBalance, 
+                            <TextBox
+                                x:Name="OperationBalance"
+                                Text="{Binding OperationBalance, 
                                 UpdateSourceTrigger=PropertyChanged,
-                                StringFormat=N2}"
-                            VerticalAlignment="Center"
-                            Grid.Row="0"
-                            Grid.Column="1"
-                            MaxLength="6"
-                            ToolTip="Сумма перечисляемых денежных средств."
-                            Background="Transparent"
-                            TextChanged="OperationBalance_TextChanged"/>
+                                Mode=TwoWay, StringFormat=F2}"
+                                VerticalAlignment="Center"
+                                Grid.Row="0"
+                                Grid.Column="1"
+                                MaxLength="6"
+                                ToolTip="Сумма перечисляемых денежных средств."
+                                Background="Transparent"
+                                TextChanged="OperationBalance_TextChanged" 
+                                PreviewTextInput="OperationBalance_PreviewTextInput"/>
 
-                        <x:Code>
-                            <![CDATA[
+                            <x:Code>
+                                <![CDATA[
                                 private void OperationBalance_TextChanged(object sender, RoutedEventArgs e)
                                 {
                                     OperationBalanceHint.Visibility = OperationBalance.Text.Length == 0 ? Visibility.Visible : Visibility.Hidden;
-                                    OperationBalance.Background = OperationBalance.Text.Length == 0 ? null : new SolidColorBrush(Colors.White); 
+                                    OperationBalance.Background = OperationBalance.Text.Length == 0 ? null : new SolidColorBrush(Colors.White);
+                                }
+                                
+                                private void OperationBalance_PreviewTextInput(object sender, System.Windows.Input.TextCompositionEventArgs e)
+                                {
+                                    e.Handled = "0123456789".IndexOf(e.Text) < 0;
                                 }
                             ]]>
-                        </x:Code>
+                            </x:Code>
 
-                        <Button 
-                            Style="{StaticResource ImageButtonStyle}"
-                            Command="{Binding OpenCalculatorCommand}"
-                            Grid.Column="2" >
-                            <Button.Content>
-                                <Image Source="../Resources/icon_calculator.png"/>
-                            </Button.Content>
-                        </Button>
+                            <Button
+                                Style="{StaticResource ImageButtonStyle}"
+                                Command="{Binding OpenCalculatorCommand}"
+                                Grid.Column="2">
+                                <Button.Content>
+                                    <Image
+                                        Source="../Resources/icon_calculator.png" />
+                                </Button.Content>
+                            </Button>
 
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="0.6*"/>
-                            <ColumnDefinition/>
-                            <ColumnDefinition Width="0.1*"/>
-                        </Grid.ColumnDefinitions>
-                    </Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition
+                                    Width="0.6*" />
+                                <ColumnDefinition />
+                                <ColumnDefinition
+                                    Width="0.1*" />
+                            </Grid.ColumnDefinitions>
+                        </Grid>
 
-                    <Button 
-                        x:Name="ConfirmButton" 
-                        Content="Оплатить"
-                        Command="{Binding DoOperationCommand}"
-                        IsEnabled="{Binding IsConfirmButtonEnabled}"
-                        Margin="0 20"
-                        ToolTip="Провести денежную операцию."/>
-                </StackPanel>
-            </Border>
-        </Grid>
+                        <Button
+                            x:Name="ConfirmButton"
+                            Content="Оплатить"
+                            Command="{Binding DoOperationCommand}"
+                            IsEnabled="{Binding IsConfirmButtonEnabled}"
+                            ToolTip="Провести денежную операцию." />
+                    </StackPanel>
+                </Border>
+            </Grid>
 
-        <TextBlock 
-            Text="{Binding TimeNow}"
-            Grid.Column="1"
-            Grid.ColumnSpan="2"
-            Grid.Row="2"
-            VerticalAlignment="Bottom"
-            HorizontalAlignment="Right"
-            Margin="10 0"/>
+            <Label
+                Content="{Binding TimeNow}"
+                Grid.Column="1"
+                Grid.ColumnSpan="2"
+                Grid.Row="2"
+                VerticalAlignment="Bottom"
+                HorizontalAlignment="Right"
+                Margin="10 0" />
 
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition/>
-            <ColumnDefinition Width="4*"/>
-            <ColumnDefinition/>
+            <Grid.ColumnDefinitions>
+            <ColumnDefinition />
+            <ColumnDefinition Width="4*" />
+            <ColumnDefinition />
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
-            <RowDefinition/>
-            <RowDefinition Height="4*"/>
-            <RowDefinition Height="0.5*"/>
+            <RowDefinition />
+            <RowDefinition Height="4*" />
+            <RowDefinition Height="0.5*" />
+        </Grid.RowDefinitions>
+        </Grid>
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
     </Grid>
 </UserControl>

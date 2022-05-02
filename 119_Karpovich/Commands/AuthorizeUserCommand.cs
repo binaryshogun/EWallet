@@ -16,7 +16,8 @@ namespace _119_Karpovich.Commands
     {
         #region Fields
         private readonly AuthorizationViewModel viewModel;
-        private readonly ParameterNavigationService<User, AccountViewModel> navigationService;
+        private readonly NavigationService<AccountViewModel> navigationService;
+        private readonly UserStore userStore;
         #endregion
 
         #region Constructors
@@ -25,10 +26,11 @@ namespace _119_Karpovich.Commands
         /// </summary>
         /// <param name="viewModel">ViewModel данных авторизации.</param>
         /// <param name="navigationStore">Хранилище данных.</param>
-        public AuthorizeUserCommand(AuthorizationViewModel viewModel, ParameterNavigationService<User, AccountViewModel> navigationService)
+        public AuthorizeUserCommand(AuthorizationViewModel viewModel, NavigationService<AccountViewModel> navigationService, UserStore userStore)
         {
             this.viewModel = viewModel;
             this.navigationService = navigationService;
+            this.userStore = userStore;
         }
         #endregion
 
@@ -51,7 +53,10 @@ namespace _119_Karpovich.Commands
                     && (u.Password == tempPassword || u.Password == "default"));
 
                 if (user != null)
-                    navigationService.Navigate(user);
+                {
+                    userStore.CurrentUser = user;
+                    navigationService.Navigate();
+                }
                 else
                     MessageBox.Show("Неверно введён логин или пароль!", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Information);
             }

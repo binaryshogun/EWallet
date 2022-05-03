@@ -38,7 +38,7 @@ namespace _119_Karpovich.ViewModels
         /// </summary>
         /// <param name="user">Пользователь, прошедший авторизацию в системе.</param>
         /// <param name="navigationStore">Хранилище данных, содержащее данные о текущей ViewModel.</param>
-        public AccountViewModel(UserStore userStore, NavigationBarViewModel navigationBarViewModel, NavigationService<AuthorizationViewModel> authorizationNavigationService)
+        public AccountViewModel(UserStore userStore, INavigationService authorizationNavigationService)
         {
             this.userStore = userStore;
             Balance = userStore.CurrentUser.Balance;
@@ -48,13 +48,12 @@ namespace _119_Karpovich.ViewModels
             {
                 IList<Service> services = new List<Service>(db.Service);
                 ListServices = CollectionViewSource.GetDefaultView(services);
+                SelectedService = services != null ? services[0].Name : "";
             }
 
-            NavigationBarViewModel = navigationBarViewModel;
-
             DoOperationCommand = new DoOperationCommand(this);
-            OpenCalculatorCommand = new OpenCalculatorCommand<Calculator>();
-            ExitAccountCommand = new ExitAccountCommand<AuthorizationViewModel>(userStore, authorizationNavigationService);
+            OpenCalculatorCommand = new OpenCalculatorCommand();
+            ExitAccountCommand = new ExitAccountCommand(userStore, authorizationNavigationService);
 
             timeNow = DateTime.Now.ToString("g");
 
@@ -62,7 +61,7 @@ namespace _119_Karpovich.ViewModels
             {
                 Interval = TimeSpan.FromSeconds(1)
             };
-            updateTimer.Tick += new EventHandler(UpdateTime);
+            updateTimer.Tick += UpdateTime;
             updateTimer.Start();
         }
         #endregion
@@ -214,13 +213,11 @@ namespace _119_Karpovich.ViewModels
         {
             get => isConfirmButtonEnabled;
             set
-            { 
+            {
                 isConfirmButtonEnabled = value;
                 OnPropertyChanged(nameof(IsConfirmButtonEnabled));
             }
         }
-
-        public NavigationBarViewModel NavigationBarViewModel { get; }
         #endregion
 
         #region Commands
@@ -229,7 +226,7 @@ namespace _119_Karpovich.ViewModels
         public ICommand ExitAccountCommand { get; }
         #endregion
 
-        #region EventHandlers
+        #region Methods
         /// <summary>
         /// Обработчик события обновления времени в таймере.
         /// </summary>
@@ -237,6 +234,13 @@ namespace _119_Karpovich.ViewModels
         /// <param name="e">Данные события.</param>
         private void UpdateTime(object sender, EventArgs e)
             => TimeNow = DateTime.Now.ToString("g");
+
+        public override void Dispose() 
+        {
+            updateTimer.Tick -= UpdateTime;
+
+            base.Dispose(); 
+        }
         #endregion
     }
 }

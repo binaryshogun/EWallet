@@ -12,7 +12,7 @@ namespace _119_Karpovich
     {
         #region Fields
         private readonly NavigationStore navigationStore;
-        private readonly NavigationBarViewModel navigationBarViewModel;
+        private readonly ModalNavigationStore modalNavigationStore;
         private readonly UserStore userStore;
         #endregion
 
@@ -24,13 +24,7 @@ namespace _119_Karpovich
         {
             userStore = new UserStore();
             navigationStore = new NavigationStore();
-            navigationBarViewModel = new NavigationBarViewModel(
-                userStore,
-                CreateHomeNavigationService(), 
-                CreateAuthorizationNavigationService(),
-                CreateRegistrationNavigationService(),
-                CreateAccountNavigationService(),
-                CreateUserProfileNavigationService());
+            modalNavigationStore = new ModalNavigationStore();
         }
         #endregion
 
@@ -38,12 +32,12 @@ namespace _119_Karpovich
         /// <inheritdoc cref="StartupEventHandler"/>
         protected override void OnStartup(StartupEventArgs e)
         {
-            NavigationService<HomeViewModel> homeNavigationService = CreateHomeNavigationService();
+            INavigationService homeNavigationService = CreateHomeNavigationService();
             homeNavigationService.Navigate();
 
             MainWindow = new MainWindow()
             {
-                DataContext = new DisplayViewModel(navigationStore)
+                DataContext = new DisplayViewModel(navigationStore, modalNavigationStore)
             };
             MainWindow.Show();
 
@@ -52,46 +46,74 @@ namespace _119_Karpovich
         #endregion
 
         #region Methods
+        private NavigationBarViewModel CreateNavigationBarViewModel() => new NavigationBarViewModel(
+                        userStore,
+                        CreateHomeNavigationService(),
+                        CreateAuthorizationNavigationService(),
+                        CreateRegistrationNavigationService(),
+                        CreateAccountNavigationService(),
+                        CreateUserProfileNavigationService());
+
         /// <summary>
         /// Метод, создающий NavigationService, привязанный к HomeViewModel.
         /// </summary>
         /// <returns>Навигационный сервис, привязанный к ViewModel домашней страницы.</returns>
-        public NavigationService<HomeViewModel> CreateHomeNavigationService() 
-            => new NavigationService<HomeViewModel>(navigationStore,
-                () => new HomeViewModel(navigationBarViewModel));
+        public INavigationService CreateHomeNavigationService() 
+            => new LayoutNavigationService<HomeViewModel>(navigationStore, CreateNavigationBarViewModel,
+                () => new HomeViewModel(CreateAuthorizationNavigationService(), 
+                    CreateRegistrationNavigationService()));
 
         /// <summary>
         /// Метод, создающий NavigationService, привязанный к AuthorizationViewModel.
         /// </summary>
         /// <returns>Навигационный сервис, привязанный к ViewModel страницы авторизации.</returns>
-        public NavigationService<AuthorizationViewModel> CreateAuthorizationNavigationService() 
-            => new NavigationService<AuthorizationViewModel>(navigationStore, 
-                () => new AuthorizationViewModel(userStore, navigationBarViewModel, 
-                    CreateAccountNavigationService(), CreateRegistrationNavigationService()));
+        public INavigationService CreateAuthorizationNavigationService()
+        {
+            CompositeNavigationService navigationService = new CompositeNavigationService(
+                new CloseModalNavigationService(modalNavigationStore),
+                CreateAccountNavigationService());
+
+            CompositeNavigationService closeModalNavigationService = new CompositeNavigationService(
+                new CloseModalNavigationService(modalNavigationStore),
+                CreateHomeNavigationService());
+
+            return new ModalNavigationService<AuthorizationViewModel>(modalNavigationStore,
+                () => new AuthorizationViewModel(userStore,
+                    navigationService, CreateRegistrationNavigationService(),
+                    closeModalNavigationService));
+        }
 
         /// <summary>
         /// Метод, создающий NavigationService, привязанный к RegistrationViewModel.
         /// </summary>
         /// <returns>Навигационный сервис, привязанный к ViewModel страницы регистрации.</returns>
-        public NavigationService<RegistrationViewModel> CreateRegistrationNavigationService() 
-            => new NavigationService<RegistrationViewModel>(navigationStore, 
-                () => new RegistrationViewModel(navigationBarViewModel, CreateAuthorizationNavigationService()));
+        public INavigationService CreateRegistrationNavigationService()
+        {
+            CompositeNavigationService closeModalNavigationService = new CompositeNavigationService(
+                new CloseModalNavigationService(modalNavigationStore),
+                CreateHomeNavigationService());
+
+            return new ModalNavigationService<RegistrationViewModel>(modalNavigationStore,
+                () => new RegistrationViewModel(CreateAuthorizationNavigationService(),
+                    closeModalNavigationService));
+        }
 
         /// <summary>
         /// Метод, создающий NavigationService, привязанный к AccountViewModel.
         /// </summary>
         /// <returns>Навигационный сервис, привязанный к ViewModel аккаунта пользователя.</returns>
-        public NavigationService<AccountViewModel> CreateAccountNavigationService() 
-            => new NavigationService<AccountViewModel>(navigationStore, 
-                () => new AccountViewModel(userStore, navigationBarViewModel, CreateAuthorizationNavigationService()));
+        public INavigationService CreateAccountNavigationService() 
+            => new LayoutNavigationService<AccountViewModel>(navigationStore, CreateNavigationBarViewModel,
+                () => new AccountViewModel(userStore, CreateHomeNavigationService()));
 
         /// <summary>
         /// Метод, создающий NavigationService, привязанный к UserProfileViewModel.
         /// </summary>
         /// <returns>Навигационный сервис, привязанный к ViewModel профиля пользователя.</returns>
-        public NavigationService<UserProfileViewModel> CreateUserProfileNavigationService()
-            => new NavigationService<UserProfileViewModel>(navigationStore,
-                () => new UserProfileViewModel(userStore, navigationBarViewModel, CreateAccountNavigationService(), CreateAuthorizationNavigationService()));
+        public INavigationService CreateUserProfileNavigationService()
+            => new LayoutNavigationService<UserProfileViewModel>(navigationStore, CreateNavigationBarViewModel,
+                () => new UserProfileViewModel(userStore, CreateAccountNavigationService(), 
+                    CreateHomeNavigationService()));
         #endregion
     }
 }

@@ -16,7 +16,7 @@ namespace _119_Karpovich.Commands
     {
         #region Fields
         private readonly AuthorizationViewModel viewModel;
-        private readonly NavigationService<AccountViewModel> navigationService;
+        private readonly INavigationService navigationService;
         private readonly UserStore userStore;
         #endregion
 
@@ -26,7 +26,7 @@ namespace _119_Karpovich.Commands
         /// </summary>
         /// <param name="viewModel">ViewModel данных авторизации.</param>
         /// <param name="navigationStore">Хранилище данных.</param>
-        public AuthorizeUserCommand(AuthorizationViewModel viewModel, NavigationService<AccountViewModel> navigationService, UserStore userStore)
+        public AuthorizeUserCommand(AuthorizationViewModel viewModel, INavigationService navigationService, UserStore userStore)
         {
             this.viewModel = viewModel;
             this.navigationService = navigationService;

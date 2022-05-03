@@ -9,8 +9,7 @@ namespace _119_Karpovich.Commands
     /// Команда открытия окна калькулятора.
     /// </summary>
     /// <typeparam name="TWindow">Класс калькулятора.</typeparam>
-    internal class OpenCalculatorCommand<TWindow> : CommandBase
-        where TWindow : Calculator
+    internal class OpenCalculatorCommand : CommandBase
     {
         #region Fields
         private Calculator calculator;

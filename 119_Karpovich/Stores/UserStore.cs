@@ -13,6 +13,7 @@ namespace _119_Karpovich.Stores
     public class UserStore
     {
         private User currentUser;
+
         /// <summary>
         /// Текущий пользователь.
         /// </summary>
@@ -22,7 +23,18 @@ namespace _119_Karpovich.Stores
         public User CurrentUser
         {
             get => currentUser;
-            set => currentUser = value;
+            set
+            {
+                currentUser = value;
+                CurrentUserChanged?.Invoke();
+            }
         }
+
+        public bool IsLoggedIn => currentUser != null;
+        public bool IsLoggedOut => currentUser == null;
+
+        public event Action CurrentUserChanged;
+
+        public void Logout() => currentUser = null;
     }
 }

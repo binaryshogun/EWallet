@@ -1,8 +1,12 @@
-﻿using System;
+﻿using _119_Karpovich.Commands;
+using _119_Karpovich.Services;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Input;
+using System.Windows.Threading;
 
 namespace _119_Karpovich.ViewModels
 {
@@ -11,8 +15,18 @@ namespace _119_Karpovich.ViewModels
     /// </summary>
     public class HomeViewModel : ViewModelBase
     {
-        public HomeViewModel(NavigationBarViewModel navigationBarViewModel) => NavigationBarViewModel = navigationBarViewModel;
+        public HomeViewModel(INavigationService authorizationNavigationService,
+            INavigationService registrationNavigationService)
+        {
+            NavigateAuthorizationCommand = new NavigateCommand(
+                authorizationNavigationService);
+            NavigateRegistrationCommand = new NavigateCommand(
+                registrationNavigationService);
+        }
 
-        public NavigationBarViewModel NavigationBarViewModel { get; }
+        public ICommand NavigateRegistrationCommand { get; }
+        public ICommand NavigateAuthorizationCommand { get; }
+
+        public override void Dispose() => base.Dispose();
     }
 }

@@ -8,43 +8,53 @@
              mc:Ignorable="d" 
              d:DesignHeight="600" d:DesignWidth="800">
     <Grid>
-        <components:NavigationBar DataContext="{Binding NavigationBarViewModel}"/>
 
-        <Grid
-            Grid.Row="1">
-            <StackPanel
-                Grid.Row="1"
-                Grid.Column="1"
-                VerticalAlignment="Stretch">
+        <Button
+            Grid.Column="1"
+            VerticalAlignment="Top"
+            HorizontalAlignment="Right"
+            Margin="5"
+            Command="{Binding NavigateHomeCommand}"
+            Style="{StaticResource ImageButtonStyle}">
+            <Image
+                Source="../Resources/icon_closeModal.png"/>
+        </Button>
+
+        <StackPanel
+            Grid.Row="1"
+            Grid.Column="1"
+            VerticalAlignment="Center"
+            Margin="60 0">
+
+            <Label
+                Content="Авторизация"
+                HorizontalAlignment="Center"
+                FontSize="32"
+                FontWeight="Bold"
+                Margin="20" />
+
+            <Grid Margin="10">
+                <Label
+                    Content="Логин"
+                    HorizontalAlignment="Left" />
 
                 <Label
-                    Content="Авторизация"
-                    HorizontalAlignment="Center"
-                    FontSize="32"
-                    FontWeight="Bold" />
+                    x:Name="LoginHint"
+                    Content="Логин"
+                    Grid.Column="1"
+                    Background="White"
+                    Foreground="Gray" />
 
-                <Grid>
-                    <Label
-                        Content="Логин"
-                        HorizontalAlignment="Left" />
+                <TextBox
+                    x:Name="LoginBox"
+                    Grid.Column="1"
+                    Text="{Binding Login, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+                    ToolTip="Уникальный логин пользователя."
+                    Background="{x:Null}"
+                    TextChanged="Login_TextChanged"
+                    MaxLength="16" />
 
-                    <Label
-                        x:Name="LoginHint"
-                        Content="Логин"
-                        Grid.Column="1"
-                        Background="White"
-                        Foreground="Gray"/>
-
-                    <TextBox
-                        x:Name="LoginBox"
-                        Grid.Column="1"
-                        Text="{Binding Login, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
-                        ToolTip="Уникальный логин пользователя."
-                        Background="{x:Null}"
-                        TextChanged="Login_TextChanged"
-                        MaxLength="16" />
-
-                    <x:Code>
+                <x:Code>
                         <![CDATA[
                         private void Login_TextChanged(object sender, RoutedEventArgs e)
                         {
@@ -61,12 +71,12 @@
                     </Grid.ColumnDefinitions>
                 </Grid>
 
-                <Grid>
-                    <Label
-                        Content="Пароль"
-                        HorizontalAlignment="Left"/>
+            <Grid Margin="10">
+                <Label
+                    Content="Пароль"
+                    HorizontalAlignment="Left" />
 
-                    <Label
+                <Label
                         x:Name="PasswordHint"
                         Content="Пароль"
                         Grid.Column="1"
@@ -102,15 +112,26 @@
                 <Button
                     Content="Не зарегистрированы?"
                     Style="{StaticResource SmallButtonStyle}"
-                    Command="{Binding NavigateCommand}" />
+                    Command="{Binding NavigateCommand}" 
+                    Margin="10"/>
 
+                <Grid>
                 <Button
                     Content="Войти"
                     IsEnabled="{Binding IsEnterButtonEnabled}"
                     Command="{Binding AuthorizeUserCommand}"
                     ToolTip="Вход в систему."
-                    IsDefault="True">
-                </Button>
+                    IsDefault="True"
+                    Grid.Column="1" 
+                    Margin="10"/>
+                    
+                <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="auto"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    
+                </Grid>
 
             </StackPanel>
 
@@ -125,22 +146,15 @@
                 Padding="0"/>
 
             <Grid.RowDefinitions>
-                <RowDefinition />
-                <RowDefinition
-                    Height="8*" />
-                <RowDefinition />
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="*" />
+                <RowDefinition Height="auto"/>
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
-                <ColumnDefinition />
+                <ColumnDefinition Width="auto"/>
                 <ColumnDefinition
-                    Width="3*" />
-                <ColumnDefinition />
+                    Width="*" />
+                <ColumnDefinition Width="auto"/>
             </Grid.ColumnDefinitions>
         </Grid>
-
-        <Grid.RowDefinitions>
-            <RowDefinition Height="auto"/>
-            <RowDefinition Height="*"/>
-        </Grid.RowDefinitions>
-    </Grid>
 </UserControl>

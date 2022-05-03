@@ -1,4 +1,5 @@
-﻿using System.ComponentModel;
+﻿using System;
+using System.ComponentModel;
 using System.Runtime.CompilerServices;
 
 namespace _119_Karpovich.ViewModels
@@ -6,7 +7,7 @@ namespace _119_Karpovich.ViewModels
     /// <summary>
     /// Базовый класс для ViewModel.
     /// </summary>
-    public abstract class ViewModelBase : INotifyPropertyChanged
+    public abstract class ViewModelBase : INotifyPropertyChanged, IDisposable
     {
         /// <inheritdoc cref="PropertyChangedEventHandler"/>
         public event PropertyChangedEventHandler PropertyChanged;
@@ -17,5 +18,7 @@ namespace _119_Karpovich.ViewModels
         /// </param>
         public void OnPropertyChanged([CallerMemberName] string property = null) 
             => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(property));
+
+        public virtual void Dispose() { }
     }
 }

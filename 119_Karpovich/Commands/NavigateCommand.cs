@@ -7,11 +7,10 @@ namespace _119_Karpovich.Commands
     /// Команда навигации.
     /// </summary>
     /// <typeparam name="TViewModel">ViewModel для навигации.</typeparam>
-    internal class NavigateCommand<TViewModel> : CommandBase
-        where TViewModel : ViewModelBase
+    internal class NavigateCommand : CommandBase
     {
         #region Fields
-        private readonly NavigationService<TViewModel> navigationService;
+        private readonly INavigationService navigationService;
         #endregion
 
         #region Constructors
@@ -19,13 +18,14 @@ namespace _119_Karpovich.Commands
         /// Инициализирует команду навигации.
         /// </summary>
         /// <param name="navigationService">Сервис навигации, привязанный к TViewModel.</param>
-        public NavigateCommand(NavigationService<TViewModel> navigationService) 
+        public NavigateCommand(INavigationService navigationService) 
             => this.navigationService = navigationService;
         #endregion
 
         #region Methods
         /// <inheritdoc cref="CommandBase.Execute(object)"/>
-        public override void Execute(object parameter) => navigationService.Navigate();
+        public override void Execute(object parameter) 
+            => navigationService.Navigate();
         #endregion
     }
 }

@@ -16,7 +16,7 @@ namespace _119_Karpovich.Commands
     {
         #region Fields
         private readonly RegistrationViewModel viewModel;
-        private readonly NavigationService<AuthorizationViewModel> navigationService;
+        private readonly INavigationService authorizationNavigationService;
         #endregion
 
         #region Constructors
@@ -24,11 +24,11 @@ namespace _119_Karpovich.Commands
         /// Инициализирует команду регистрации пользователя.
         /// </summary>
         /// <param name="viewModel">ViewModel страницы регистрации пользователя.</param>
-        /// <param name="navigationService">Сервис навигации, привязанный к AuthorizationViewModel.</param>
-        public RegisterUserCommand(RegistrationViewModel viewModel, NavigationService<AuthorizationViewModel> navigationService)
+        /// <param name="authorizationNavigationService">Сервис навигации, привязанный к AuthorizationViewModel.</param>
+        public RegisterUserCommand(RegistrationViewModel viewModel, INavigationService authorizationNavigationService)
         {
             this.viewModel = viewModel;
-            this.navigationService = navigationService;
+            this.authorizationNavigationService = authorizationNavigationService;
         }
         #endregion
 
@@ -71,7 +71,7 @@ namespace _119_Karpovich.Commands
                         "Перенаправление на страницу авторизации...", "Успешно", MessageBoxButton.OK, MessageBoxImage.Information);
             }
 
-            navigationService.Navigate();
+            authorizationNavigationService.Navigate();
         }
 
         /// <inheritdoc cref="AuthorizeUserCommand.GetHash(string, int)"/>

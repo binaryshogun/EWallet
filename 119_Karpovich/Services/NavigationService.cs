@@ -8,7 +8,7 @@ namespace _119_Karpovich.Services
     /// Сервис навигации в системе.
     /// </summary>
     /// <typeparam name="TViewModel">ViewModel для создания в качестве отображаемой страницы.</typeparam>
-    public class NavigationService<TViewModel>
+    public class NavigationService<TViewModel> : INavigationService 
         where TViewModel : ViewModelBase
     {
         #region Fields

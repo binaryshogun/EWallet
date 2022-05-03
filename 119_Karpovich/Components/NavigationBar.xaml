@@ -14,6 +14,30 @@
             <Setter Property="Padding" Value="5"/>
             <Setter Property="Margin" Value="10"/>
         </Style>
+        
+        <Style x:Key="LogoButton" TargetType="{x:Type Button}">
+            <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="Margin" Value="10"/>
+            <Setter Property="HorizontalAlignment" Value="Left"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type Button}">
+                        <Label Content="{TemplateBinding Content}" 
+                               Foreground="{TemplateBinding Foreground}"
+                               Margin="{TemplateBinding Margin}"
+                               Padding="{TemplateBinding Padding}"
+                               FontSize="{TemplateBinding FontSize}"/>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Cursor" Value="Hand"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+        
         <Style TargetType="{x:Type Grid}">
             <Setter Property="Background" Value="#773997"/>
         </Style>
@@ -21,41 +45,38 @@
             <Setter Property="Foreground" Value="White"/>
             <Setter Property="VerticalAlignment" Value="Center"/>
             <Setter Property="Margin" Value="10"/>
-            <Setter Property="VerticalAlignment" Value="Center"/>
             <Setter Property="HorizontalAlignment" Value="Left"/>
         </Style>
 
         <BooleanToVisibilityConverter
             x:Key="IsAuthorized" />
+        <CommandConverter x:Key="IsLoggedIn"/>
     </UserControl.Resources>
     
     <Grid
         MouseLeftButtonDown="UserControl_MouseLeftButtonDown">
-        <Label 
-            Grid.Column="0" 
-            Content="E-Money" 
-            FontSize="32"/>
-
         <Button
-            Grid.Column="1"
-            Command="{Binding NavigateHomeCommand}"
-            Content="Домой"/>
+            Command="{Binding NavigateCommand}"
+            Style="{StaticResource LogoButton}"
+            Grid.Column="0"
+            Content="E-Money"
+            FontSize="32" />
 
         <Button
             Grid.Column="2"
             Command="{Binding NavigateAuthorizationCommand}"
-            Content="Авторизация"
+            Content="Войти"
             Visibility="{Binding Path=IsLoggedOut, Converter={StaticResource IsAuthorized}}" />
 
         <Button
             Grid.Column="3"
             Command="{Binding NavigateRegistrationCommand}"
-            Content="Регистрация"
+            Content="Зарегистрироваться"
             Visibility="{Binding Path=IsLoggedOut, Converter={StaticResource IsAuthorized}}" />
 
         <Button
             Grid.Column="4"
-            Command="{Binding NavigateAccountCommand}"
+            Command="{Binding NavigateCommand}"
             Content="Операции"
             Visibility="{Binding Path=IsLoggedIn, Converter={StaticResource IsAuthorized}}" />
 

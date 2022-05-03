@@ -16,9 +16,7 @@ namespace _119_Karpovich.ViewModels
         #region Fields
         private string login = "";
         private string password = "";
-        private string timeNow;
         private bool isEnterButtonEnabled = false;
-        private readonly DispatcherTimer updateTimer;
         #endregion
 
         #region Constructors
@@ -27,21 +25,15 @@ namespace _119_Karpovich.ViewModels
         /// </summary>
         /// <param name="navigationBarViewModel">ViewModel страницы регистрации.</param>
         /// <param name="navigationStore">Навигационное хранилище.</param>
-        public AuthorizationViewModel(UserStore userStore, NavigationBarViewModel navigationBarViewModel, NavigationService<AccountViewModel> accountNavigationService, NavigationService<RegistrationViewModel> registrationNavigationService)
+        public AuthorizationViewModel(UserStore userStore, 
+            INavigationService accountNavigationService, 
+            INavigationService registrationNavigationService, 
+            INavigationService homeNavigationService)
         {
-            NavigationBarViewModel = navigationBarViewModel;
 
-            NavigateCommand = new NavigateCommand<RegistrationViewModel>(registrationNavigationService);
+            NavigateCommand = new NavigateCommand(registrationNavigationService);
             AuthorizeUserCommand = new AuthorizeUserCommand(this, accountNavigationService, userStore);
-
-            timeNow = DateTime.Now.ToString("g");
-
-            updateTimer = new DispatcherTimer
-            {
-                Interval = TimeSpan.FromSeconds(1)
-            };
-            updateTimer.Tick += new EventHandler(UpdateTime);
-            updateTimer.Start();
+            NavigateHomeCommand = new NavigateCommand(homeNavigationService);
         }
         #endregion
 
@@ -95,32 +87,12 @@ namespace _119_Karpovich.ViewModels
                 OnPropertyChanged(nameof(IsEnterButtonEnabled));
             }
         }
-
-        /// <summary>
-        /// Текущее локальное время.
-        /// </summary>
-        /// <value>
-        /// Строка, содержащее текущее время.
-        /// </value>
-        public string TimeNow
-        {
-            get => timeNow;
-            set
-            {
-                timeNow = value;
-                OnPropertyChanged(nameof(TimeNow));
-            }
-        }
-
-        /// <summary>
-        /// ViewModel панели навигации.
-        /// </summary>
-        public NavigationBarViewModel NavigationBarViewModel { get; }
         #endregion
 
         #region Commands
         public ICommand NavigateCommand { get; }
         public ICommand AuthorizeUserCommand { get; }
+        public ICommand NavigateHomeCommand { get; }
         public ICommand ExitAppCommand { get; }
         #endregion
 
@@ -134,13 +106,7 @@ namespace _119_Karpovich.ViewModels
         private bool EnableEnterButton()
             => login != "" && password != "";
 
-        /// <summary>
-        /// Обработчик события обновления времени в таймере.
-        /// </summary>
-        /// <param name="sender">Объект, вызвавший событие.</param>
-        /// <param name="e">Данные события.</param>
-        private void UpdateTime(object sender, EventArgs e)
-            => TimeNow = DateTime.Now.ToString("g");
+        public override void Dispose() => base.Dispose();
         #endregion
     }
 }

@@ -11,10 +11,18 @@ namespace _119_Karpovich.ViewModels
         /// Инициализирует объект класса DisplayViewModel.
         /// </summary>
         /// <param name="navigationStore">Навигационное хранилище.</param>
-        public DisplayViewModel(NavigationStore navigationStore)
+        public DisplayViewModel(NavigationStore navigationStore, ModalNavigationStore modalNavigationStore)
         {
             this.navigationStore = navigationStore;
+            this.modalNavigationStore = modalNavigationStore;
             this.navigationStore.CurrentViewModelChanged += OnCurrentViewModelChanged;
+            this.modalNavigationStore.CurrentViewModelChanged += OnCurrentModalViewModelChanged;
+        }
+
+        private void OnCurrentModalViewModelChanged()
+        {
+            OnPropertyChanged(nameof(CurrentModalViewModel));
+            OnPropertyChanged(nameof(IsModalOpen));
         }
 
         /// <summary>
@@ -26,7 +34,10 @@ namespace _119_Karpovich.ViewModels
         /// Текущая ViewModel.
         /// </summary>
         public ViewModelBase CurrentViewModel => navigationStore.CurrentViewModel;
-        
+        public ViewModelBase CurrentModalViewModel => modalNavigationStore.CurrentViewModel;
+        public bool IsModalOpen => modalNavigationStore.IsOpen;
+
         private readonly NavigationStore navigationStore;
+        private readonly ModalNavigationStore modalNavigationStore;
     }
 }

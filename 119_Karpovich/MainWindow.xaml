@@ -6,29 +6,49 @@
         xmlns:local="clr-namespace:_119_Karpovich" 
         xmlns:viewmodels="clr-namespace:_119_Karpovich.ViewModels"
         xmlns:views="clr-namespace:_119_Karpovich.Views"
-        mc:Ignorable="d"
+    xmlns:components="clr-namespace:_119_Karpovich.Components"
+    mc:Ignorable="d"
         Title="E-Money" 
         MinHeight="600" MinWidth="800"
         WindowStartupLocation="CenterOwner" 
         WindowStyle="None"
         WindowState="Normal">
-    <ContentControl Content="{Binding CurrentViewModel}" Grid.Row="1">
-        <ContentControl.Resources>
-            <DataTemplate DataType="{x:Type viewmodels:AuthorizationViewModel}">
-                <views:AuthorizationView/>
+    <Grid>
+        <Grid.Resources>
+            <DataTemplate
+                DataType="{x:Type viewmodels:AuthorizationViewModel}">
+                <views:AuthorizationView />
             </DataTemplate>
-            <DataTemplate DataType="{x:Type viewmodels:RegistrationViewModel}">
-                <views:RegistrationView/>
+            <DataTemplate
+                DataType="{x:Type viewmodels:RegistrationViewModel}">
+                <views:RegistrationView />
             </DataTemplate>
-            <DataTemplate DataType="{x:Type viewmodels:AccountViewModel}">
-                <views:AccountView/>
+            <DataTemplate
+                DataType="{x:Type viewmodels:AccountViewModel}">
+                <views:AccountView />
             </DataTemplate>
-            <DataTemplate DataType="{x:Type viewmodels:UserProfileViewModel}">
-                <views:UserProfileView/>
+            <DataTemplate
+                DataType="{x:Type viewmodels:UserProfileViewModel}">
+                <views:UserProfileView />
             </DataTemplate>
-            <DataTemplate DataType="{x:Type viewmodels:HomeViewModel}">
+            <DataTemplate
+                DataType="{x:Type viewmodels:HomeViewModel}">
                 <views:HomeView />
             </DataTemplate>
-        </ContentControl.Resources>
-    </ContentControl>
+            <DataTemplate
+                DataType="{x:Type viewmodels:LayoutViewModel}">
+                <components:Layout />
+            </DataTemplate>
+        </Grid.Resources>
+
+        <components:Modal
+            Panel.ZIndex="100"
+            IsOpen="{Binding IsModalOpen}">
+            <ContentControl Content="{Binding CurrentModalViewModel}"/>
+        </components:Modal>
+
+        <ContentControl
+            Content="{Binding CurrentViewModel}"
+            Grid.Row="1" />
+    </Grid>
 </Window>

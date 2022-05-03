@@ -9,10 +9,6 @@
              d:DesignHeight="600" d:DesignWidth="800">
     <Grid>
         
-        <components:NavigationBar DataContext="{Binding NavigationBarViewModel}"/>
-
-        <Grid
-            Grid.Row="1">
             <Label
                 Content="{Binding StringBalance, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"
                 HorizontalAlignment="Left"
@@ -34,79 +30,76 @@
                 </Button.Content>
             </Button>
 
-            <Grid
-                Grid.Row="1"
-                Grid.Column="1">
+        <Grid
+            Grid.Row="1"
+            Grid.Column="1">
 
-                <Border
-                    BorderThickness="1"
-                    BorderBrush="Black">
+            <StackPanel>
+                <Grid>
+                    <Label
+                        Content="Выберите услугу:"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Center"
+                        MaxWidth="200" />
 
-                    <StackPanel>
-                        <Grid>
-                            <Label
-                                Content="Выберите услугу:"
-                                HorizontalAlignment="Left"
-                                VerticalAlignment="Center"
-                                MaxWidth="200" />
+                    <ComboBox
+                        x:Name="SelectService"
+                        ItemsSource="{Binding ListServices}"
+                        SelectedValuePath="Name"
+                        SelectedValue="{Binding SelectedService}"
+                        Grid.Column="1"
+                        ToolTip="Список доступных услуг."
+                        IsSynchronizedWithCurrentItem="True"
+                        VerticalAlignment="Center">
+                        <ComboBox.ItemTemplate>
+                            <DataTemplate>
+                                <Label
+                                    Content="{Binding Name}"
+                                    Margin="0"
+                                    Padding="0" />
+                            </DataTemplate>
+                        </ComboBox.ItemTemplate>
+                    </ComboBox>
 
-                            <ComboBox
-                                x:Name="SelectService"
-                                ItemsSource="{Binding ListServices}"
-                                SelectedValuePath="Name"
-                                SelectedValue="{Binding SelectedService}"
-                                Grid.Column="1"
-                                ToolTip="Список доступных услуг."
-                                IsSynchronizedWithCurrentItem="True">
-                                <ComboBox.ItemTemplate>
-                                    <DataTemplate>
-                                        <Label
-                                            Content="{Binding Name}" 
-                                            Margin="0"
-                                            Padding="0"/>
-                                    </DataTemplate>
-                                </ComboBox.ItemTemplate>
-                            </ComboBox>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition
+                            Width="auto" />
+                        <ColumnDefinition
+                            Width="*" />
+                    </Grid.ColumnDefinitions>
+                </Grid>
 
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition
-                                    Width="auto" />
-                                <ColumnDefinition
-                                    Width="*" />
-                            </Grid.ColumnDefinitions>
-                        </Grid>
+                <Grid>
+                    <Label
+                        x:Name="FirstServiceBlock"
+                        Content="Номер карты:"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Center"
+                        Grid.Column="0" />
 
-                        <Grid>
-                            <Label
-                                x:Name="FirstServiceBlock"
-                                Content="Номер карты:"
-                                HorizontalAlignment="Left"
-                                VerticalAlignment="Center"
-                                Grid.Column="0" />
+                    <Label
+                        x:Name="CardNumberHint"
+                        Content="0000 0000 0000 0000"
+                        Grid.Column="1"
+                        Background="White"
+                        Foreground="Gray"
+                        VerticalAlignment="Center" />
 
-                            <Label
-                                x:Name="CardNumberHint"
-                                Content="0000 0000 0000 0000"
-                                Grid.Column="1"
-                                Background="White"
-                                Foreground="Gray"
-                                VerticalAlignment="Center" />
-
-                            <TextBox
-                                x:Name="CardNumber"
-                                Text="{Binding CardNumber, 
+                    <TextBox
+                        x:Name="CardNumber"
+                        Text="{Binding CardNumber, 
                                 UpdateSourceTrigger=PropertyChanged}"
-                                Grid.Row="0"
-                                Grid.Column="1"
-                                MaxLength="19"
-                                VerticalAlignment="Center"
-                                ToolTip="Номер карты для выполнения операции (16 цифр)."
-                                Background="Transparent"
-                                TextChanged="CardNumber_TextChanged" 
-                                PreviewTextInput="CardNumber_PreviewTextInput"/>
+                        Grid.Row="0"
+                        Grid.Column="1"
+                        MaxLength="19"
+                        VerticalAlignment="Center"
+                        ToolTip="Номер карты для выполнения операции (16 цифр)."
+                        Background="Transparent"
+                        TextChanged="CardNumber_TextChanged"
+                        PreviewTextInput="CardNumber_PreviewTextInput" />
 
-                            <x:Code>
-                                <![CDATA[
+                    <x:Code>
+                        <![CDATA[
                                 private void CardNumber_TextChanged(object sender, RoutedEventArgs e)
                                 {
                                     CardNumberHint.Visibility = CardNumber.Text.Length == 0 ? Visibility.Visible : Visibility.Hidden;
@@ -118,48 +111,48 @@
                                     e.Handled = "0123456789".IndexOf(e.Text) < 0;
                                 }
                             ]]>
-                            </x:Code>
+                    </x:Code>
 
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition
-                                    Width="0.6*" />
-                                <ColumnDefinition />
-                                <ColumnDefinition
-                                    Width="0.1*" />
-                            </Grid.ColumnDefinitions>
-                        </Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition
+                            Width="0.6*" />
+                        <ColumnDefinition />
+                        <ColumnDefinition
+                            Width="0.1*" />
+                    </Grid.ColumnDefinitions>
+                </Grid>
 
-                        <Grid>
-                            <Label
-                                Content="Сумма операции:"
-                                HorizontalAlignment="Left"
-                                VerticalAlignment="Center"
-                                Grid.Column="0" />
+                <Grid>
+                    <Label
+                        Content="Сумма операции:"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Center"
+                        Grid.Column="0" />
 
-                            <Label
-                                x:Name="OperationBalanceHint"
-                                Content="100,00"
-                                Grid.Column="1"
-                                Background="White"
-                                Foreground="Gray"
-                                VerticalAlignment="Center" />
+                    <Label
+                        x:Name="OperationBalanceHint"
+                        Content="100,00"
+                        Grid.Column="1"
+                        Background="White"
+                        Foreground="Gray"
+                        VerticalAlignment="Center" />
 
-                            <TextBox
-                                x:Name="OperationBalance"
-                                Text="{Binding OperationBalance, 
+                    <TextBox
+                        x:Name="OperationBalance"
+                        Text="{Binding OperationBalance, 
                                 UpdateSourceTrigger=PropertyChanged,
                                 Mode=TwoWay, StringFormat=F2}"
-                                VerticalAlignment="Center"
-                                Grid.Row="0"
-                                Grid.Column="1"
-                                MaxLength="6"
-                                ToolTip="Сумма перечисляемых денежных средств."
-                                Background="Transparent"
-                                TextChanged="OperationBalance_TextChanged" 
-                                PreviewTextInput="OperationBalance_PreviewTextInput"/>
+                        VerticalAlignment="Center"
+                        Grid.Row="0"
+                        Grid.Column="1"
+                        MaxLength="6"
+                        ToolTip="Сумма перечисляемых денежных средств."
+                        Background="Transparent"
+                        TextChanged="OperationBalance_TextChanged"
+                        PreviewTextInput="OperationBalance_PreviewTextInput" />
 
-                            <x:Code>
-                                <![CDATA[
+                    <x:Code>
+                        <![CDATA[
                                 private void OperationBalance_TextChanged(object sender, RoutedEventArgs e)
                                 {
                                     OperationBalanceHint.Visibility = OperationBalance.Text.Length == 0 ? Visibility.Visible : Visibility.Hidden;
@@ -171,61 +164,57 @@
                                     e.Handled = "0123456789".IndexOf(e.Text) < 0;
                                 }
                             ]]>
-                            </x:Code>
+                    </x:Code>
 
-                            <Button
-                                Style="{StaticResource ImageButtonStyle}"
-                                Command="{Binding OpenCalculatorCommand}"
-                                Grid.Column="2">
-                                <Button.Content>
-                                    <Image
-                                        Source="../Resources/icon_calculator.png" />
-                                </Button.Content>
-                            </Button>
+                    <Button
+                        Style="{StaticResource ImageButtonStyle}"
+                        Command="{Binding OpenCalculatorCommand}"
+                        Grid.Column="2">
+                        <Button.Content>
+                            <Image
+                                Source="../Resources/icon_calculator.png" />
+                        </Button.Content>
+                    </Button>
 
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition
-                                    Width="0.6*" />
-                                <ColumnDefinition />
-                                <ColumnDefinition
-                                    Width="0.1*" />
-                            </Grid.ColumnDefinitions>
-                        </Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition
+                            Width="0.6*" />
+                        <ColumnDefinition />
+                        <ColumnDefinition
+                            Width="0.1*" />
+                    </Grid.ColumnDefinitions>
+                </Grid>
 
-                        <Button
-                            x:Name="ConfirmButton"
-                            Content="Оплатить"
-                            Command="{Binding DoOperationCommand}"
-                            IsEnabled="{Binding IsConfirmButtonEnabled}"
-                            ToolTip="Провести денежную операцию." />
-                    </StackPanel>
-                </Border>
-            </Grid>
+                <Button
+                    x:Name="ConfirmButton"
+                    Content="Оплатить"
+                    Command="{Binding DoOperationCommand}"
+                    IsEnabled="{Binding IsConfirmButtonEnabled}"
+                    ToolTip="Провести денежную операцию." />
+            </StackPanel>
+        </Grid>
 
-            <Label
-                Content="{Binding TimeNow}"
-                Grid.Column="1"
-                Grid.ColumnSpan="2"
-                Grid.Row="2"
-                VerticalAlignment="Bottom"
-                HorizontalAlignment="Right"
-                Margin="10 0" />
+        <Label
+            Content="{Binding TimeNow}"
+            Grid.Column="1"
+            Grid.ColumnSpan="2"
+            Grid.Row="2"
+            VerticalAlignment="Bottom"
+            HorizontalAlignment="Right"
+            Margin="10 0" />
 
-            <Grid.ColumnDefinitions>
+        <Grid.ColumnDefinitions>
             <ColumnDefinition />
             <ColumnDefinition Width="4*" />
             <ColumnDefinition />
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
-            <RowDefinition />
-            <RowDefinition Height="4*" />
-            <RowDefinition Height="0.5*" />
-        </Grid.RowDefinitions>
-        </Grid>
-
-        <Grid.RowDefinitions>
-            <RowDefinition Height="auto"/>
-            <RowDefinition Height="*"/>
+            <RowDefinition 
+                Height="auto"/>
+            <RowDefinition
+                Height="*" />
+            <RowDefinition
+                Height="auto" />
         </Grid.RowDefinitions>
     </Grid>
 </UserControl>

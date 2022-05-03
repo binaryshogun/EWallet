@@ -8,12 +8,7 @@
              mc:Ignorable="d" 
              d:DesignHeight="800" d:DesignWidth="800">
     <Grid>
-
-        <components:NavigationBar DataContext="{Binding NavigationBarViewModel}" />
-
-        <Grid Grid.Row="1">
-
-            <Button
+        <Button
                 x:Name="supervisorButton"
                 Style="{StaticResource SmallButtonStyle}"
                 Command="{Binding }"
@@ -216,15 +211,10 @@
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition />
-            <ColumnDefinition Width="1*"/>
+            <ColumnDefinition
+                Width="1*" />
             <ColumnDefinition />
         </Grid.ColumnDefinitions>
-        </Grid>
 
-        <Grid.RowDefinitions>
-            <RowDefinition Height="auto"/>
-            <RowDefinition Height="*"/>
-        </Grid.RowDefinitions>
-        
     </Grid>
 </UserControl>

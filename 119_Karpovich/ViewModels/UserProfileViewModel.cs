@@ -26,9 +26,8 @@ namespace _119_Karpovich.ViewModels
         #endregion
 
         #region Constructors
-        public UserProfileViewModel(UserStore userStore, NavigationBarViewModel navigationBarViewModel, NavigationService<AccountViewModel> accountNavigationService, NavigationService<AuthorizationViewModel> authorizationNavigationService)
+        public UserProfileViewModel(UserStore userStore, INavigationService accountNavigationService, INavigationService authorizationNavigationService)
         {
-            NavigationBarViewModel = navigationBarViewModel;
 
             using (var dataBase = new WalletEntities())
             {
@@ -36,12 +35,15 @@ namespace _119_Karpovich.ViewModels
                     Where(p => p.UserID == userStore.CurrentUser.ID).FirstOrDefault();
             }
 
-            FirstName = passport.FirstName == null ? "" : passport.FirstName;
-            LastName = passport.LastName == null ? "" : passport.LastName;
-            Patronymic = passport.Patronymic == null ? "" : passport.LastName;
+            if (passport != null)
+            {
+                FirstName = passport.FirstName ?? "";
+                LastName = passport.LastName ?? "";
+                Patronymic = passport.Patronymic ?? "";
+            }
 
-            NavigateCommand = new NavigateCommand<AccountViewModel>(accountNavigationService);
-            ExitAccountCommand = new ExitAccountCommand<AuthorizationViewModel>(userStore, authorizationNavigationService);
+            NavigateCommand = new NavigateCommand(accountNavigationService);
+            ExitAccountCommand = new ExitAccountCommand(userStore, authorizationNavigationService);
 
             timeNow = DateTime.Now.ToString("g");
 
@@ -130,8 +132,6 @@ namespace _119_Karpovich.ViewModels
                 OnPropertyChanged(nameof(TimeNow));
             }
         }
-
-        public NavigationBarViewModel NavigationBarViewModel { get; }
         #endregion
 
         #region Commands
@@ -148,6 +148,13 @@ namespace _119_Karpovich.ViewModels
         /// <param name="e">Данные события.</param>
         private void UpdateTime(object sender, EventArgs e)
             => TimeNow = DateTime.Now.ToString("g");
+
+        public override void Dispose()
+        {
+            updateTimer.Tick -= UpdateTime;
+
+            base.Dispose();
+        }
         #endregion
     }
 }

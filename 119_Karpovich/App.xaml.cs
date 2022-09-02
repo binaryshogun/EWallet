@@ -1,9 +1,9 @@
-﻿using _119_Karpovich.Stores;
-using _119_Karpovich.ViewModels;
-using _119_Karpovich.Services;
+﻿using EWallet.Stores;
+using EWallet.ViewModels;
+using EWallet.Services;
 using System.Windows;
 
-namespace _119_Karpovich
+namespace EWallet
 {
     /// <summary>
     /// Логика взаимодействия для App.xaml

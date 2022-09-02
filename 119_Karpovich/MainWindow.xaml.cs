@@ -1,6 +1,6 @@
 ﻿using System.Windows;
 
-namespace _119_Karpovich
+namespace EWallet
 {
     /// <summary>
     /// Interaction logic for MainWindow.xaml

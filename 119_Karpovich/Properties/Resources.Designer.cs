@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace _119_Karpovich.Properties {
+namespace EWallet.Properties {
     using System;
     
     

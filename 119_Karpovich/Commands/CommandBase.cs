@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Windows.Input;
 
-namespace _119_Karpovich.Commands
+namespace EWallet.Commands
 {
     /// <summary>
     /// Базовый абстрактный класс для создания команд

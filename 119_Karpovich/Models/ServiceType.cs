@@ -7,7 +7,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace _119_Karpovich.Models
+namespace EWallet.Models
 {
     using System;
     using System.Collections.Generic;

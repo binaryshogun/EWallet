@@ -1,7 +1,7 @@
-﻿using _119_Karpovich.ViewModels;
+﻿using EWallet.ViewModels;
 using System;
 
-namespace _119_Karpovich.Stores
+namespace EWallet.Stores
 {
     /// <summary>
     /// Навигационное хранилище для хранения данных о текущей VieModel.

@@ -1,7 +1,7 @@
-﻿using _119_Karpovich.Services;
-using _119_Karpovich.ViewModels;
+﻿using EWallet.Services;
+using EWallet.ViewModels;
 
-namespace _119_Karpovich.Commands
+namespace EWallet.Commands
 {
     /// <summary>
     /// Команда навигации.

@@ -2,7 +2,7 @@
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 
-namespace _119_Karpovich.ViewModels
+namespace EWallet.ViewModels
 {
     /// <summary>
     /// Базовый класс для ViewModel.

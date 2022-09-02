@@ -1,11 +1,11 @@
-﻿using _119_Karpovich.Models;
-using _119_Karpovich.ViewModels;
+﻿using EWallet.Models;
+using EWallet.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
 
-namespace _119_Karpovich.Commands
+namespace EWallet.Commands
 {
     /// <summary>
     /// Команда выполнения денежной операции.

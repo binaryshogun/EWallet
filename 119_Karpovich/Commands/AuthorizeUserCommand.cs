@@ -1,13 +1,13 @@
-﻿using _119_Karpovich.Models;
-using _119_Karpovich.Stores;
-using _119_Karpovich.ViewModels;
-using _119_Karpovich.Services;
+﻿using EWallet.Models;
+using EWallet.Stores;
+using EWallet.ViewModels;
+using EWallet.Services;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
 using System.Windows;
 
-namespace _119_Karpovich.Commands
+namespace EWallet.Commands
 {
     /// <summary>
     /// Команда авторизации пользователя.

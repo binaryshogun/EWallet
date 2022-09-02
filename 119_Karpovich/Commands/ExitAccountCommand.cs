@@ -1,9 +1,9 @@
-﻿using _119_Karpovich.Services;
-using _119_Karpovich.Stores;
-using _119_Karpovich.ViewModels;
+﻿using EWallet.Services;
+using EWallet.Stores;
+using EWallet.ViewModels;
 using System.Windows;
 
-namespace _119_Karpovich.Commands
+namespace EWallet.Commands
 {
     /// <summary>
     /// Команда выхода из учётной записи.

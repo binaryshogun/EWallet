@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace _119_Karpovich.ViewModels
+namespace EWallet.ViewModels
 {
     public class LayoutViewModel : ViewModelBase
     {

@@ -1,13 +1,13 @@
-﻿using _119_Karpovich.Models;
-using _119_Karpovich.Stores;
-using _119_Karpovich.ViewModels;
+﻿using EWallet.Models;
+using EWallet.Stores;
+using EWallet.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace _119_Karpovich.Services
+namespace EWallet.Services
 {
     public class ParameterNavigationService<TParameter, TViewModel>
         where TViewModel : ViewModelBase

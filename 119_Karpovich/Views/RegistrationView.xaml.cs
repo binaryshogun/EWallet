@@ -13,7 +13,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace _119_Karpovich.Views
+namespace EWallet.Views
 {
     /// <summary>
     /// Логика взаимодействия для RegistrationView.xaml

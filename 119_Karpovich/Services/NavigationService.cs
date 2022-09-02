@@ -1,8 +1,8 @@
-﻿using _119_Karpovich.Stores;
-using _119_Karpovich.ViewModels;
+﻿using EWallet.Stores;
+using EWallet.ViewModels;
 using System;
 
-namespace _119_Karpovich.Services
+namespace EWallet.Services
 {
     /// <summary>
     /// Сервис навигации в системе.

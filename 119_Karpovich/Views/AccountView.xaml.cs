@@ -1,6 +1,6 @@
 ﻿using System.Windows.Controls;
 
-namespace _119_Karpovich.Views
+namespace EWallet.Views
 {
     /// <summary>
     /// Логика взаимодействия для AccountView1.xaml

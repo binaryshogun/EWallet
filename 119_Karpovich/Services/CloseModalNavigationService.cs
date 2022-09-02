@@ -1,11 +1,11 @@
-﻿using _119_Karpovich.Stores;
+﻿using EWallet.Stores;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace _119_Karpovich.Services
+namespace EWallet.Services
 {
     public class CloseModalNavigationService : INavigationService
     {

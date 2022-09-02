@@ -3,7 +3,7 @@ using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Media;
 
-namespace _119_Karpovich.Components
+namespace EWallet.Components
 {
     /// <summary>
     /// PasswordBox с возможностью привязки данных.

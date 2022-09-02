@@ -13,7 +13,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace _119_Karpovich.Components
+namespace EWallet.Components
 {
     /// <summary>
     /// Логика взаимодействия для Layout.xaml

@@ -1,6 +1,6 @@
-﻿using _119_Karpovich.Stores;
+﻿using EWallet.Stores;
 
-namespace _119_Karpovich.ViewModels
+namespace EWallet.ViewModels
 {
     /// <summary>
     /// ViewModel для MainWindow.xaml.

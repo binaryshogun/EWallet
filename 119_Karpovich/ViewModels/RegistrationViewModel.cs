@@ -1,11 +1,11 @@
-﻿using _119_Karpovich.Commands;
-using _119_Karpovich.Stores;
-using _119_Karpovich.Services;
+﻿using EWallet.Commands;
+using EWallet.Stores;
+using EWallet.Services;
 using System;
 using System.Windows.Input;
 using System.Windows.Threading;
 
-namespace _119_Karpovich.ViewModels
+namespace EWallet.ViewModels
 {
     /// <summary>
     /// ViewModel страницы регистрации пользователей.

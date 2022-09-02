@@ -1,6 +1,6 @@
-﻿using _119_Karpovich.ViewModels;
+﻿using EWallet.ViewModels;
 
-namespace _119_Karpovich.Services
+namespace EWallet.Services
 {
     public interface INavigationService
     {

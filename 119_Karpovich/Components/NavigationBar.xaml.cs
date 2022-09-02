@@ -2,7 +2,7 @@
 using System.Windows.Controls;
 using System.Windows.Input;
 
-namespace _119_Karpovich.Components
+namespace EWallet.Components
 {
     /// <summary>
     /// Логика взаимодействия для NavigationBar.xaml

@@ -1,8 +1,8 @@
-﻿using _119_Karpovich.Commands;
-using _119_Karpovich.Extensions;
-using _119_Karpovich.Models;
-using _119_Karpovich.Services;
-using _119_Karpovich.Stores;
+﻿using EWallet.Commands;
+using EWallet.Extensions;
+using EWallet.Models;
+using EWallet.Services;
+using EWallet.Stores;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -10,7 +10,7 @@ using System.Windows.Data;
 using System.Windows.Input;
 using System.Windows.Threading;
 
-namespace _119_Karpovich.ViewModels
+namespace EWallet.ViewModels
 {
     /// <summary>
     /// ViewModel аккаунта пользователя.

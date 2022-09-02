@@ -1,11 +1,11 @@
-﻿using _119_Karpovich.ViewModels;
+﻿using EWallet.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace _119_Karpovich.Stores
+namespace EWallet.Stores
 {
     public class ModalNavigationStore
     {

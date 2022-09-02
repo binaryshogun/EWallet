@@ -1,13 +1,13 @@
-﻿using _119_Karpovich.Commands;
-using _119_Karpovich.Models;
-using _119_Karpovich.Services;
-using _119_Karpovich.Stores;
+﻿using EWallet.Commands;
+using EWallet.Models;
+using EWallet.Services;
+using EWallet.Stores;
 using System.Windows.Input;
 using System.Linq;
 using System.Windows.Threading;
 using System;
 
-namespace _119_Karpovich.ViewModels
+namespace EWallet.ViewModels
 {
     public class UserProfileViewModel : ViewModelBase
     {

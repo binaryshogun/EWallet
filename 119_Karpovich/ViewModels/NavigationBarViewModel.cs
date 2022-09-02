@@ -1,9 +1,9 @@
-﻿using _119_Karpovich.Commands;
-using _119_Karpovich.Services;
-using _119_Karpovich.Stores;
+﻿using EWallet.Commands;
+using EWallet.Services;
+using EWallet.Stores;
 using System.Windows.Input;
 
-namespace _119_Karpovich.ViewModels
+namespace EWallet.ViewModels
 {
     /// <summary>
     /// ViewModel навигационной панели.

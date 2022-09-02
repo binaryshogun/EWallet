@@ -1,9 +1,9 @@
-﻿using _119_Karpovich.Extensions;
+﻿using EWallet.Extensions;
 using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 using System.Windows;
 
-namespace _119_Karpovich.Commands
+namespace EWallet.Commands
 {
     /// <summary>
     /// Команда открытия окна калькулятора.

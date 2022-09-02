@@ -1,5 +1,5 @@
-﻿using _119_Karpovich.Commands;
-using _119_Karpovich.Services;
+﻿using EWallet.Commands;
+using EWallet.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using System.Windows.Threading;
 
-namespace _119_Karpovich.ViewModels
+namespace EWallet.ViewModels
 {
     /// <summary>
     /// ViewModel домашней страницы.

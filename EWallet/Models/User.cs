@@ -22,7 +22,17 @@ namespace EWallet.Models
             this.Operation1 = new HashSet<Operation>();
             this.Passport = new HashSet<Passport>();
         }
-    
+
+        public void UpdateUserBalance(double sum)
+        {
+            using (var db = new WalletEntities())
+            {
+                this.Balance += sum;
+
+                db.SaveChanges();
+            }
+        }
+
         public int ID { get; set; }
         public string Login { get; set; }
         public string Password { get; set; }
@@ -38,21 +48,5 @@ namespace EWallet.Models
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Passport> Passport { get; set; }
         public virtual Role Role { get; set; }
-
-        /// <summary>
-        /// Метод, обновляющий баланс пользователя.
-        /// </summary>
-        /// <param name="sum">Сумма увеличения баланса пользователя.</param>
-        public void UpdateUserBalance(double sum)
-        {
-            using (WalletEntities db = new WalletEntities())
-            {
-                if (db.User.Find(ID) != null)
-                {
-                    db.User.Find(ID).Balance += sum;
-                    db.SaveChanges();
-                }
-            }
-        }
     }
 }

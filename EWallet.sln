@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.3.32825.248
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EWallet", "EWallet\EWallet.csproj", "{3C760D2B-DFC6-476A-8E5C-6136837DA2BC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EWallet.Tests", "EWallet.Tests\EWallet.Tests.csproj", "{54A86E39-35FF-4A56-9B68-B1CC5EA2F911}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{3C760D2B-DFC6-476A-8E5C-6136837DA2BC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3C760D2B-DFC6-476A-8E5C-6136837DA2BC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3C760D2B-DFC6-476A-8E5C-6136837DA2BC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3C760D2B-DFC6-476A-8E5C-6136837DA2BC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{54A86E39-35FF-4A56-9B68-B1CC5EA2F911}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{54A86E39-35FF-4A56-9B68-B1CC5EA2F911}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{54A86E39-35FF-4A56-9B68-B1CC5EA2F911}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{54A86E39-35FF-4A56-9B68-B1CC5EA2F911}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {BB6BCF33-6B1A-4095-972F-C3A14EBE4991}
+	EndGlobalSection
+EndGlobal

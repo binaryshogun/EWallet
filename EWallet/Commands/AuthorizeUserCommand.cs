@@ -6,13 +6,15 @@ using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
 using System.Windows;
+using EWallet.Components.CS;
+using System;
 
 namespace EWallet.Commands
 {
     /// <summary>
     /// Команда авторизации пользователя.
     /// </summary>
-    internal class AuthorizeUserCommand : CommandBase
+    public class AuthorizeUserCommand : CommandBase
     {
         #region Fields
         private readonly AuthorizationViewModel viewModel;
@@ -34,6 +36,8 @@ namespace EWallet.Commands
         }
         #endregion
 
+        public bool IsUserAuthorized { get; set; } = false;
+
         #region Methods
         /// <inheritdoc cref="CommandBase.Execute(object)"/>
         public override void Execute(object parameter)
@@ -52,13 +56,16 @@ namespace EWallet.Commands
                     u => u.Login == viewModel.Login
                     && (u.Password == tempPassword || u.Password == "default"));
 
-                if (user != null)
+                try
                 {
+                    if (user == null)
+                        throw new Exception("Пользователь не найден!");
+
+                    IsUserAuthorized = true;
                     userStore.CurrentUser = user;
-                    navigationService.Navigate();
+                    navigationService?.Navigate();
                 }
-                else
-                    MessageBox.Show("Неверно введён логин или пароль!", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Information);
+                catch (Exception e) { ErrorMessageBox.Show(e); }
             }
         }
 

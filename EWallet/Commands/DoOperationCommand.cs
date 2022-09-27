@@ -10,7 +10,7 @@ namespace EWallet.Commands
     /// <summary>
     /// Команда выполнения денежной операции.
     /// </summary>
-    internal class DoOperationCommand : CommandBase
+    public sealed class DoOperationCommand : CommandBase
     {
         #region Fields
         private readonly AccountViewModel viewmodel;

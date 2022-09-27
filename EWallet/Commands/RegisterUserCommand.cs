@@ -1,7 +1,9 @@
-﻿using EWallet.Models;
+﻿using EWallet.Components.CS;
+using EWallet.Models;
 using EWallet.Services;
 using EWallet.ViewModels;
 using System;
+using System.Data.Entity;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
@@ -12,7 +14,7 @@ namespace EWallet.Commands
     /// <summary>
     /// Команда регистрации пользователя.
     /// </summary>
-    internal class RegisterUserCommand : CommandBase
+    public sealed class RegisterUserCommand : CommandBase
     {
         #region Fields
         private readonly RegistrationViewModel viewModel;
@@ -32,15 +34,25 @@ namespace EWallet.Commands
         }
         #endregion
 
+        public bool IsUserRegistered { get; set; } = false;
+
         #region Methods
         ///<inheritdoc cref="CommandBase.Execute(object)"/>
         public override void Execute(object parameter)
+        {
+            RegisterUserInDataBase();
+        }
+
+        public async void RegisterUserInDataBase()
         {
             using (var dataBase = new WalletEntities())
             {
                 try
                 {
-                    User user = dataBase.User.AsNoTracking().FirstOrDefault(u => u.Login == viewModel.Login);
+                    User user = await dataBase
+                        .User
+                        .AsNoTracking()
+                        .FirstOrDefaultAsync(u => u.Login == viewModel.Login);
 
                     if (user == null)
                     {
@@ -60,18 +72,19 @@ namespace EWallet.Commands
                         dataBase.SaveChanges();
                     }
                     else
-                        MessageBox.Show("Пользователь уже зарегистрирован в системе!", "Ошибка регистрации", MessageBoxButton.OK, MessageBoxImage.Information);
+                        throw new Exception("Пользователь уже зарегистрирован в системе!");
+
+                    MessageBox.Show("Пользователь успешно зарегистрирован!\n" +
+                        "Перенаправление на страницу авторизации...", "Успешно", MessageBoxButton.OK, MessageBoxImage.Information);
+
+                    IsUserRegistered = true;
+                    authorizationNavigationService?.Navigate();
                 }
                 catch (Exception ex)
                 {
-                    MessageBox.Show(ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                    ErrorMessageBox.Show(ex);
                 }
-
-                MessageBox.Show("Пользователь успешно зарегистрирован!\n" +
-                        "Перенаправление на страницу авторизации...", "Успешно", MessageBoxButton.OK, MessageBoxImage.Information);
             }
-
-            authorizationNavigationService.Navigate();
         }
 
         /// <inheritdoc cref="AuthorizeUserCommand.GetHash(string, int)"/>
@@ -79,7 +92,10 @@ namespace EWallet.Commands
         {
             using (var hash = SHA1.Create())
             {
-                return string.Concat(hash.ComputeHash(Encoding.UTF8.GetBytes(password)).Select(x => x.ToString("X2"))).Substring(0, length);
+                return string
+                    .Concat(hash.ComputeHash(Encoding.UTF8.GetBytes(password))
+                    .Select(x => x.ToString("X2")))
+                    .Substring(0, length);
             }
         }
         #endregion

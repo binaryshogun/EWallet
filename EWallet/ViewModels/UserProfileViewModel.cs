@@ -21,8 +21,7 @@ namespace EWallet.ViewModels
         private int number;
         private int divisionCode;
 
-        private readonly DispatcherTimer updateTimer;
-        private string timeNow;
+        private bool doesUserHavePatronymic;
         #endregion
 
         #region Constructors
@@ -44,15 +43,6 @@ namespace EWallet.ViewModels
 
             NavigateCommand = new NavigateCommand(accountNavigationService);
             ExitAccountCommand = new ExitAccountCommand(userStore, authorizationNavigationService);
-
-            timeNow = DateTime.Now.ToString("g");
-
-            updateTimer = new DispatcherTimer
-            {
-                Interval = TimeSpan.FromSeconds(1)
-            };
-            updateTimer.Tick += new EventHandler(UpdateTime);
-            updateTimer.Start();
         }
         #endregion
 
@@ -117,19 +107,13 @@ namespace EWallet.ViewModels
             }
         }
 
-        /// <summary>
-        /// Текущее локальное время.
-        /// </summary>
-        /// <value>
-        /// Строка, содержащее текущее время.
-        /// </value>
-        public string TimeNow 
+        public bool DoesUserHavePatronymic
         {
-            get => timeNow;
-            set
-            {
-                timeNow = value;
-                OnPropertyChanged(nameof(TimeNow));
+            get => doesUserHavePatronymic;
+            set 
+            { 
+                doesUserHavePatronymic = value;
+                OnPropertyChanged(nameof(DoesUserHavePatronymic));
             }
         }
         #endregion
@@ -138,23 +122,6 @@ namespace EWallet.ViewModels
         public ICommand NavigateCommand { get; }
 
         public ICommand ExitAccountCommand { get; }
-        #endregion
-
-        #region Methods
-        /// <summary>
-        /// Обработчик события обновления времени в таймере.
-        /// </summary>
-        /// <param name="sender">Объект, вызвавший событие.</param>
-        /// <param name="e">Данные события.</param>
-        private void UpdateTime(object sender, EventArgs e)
-            => TimeNow = DateTime.Now.ToString("g");
-
-        public override void Dispose()
-        {
-            updateTimer.Tick -= UpdateTime;
-
-            base.Dispose();
-        }
         #endregion
     }
 }

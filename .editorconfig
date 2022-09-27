@@ -2,3 +2,6 @@
 
 # IDE0045: Преобразовать в условное выражение
 dotnet_style_prefer_conditional_expression_over_assignment = false
+
+# CS8618: Поле, не допускающее значения NULL, должно содержать значение, отличное от NULL, при выходе из конструктора. Возможно, стоит объявить поле как допускающее значения NULL.
+dotnet_diagnostic.CS8618.severity = suggestion

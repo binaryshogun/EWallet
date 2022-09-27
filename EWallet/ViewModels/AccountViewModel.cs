@@ -1,5 +1,4 @@
 ﻿using EWallet.Commands;
-using EWallet.Extensions;
 using EWallet.Models;
 using EWallet.Services;
 using EWallet.Stores;
@@ -27,8 +26,6 @@ namespace EWallet.ViewModels
         private string stringBalance;
         private string cardNumber;
 
-        private readonly DispatcherTimer updateTimer;
-        private string timeNow;
         private bool isConfirmButtonEnabled = false;
         #endregion
 
@@ -52,17 +49,7 @@ namespace EWallet.ViewModels
             }
 
             DoOperationCommand = new DoOperationCommand(this);
-            OpenCalculatorCommand = new OpenCalculatorCommand();
             ExitAccountCommand = new ExitAccountCommand(userStore, authorizationNavigationService);
-
-            timeNow = DateTime.Now.ToString("g");
-
-            updateTimer = new DispatcherTimer
-            {
-                Interval = TimeSpan.FromSeconds(1)
-            };
-            updateTimer.Tick += UpdateTime;
-            updateTimer.Start();
         }
         #endregion
 
@@ -180,26 +167,13 @@ namespace EWallet.ViewModels
             get => operationBalance;
             set
             {
-                operationBalance = value;
-                OnPropertyChanged(nameof(OperationBalance));
-                if (cardNumber != "" && operationBalance != 0 && selectedService != null)
-                    IsConfirmButtonEnabled = true;
-            }
-        }
-
-        /// <summary>
-        /// Текущее локальное время.
-        /// </summary>
-        /// <value>
-        /// Строка, содержащее текущее время.
-        /// </value>
-        public string TimeNow
-        {
-            get => timeNow;
-            set
-            {
-                timeNow = value;
-                OnPropertyChanged(nameof(TimeNow));
+                if (operationBalance != value)
+                {
+                    operationBalance = value;
+                    OnPropertyChanged(nameof(OperationBalance));
+                    if (cardNumber != "" && operationBalance != 0 && selectedService != null)
+                        IsConfirmButtonEnabled = true;
+                }
             }
         }
 
@@ -227,20 +201,8 @@ namespace EWallet.ViewModels
         #endregion
 
         #region Methods
-        /// <summary>
-        /// Обработчик события обновления времени в таймере.
-        /// </summary>
-        /// <param name="sender">Объект, вызвавший событие.</param>
-        /// <param name="e">Данные события.</param>
-        private void UpdateTime(object sender, EventArgs e)
-            => TimeNow = DateTime.Now.ToString("g");
-
         public override void Dispose() 
-        {
-            updateTimer.Tick -= UpdateTime;
-
-            base.Dispose(); 
-        }
+            => base.Dispose();
         #endregion
     }
 }

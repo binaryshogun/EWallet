@@ -8,13 +8,14 @@ using System.Text;
 using System.Windows;
 using EWallet.Components.CS;
 using System;
+using System.Data.Entity;
 
 namespace EWallet.Commands
 {
     /// <summary>
     /// Команда авторизации пользователя.
     /// </summary>
-    public class AuthorizeUserCommand : CommandBase
+    public sealed class AuthorizeUserCommand : CommandBase
     {
         #region Fields
         private readonly AuthorizationViewModel viewModel;
@@ -42,6 +43,11 @@ namespace EWallet.Commands
         /// <inheritdoc cref="CommandBase.Execute(object)"/>
         public override void Execute(object parameter)
         {
+            FetchUserFromDataBase();
+        }
+
+        public async void FetchUserFromDataBase()
+        {
             using (var dataBase = new WalletEntities())
             {
                 int length = 16;
@@ -50,11 +56,12 @@ namespace EWallet.Commands
 
                 string tempPassword = GetHash(viewModel.Password, length);
 
-                User user = dataBase.User
+                User user = await dataBase
+                    .User
                     .AsNoTracking()
-                    .FirstOrDefault(
+                    .FirstOrDefaultAsync(
                     u => u.Login == viewModel.Login
-                    && (u.Password == tempPassword || u.Password == "default"));
+                    && u.Password == tempPassword);
 
                 try
                 {

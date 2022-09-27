@@ -1,5 +1,4 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System;
 using EWallet.Commands;
 using EWallet.ViewModels;
 using EWallet.Stores;
@@ -26,10 +25,10 @@ namespace EWallet.Tests
             authorizationViewModel.Login = login;
             authorizationViewModel.Password = password;
             authorizeUserCommand.Execute(null);
-            AuthorizationTest();
+            PassAuthorizationTest();
         }
         
-        public void AuthorizationTest() 
+        public void PassAuthorizationTest() 
             => Assert.AreEqual(authorizeUserCommand.IsUserAuthorized, true);
 
         [TestMethod()]

@@ -16,6 +16,11 @@ namespace EWallet.ViewModels
         private string login = "";
         private string password = "";
         private string repeatedPassword = "";
+        private string firstName;
+        private string lastName;
+        private string patronymic;
+
+        private bool doesUserHavePatronymic;
         private bool isRegistrationButtonEnabled;
         #endregion
 
@@ -24,12 +29,12 @@ namespace EWallet.ViewModels
         /// Инициализирует объект класса RegistrationViewModel.
         /// </summary>
         /// <param name="navigationStore">Навигационное хранилище.</param>
-        public RegistrationViewModel(INavigationService authorizationNavigationService, INavigationService homeNavigationService)
+        public RegistrationViewModel(INavigationService accountNavigationService, INavigationService homeNavigationService, UserStore userStore)
         {
 
-            NavigateCommand = new NavigateCommand(authorizationNavigationService);
+            NavigateCommand = new NavigateCommand(accountNavigationService);
             NavigateHomeCommand = new NavigateCommand(homeNavigationService);
-            RegisterUserCommand = new RegisterUserCommand(this, authorizationNavigationService);
+            RegisterUserCommand = new RegisterUserCommand(this, accountNavigationService, userStore);
             ExitAppCommand = new ExitAppCommand();
         }
         #endregion
@@ -83,6 +88,46 @@ namespace EWallet.ViewModels
                 repeatedPassword = value;
                 OnPropertyChanged(nameof(RepeatedPassword));
                 IsRegistrationButtonEnabled = EnableRegistrationButton();
+            }
+        }
+
+        public string Patronymic
+        {
+            get => patronymic;
+            set
+            {
+                patronymic = value;
+                OnPropertyChanged(nameof(Patronymic));
+            }
+        }
+
+        public string LastName
+        {
+            get => lastName;
+            set
+            {
+                lastName = value;
+                OnPropertyChanged(nameof(LastName));
+            }
+        }
+
+        public string FirstName
+        {
+            get => firstName;
+            set
+            {
+                firstName = value;
+                OnPropertyChanged(nameof(FirstName));
+            }
+        }
+
+        public bool DoesUserHavePatronymic
+        {
+            get => doesUserHavePatronymic;
+            set
+            {
+                doesUserHavePatronymic = value;
+                OnPropertyChanged(nameof(DoesUserHavePatronymic));
             }
         }
 

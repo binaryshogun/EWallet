@@ -95,7 +95,7 @@ namespace EWallet
 
             return new ModalNavigationService<RegistrationViewModel>(modalNavigationStore,
                 () => new RegistrationViewModel(CreateAuthorizationNavigationService(),
-                    closeModalNavigationService));
+                    closeModalNavigationService, userStore));
         }
 
         /// <summary>

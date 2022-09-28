@@ -56,15 +56,15 @@ namespace EWallet.Commands
 
                 string tempPassword = GetHash(viewModel.Password, length);
 
-                User user = await dataBase
+                try
+                {
+                    User user = await dataBase
                     .User
                     .AsNoTracking()
                     .FirstOrDefaultAsync(
                     u => u.Login == viewModel.Login
                     && u.Password == tempPassword);
-
-                try
-                {
+                
                     if (user == null)
                         throw new Exception("Пользователь не найден!");
 

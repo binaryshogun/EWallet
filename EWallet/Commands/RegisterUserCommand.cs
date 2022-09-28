@@ -1,6 +1,7 @@
 ﻿using EWallet.Components.CS;
 using EWallet.Models;
 using EWallet.Services;
+using EWallet.Stores;
 using EWallet.ViewModels;
 using System;
 using System.Data.Entity;
@@ -18,7 +19,8 @@ namespace EWallet.Commands
     {
         #region Fields
         private readonly RegistrationViewModel viewModel;
-        private readonly INavigationService authorizationNavigationService;
+        private readonly INavigationService accountNavigationService;
+        private readonly UserStore userStore;
         #endregion
 
         #region Constructors
@@ -26,11 +28,12 @@ namespace EWallet.Commands
         /// Инициализирует команду регистрации пользователя.
         /// </summary>
         /// <param name="viewModel">ViewModel страницы регистрации пользователя.</param>
-        /// <param name="authorizationNavigationService">Сервис навигации, привязанный к AuthorizationViewModel.</param>
-        public RegisterUserCommand(RegistrationViewModel viewModel, INavigationService authorizationNavigationService)
+        /// <param name="accountNavigationService">Сервис навигации, привязанный к AccountViewModel.</param>
+        public RegisterUserCommand(RegistrationViewModel viewModel, INavigationService accountNavigationService, UserStore userStore)
         {
             this.viewModel = viewModel;
-            this.authorizationNavigationService = authorizationNavigationService;
+            this.accountNavigationService = accountNavigationService;
+            this.userStore = userStore;
         }
         #endregion
 
@@ -38,10 +41,8 @@ namespace EWallet.Commands
 
         #region Methods
         ///<inheritdoc cref="CommandBase.Execute(object)"/>
-        public override void Execute(object parameter)
-        {
-            RegisterUserInDataBase();
-        }
+        public override void Execute(object parameter) 
+            => RegisterUserInDataBase();
 
         public async void RegisterUserInDataBase()
         {
@@ -70,6 +71,20 @@ namespace EWallet.Commands
 
                         dataBase.User.Add(user);
                         dataBase.SaveChanges();
+
+                        Passport userPassport = new Passport()
+                        {
+                            FirstName = viewModel.FirstName,
+                            LastName = viewModel.LastName,
+                            Patronymic = viewModel?.Patronymic,
+                            SerialNumber = 0,
+                            DivisionCode = 0,
+                            Number = 0,
+                            UserID = dataBase
+                                    .User
+                                    .AsNoTracking()
+                                    .FirstOrDefault(u => u.Login == viewModel.Login).ID
+                        };
                     }
                     else
                         throw new Exception("Пользователь уже зарегистрирован в системе!");
@@ -78,7 +93,8 @@ namespace EWallet.Commands
                         "Перенаправление на страницу авторизации...", "Успешно", MessageBoxButton.OK, MessageBoxImage.Information);
 
                     IsUserRegistered = true;
-                    authorizationNavigationService?.Navigate();
+                    userStore.CurrentUser = user;
+                    accountNavigationService?.Navigate();
                 }
                 catch (Exception ex)
                 {

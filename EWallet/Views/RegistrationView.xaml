@@ -36,22 +36,132 @@
 
             <Grid
                 Margin="10">
+                
                 <Label
-                    Content="Логин"
-                    HorizontalAlignment="Left"
-                    Grid.Row="0" />
+                    Content="Фамилия"
+                    HorizontalAlignment="Left"/>
 
                 <Label
-                    x:Name="LoginHint"
-                    Content="Логин"
+                    x:Name="lastNameHint"
+                    Content="Иванов"
                     Grid.Column="1"
                     Background="White"
                     Foreground="Gray"
                     VerticalAlignment="Center" />
 
                 <TextBox
-                    x:Name="LoginBox"
+                    x:Name="lastNameBox"
                     Grid.Column="1"
+                    Text="{Binding LastName, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+                    ToolTip="Ваша фамилия, пожалуйста, указывайте настоящие данные!"
+                    Background="{x:Null}"
+                    TextChanged="LastName_TextChanged"
+                    MaxLength="16" />
+
+                <x:Code>
+                    <![CDATA[
+                        private void LastName_TextChanged(object sender, RoutedEventArgs e)
+                        {
+                            lastNameHint.Visibility = lastNameBox.Text.Length == 0 ? Visibility.Visible : Visibility.Hidden;
+                            lastNameBox.Background = lastNameBox.Text.Length == 0 ? null : new SolidColorBrush(Colors.White); 
+                        }
+                    ]]>
+                </x:Code>
+
+                <Label
+                    Content="Имя"
+                    HorizontalAlignment="Left"
+                    Grid.Row="1" />
+
+                <Label
+                    x:Name="firstNameHint"
+                    Content="Иван"
+                    Grid.Column="1"
+                    Grid.Row="1"
+                    Background="White"
+                    Foreground="Gray"
+                    VerticalAlignment="Center" />
+
+                <TextBox
+                    x:Name="firstNameBox"
+                    Grid.Column="1"
+                    Grid.Row="1"
+                    Text="{Binding FirstName, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+                    ToolTip="Уникальный логин пользователя."
+                    Background="{x:Null}"
+                    TextChanged="FirstName_TextChanged"
+                    MaxLength="16" />
+
+                <x:Code>
+                    <![CDATA[
+                        private void FirstName_TextChanged(object sender, RoutedEventArgs e)
+                        {
+                            firstNameHint.Visibility = firstNameBox.Text.Length == 0 ? Visibility.Visible : Visibility.Hidden;
+                            firstNameBox.Background = firstNameBox.Text.Length == 0 ? null : new SolidColorBrush(Colors.White); 
+                        }
+                    ]]>
+                </x:Code>
+
+                <Label
+                    Content="Отчество"
+                    HorizontalAlignment="Left"
+                    Grid.Row="2" />
+
+                <Label
+                    x:Name="patronymicHint"
+                    Content="Иванович"
+                    Grid.Column="1"
+                    Grid.Row="2"
+                    Background="White"
+                    Foreground="Gray"
+                    VerticalAlignment="Center" />
+
+                <TextBox
+                    x:Name="patronymicBox"
+                    Grid.Column="1"
+                    Grid.Row="2"
+                    Text="{Binding Patronymic, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+                    ToolTip="Уникальный логин пользователя."
+                    Background="{x:Null}"
+                    TextChanged="Patronymic_TextChanged"
+                    MaxLength="16" 
+                    IsEnabled="{Binding DoesUserHavePatronymic}"/>
+
+                <CheckBox 
+                    Grid.Row="2"
+                    Grid.Column="2"
+                    IsChecked="{Binding DoesUserHavePatronymic}"
+                    VerticalAlignment="Center"
+                    HorizontalAlignment="Left"/>
+
+                <x:Code>
+                    <![CDATA[
+                        private void Patronymic_TextChanged(object sender, RoutedEventArgs e)
+                        {
+                            patronymicHint.Visibility = patronymicBox.Text.Length == 0 ? Visibility.Visible : Visibility.Hidden;
+                            patronymicBox.Background = patronymicBox.Text.Length == 0 ? null : new SolidColorBrush(Colors.White); 
+                        }
+                    ]]>
+                </x:Code>
+
+                <Label
+                    Content="Логин"
+                    HorizontalAlignment="Left"
+                    Grid.Row="3" />
+
+                <Label
+                    x:Name="loginHint"
+                    Content="Логин"
+                    Grid.Column="1"
+                    Grid.Row="3"
+                    Background="White"
+                    Foreground="Gray"
+                    VerticalAlignment="Center" />
+
+                <TextBox
+                    x:Name="loginBox"
+                    Grid.Column="1"
+                    Grid.Row="3"
                     Text="{Binding Login, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
                     ToolTip="Уникальный логин пользователя."
                     Background="{x:Null}"
@@ -62,8 +172,8 @@
                     <![CDATA[
                         private void Login_TextChanged(object sender, RoutedEventArgs e)
                         {
-                            LoginHint.Visibility = LoginBox.Text.Length == 0 ? Visibility.Visible : Visibility.Hidden;
-                            LoginBox.Background = LoginBox.Text.Length == 0 ? null : new SolidColorBrush(Colors.White); 
+                            loginHint.Visibility = loginBox.Text.Length == 0 ? Visibility.Visible : Visibility.Hidden;
+                            loginBox.Background = loginBox.Text.Length == 0 ? null : new SolidColorBrush(Colors.White); 
                         }
                     ]]>
                 </x:Code>
@@ -71,21 +181,21 @@
                 <Label
                     Content="Пароль"
                     HorizontalAlignment="Left"
-                    Grid.Row="1" />
+                    Grid.Row="4" />
 
                 <Label
-                    x:Name="PasswordHint"
+                    x:Name="passwordHint"
                     Content="Пароль"
                     Grid.Column="1"
+                    Grid.Row="4"
                     Background="White"
                     Foreground="Gray"
-                    VerticalAlignment="Center"
-                    Grid.Row="1" />
+                    VerticalAlignment="Center" />
 
                 <components:BindablePasswordBox
-                    x:Name="PasswordBox"
+                    x:Name="passwordBox"
                     Grid.Column="1"
-                    Grid.Row="1"
+                    Grid.Row="4"
                     Password="{Binding Password}"
                     ToolTip="Пароль, длиной не более 16 символов"
                     Background="Transparent"
@@ -96,8 +206,8 @@
                     <![CDATA[
                         private void Password_PasswordChanged(object sender, RoutedEventArgs e)
                         {
-                            PasswordHint.Visibility = PasswordBox.Password.Length == 0 ? Visibility.Visible : Visibility.Hidden;
-                            PasswordBox.Background = PasswordBox.Password.Length == 0 ? null : new SolidColorBrush(Colors.White);
+                            passwordHint.Visibility = passwordBox.Password.Length == 0 ? Visibility.Visible : Visibility.Hidden;
+                            passwordBox.Background = passwordBox.Password.Length == 0 ? null : new SolidColorBrush(Colors.White);
                         }
                     ]]>
                 </x:Code>
@@ -105,7 +215,7 @@
                 <Label
                     HorizontalAlignment="Left"
                     Margin="10 10 0 10"
-                    Grid.Row="2">
+                    Grid.Row="5">
                     <Label.Content>
                         <TextBlock
                             Text="Повторите пароль"
@@ -114,18 +224,18 @@
                 </Label>
 
                 <Label
-                    x:Name="RepeatedPasswordHint"
+                    x:Name="repeatedPasswordHint"
                     Content="Повторите пароль"
                     Grid.Column="1"
-                    Grid.Row="2"
+                    Grid.Row="5"
                     Background="White"
                     Foreground="Gray"
                     VerticalAlignment="Center" />
 
                 <components:BindablePasswordBox
-                    x:Name="RepeatedPasswordBox"
+                    x:Name="repeatedPasswordBox"
                     Grid.Column="1"
-                    Grid.Row="2"
+                    Grid.Row="5"
                     Password="{Binding RepeatedPassword}"
                     ToolTip="Повторно введённый пароль"
                     Background="Transparent"
@@ -137,8 +247,8 @@
                     <![CDATA[
                         private void RepeatedPassword_PasswordChanged(object sender, RoutedEventArgs e)
                         {
-                            RepeatedPasswordHint.Visibility = RepeatedPasswordBox.Password.Length == 0 ? Visibility.Visible : Visibility.Hidden;
-                            RepeatedPasswordBox.Background = RepeatedPasswordBox.Password.Length == 0 ? null : new SolidColorBrush(Colors.White);
+                            repeatedPasswordHint.Visibility = repeatedPasswordBox.Password.Length == 0 ? Visibility.Visible : Visibility.Hidden;
+                            repeatedPasswordBox.Background = repeatedPasswordBox.Password.Length == 0 ? null : new SolidColorBrush(Colors.White);
                         }
                     ]]>
                 </x:Code>
@@ -147,9 +257,14 @@
                     <ColumnDefinition />
                     <ColumnDefinition
                         Width="5*" />
+                    <ColumnDefinition 
+                        Width="0.4*"/>
                 </Grid.ColumnDefinitions>
 
                 <Grid.RowDefinitions>
+                    <RowDefinition />
+                    <RowDefinition />
+                    <RowDefinition />
                     <RowDefinition />
                     <RowDefinition />
                     <RowDefinition />

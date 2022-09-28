@@ -4,8 +4,6 @@ using EWallet.Services;
 using EWallet.Stores;
 using System.Windows.Input;
 using System.Linq;
-using System.Windows.Threading;
-using System;
 
 namespace EWallet.ViewModels
 {
@@ -36,13 +34,17 @@ namespace EWallet.ViewModels
 
             if (passport != null)
             {
-                FirstName = passport.FirstName ?? "";
-                LastName = passport.LastName ?? "";
-                Patronymic = passport.Patronymic ?? "";
+                FirstName = passport.FirstName;
+                LastName = passport.LastName;
+                Patronymic = passport.Patronymic;
+                SerialNumber = passport.SerialNumber;
+                Number = passport.Number;
+                DivisionCode = passport.DivisionCode;
             }
 
             NavigateCommand = new NavigateCommand(accountNavigationService);
             ExitAccountCommand = new ExitAccountCommand(userStore, authorizationNavigationService);
+            SaveCommand = new SavePassportDataCommand(this, userStore);
         }
         #endregion
 
@@ -71,7 +73,7 @@ namespace EWallet.ViewModels
         {
             get => patronymic;
             set 
-            { 
+            {
                 patronymic = value;
                 OnPropertyChanged(nameof(Patronymic));
             }
@@ -109,9 +111,10 @@ namespace EWallet.ViewModels
 
         public bool DoesUserHavePatronymic
         {
-            get => doesUserHavePatronymic;
+            get => Patronymic != null;
             set 
-            { 
+            {
+                Patronymic = value ? "" : null;
                 doesUserHavePatronymic = value;
                 OnPropertyChanged(nameof(DoesUserHavePatronymic));
             }
@@ -120,7 +123,7 @@ namespace EWallet.ViewModels
 
         #region Commands
         public ICommand NavigateCommand { get; }
-
+        public ICommand SaveCommand { get; }
         public ICommand ExitAccountCommand { get; }
         #endregion
     }

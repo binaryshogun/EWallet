@@ -17,7 +17,7 @@
             Command="{Binding NavigateHomeCommand}"
             Style="{StaticResource ImageButtonStyle}">
             <Image
-                Source="../Resources/icon_closeModal.png" />
+                Source="../Resources/icons/icon_closeModal.png" />
         </Button>
 
         <StackPanel

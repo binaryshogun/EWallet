@@ -9,6 +9,7 @@ using System.Windows;
 using EWallet.Components.CS;
 using System;
 using System.Data.Entity;
+using System.Threading.Tasks;
 
 namespace EWallet.Commands
 {
@@ -37,14 +38,10 @@ namespace EWallet.Commands
         }
         #endregion
 
-        public bool IsUserAuthorized { get; set; } = false;
-
         #region Methods
         /// <inheritdoc cref="CommandBase.Execute(object)"/>
-        public override void Execute(object parameter)
-        {
-            FetchUserFromDataBase();
-        }
+        public override void Execute(object parameter) 
+            => Task.Run(FetchUserFromDataBase);
 
         public async void FetchUserFromDataBase()
         {
@@ -64,12 +61,8 @@ namespace EWallet.Commands
                     .FirstOrDefaultAsync(
                     u => u.Login == viewModel.Login
                     && u.Password == tempPassword);
-                
-                    if (user == null)
-                        throw new Exception("Пользователь не найден!");
 
-                    IsUserAuthorized = true;
-                    userStore.CurrentUser = user;
+                    userStore.CurrentUser = user ?? throw new Exception("Пользователь не найден!");
                     navigationService?.Navigate();
                 }
                 catch (Exception e) { ErrorMessageBox.Show(e); }

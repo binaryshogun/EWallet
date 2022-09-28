@@ -3,6 +3,7 @@ using EWallet.Stores;
 using EWallet.ViewModels;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
+using System.Threading.Tasks;
 
 namespace EWallet.Tests
 {
@@ -11,11 +12,13 @@ namespace EWallet.Tests
     {
         private RegisterUserCommand registerUserCommand;
         private RegistrationViewModel viewModel;
+        private UserStore userStore;
 
         public void InitializeData()
         {
-            viewModel = new RegistrationViewModel(null, null);
-            registerUserCommand = new RegisterUserCommand(viewModel, null);
+            userStore = new UserStore();
+            viewModel = new RegistrationViewModel(null, null, userStore);
+            registerUserCommand = new RegisterUserCommand(viewModel, null, null);
         }
 
         public void ChangeUserDataAndTest(string login, string password)
@@ -24,14 +27,19 @@ namespace EWallet.Tests
             viewModel.Login = login;
             viewModel.Password = password;
             viewModel.RepeatedPassword = password;
-            registerUserCommand.Execute(null);
             AlreadyRegistredTest();
         }
-        public void PassRegistrationTest()
-            => Assert.AreEqual(registerUserCommand.IsUserRegistered, true);
+        public async void PassRegistrationTest()
+        {
+            await Task.Run(() => registerUserCommand.RegisterUserInDataBase());
+            Assert.AreEqual(userStore.CurrentUser != null, true);
+        }
 
-        public void AlreadyRegistredTest()
-            => Assert.AreEqual(registerUserCommand.IsUserRegistered, false);
+        public async void AlreadyRegistredTest()
+        {
+            await Task.Run(() => registerUserCommand.RegisterUserInDataBase());
+            Assert.AreEqual(userStore.CurrentUser == null, true);
+        }
 
         [TestMethod()]
         public void RegisterAlexanderTest()

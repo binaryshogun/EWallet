@@ -8,6 +8,7 @@ using System.Data.Entity;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
+using System.Threading.Tasks;
 using System.Windows;
 
 namespace EWallet.Commands
@@ -37,12 +38,10 @@ namespace EWallet.Commands
         }
         #endregion
 
-        public bool IsUserRegistered { get; set; } = false;
-
         #region Methods
         ///<inheritdoc cref="CommandBase.Execute(object)"/>
         public override void Execute(object parameter) 
-            => RegisterUserInDataBase();
+            => Task.Run(RegisterUserInDataBase);
 
         public async void RegisterUserInDataBase()
         {
@@ -92,7 +91,6 @@ namespace EWallet.Commands
                     MessageBox.Show("Пользователь успешно зарегистрирован!\n" +
                         "Перенаправление на страницу авторизации...", "Успешно", MessageBoxButton.OK, MessageBoxImage.Information);
 
-                    IsUserRegistered = true;
                     userStore.CurrentUser = user;
                     accountNavigationService?.Navigate();
                 }

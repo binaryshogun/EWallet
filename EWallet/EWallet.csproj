@@ -38,7 +38,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup>
-    <ApplicationIcon>Resources\icon.ico</ApplicationIcon>
+    <ApplicationIcon>Resources\icons\icon.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="PresentationFramework.Aero2" />
@@ -76,6 +76,7 @@
     <Compile Include="Commands\ExitAppCommand.cs" />
     <Compile Include="Commands\NavigateCommand.cs" />
     <Compile Include="Commands\RegisterUserCommand.cs" />
+    <Compile Include="Commands\SavePassportDataCommand.cs" />
     <Compile Include="Components\CS\ErrorMessageBox.cs" />
     <Compile Include="Components\UI\BindablePasswordBox.xaml.cs">
       <DependentUpon>BindablePasswordBox.xaml</DependentUpon>
@@ -217,10 +218,6 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Resources\CalculatorTheme.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="Views\AccountView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -233,7 +230,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Resources\AppTheme.xaml">
+    <Page Include="Resources\styles\AppTheme.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -263,10 +260,10 @@
       <DependentUpon>WalletEntities.edmx</DependentUpon>
       <LastGenOutput>WalletEntities.cs</LastGenOutput>
     </Content>
-    <Resource Include="Resources\icon_closeModal.png" />
-    <Resource Include="Resources\icon.ico" />
-    <Resource Include="Resources\icon_exitButton.png" />
-    <Resource Include="Resources\icon_calculator.png" />
+    <Resource Include="Resources\icons\icon_exitButton_white.png" />
+    <Resource Include="Resources\icons\icon_closeModal.png" />
+    <Resource Include="Resources\icons\icon.ico" />
+    <Resource Include="Resources\icons\icon_exitButton.png" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />

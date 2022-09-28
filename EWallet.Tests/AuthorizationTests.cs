@@ -2,6 +2,7 @@
 using EWallet.Commands;
 using EWallet.ViewModels;
 using EWallet.Stores;
+using System.Threading.Tasks;
 
 namespace EWallet.Tests
 {
@@ -15,7 +16,7 @@ namespace EWallet.Tests
         public void InitializeData()
         {
             userStore = new UserStore();
-            authorizationViewModel = new AuthorizationViewModel(null, null, null, null);
+            authorizationViewModel = new AuthorizationViewModel(userStore, null, null, null);
             authorizeUserCommand = new AuthorizeUserCommand(authorizationViewModel, null, userStore);
         }
 
@@ -24,12 +25,14 @@ namespace EWallet.Tests
             InitializeData();
             authorizationViewModel.Login = login;
             authorizationViewModel.Password = password;
-            authorizeUserCommand.Execute(null);
             PassAuthorizationTest();
         }
         
-        public void PassAuthorizationTest() 
-            => Assert.AreEqual(authorizeUserCommand.IsUserAuthorized, true);
+        public async void PassAuthorizationTest()
+        {
+            await Task.Run(() => authorizeUserCommand.FetchUserFromDataBase());
+            Assert.AreEqual(userStore.CurrentUser != null, true);
+        }
 
         [TestMethod()]
         public void AuthorizeAlexanderTest() 

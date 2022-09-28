@@ -18,7 +18,7 @@
                 Grid.Column="2"
                 Margin="15 15 15 0">
                 <Button.Content>
-                    <Image Source="../Resources/icon_exitButton.png"/>
+                    <Image Source="../Resources/icons/icon_exitButton.png"/>
                 </Button.Content>
             </Button>
 
@@ -27,8 +27,8 @@
             Grid.ColumnSpan="3">
 
             <Border 
-                BorderThickness="1"
-                BorderBrush="Black"
+                BorderThickness="2"
+                BorderBrush="#773997"
                 Grid.Column="1">
 
                 <ScrollViewer
@@ -171,6 +171,21 @@
                             </Grid.ColumnDefinitions>
                         </Grid>
 
+                        <Grid Margin="10">
+                            <Button 
+                                Grid.Column="1"
+                                ToolTip="Сохранить изменения"
+                                Command="{Binding SaveCommand}"
+                                Content="Сохранить"/>
+
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition />
+                                <ColumnDefinition 
+                                Width="2*"/>
+                                <ColumnDefinition />
+                            </Grid.ColumnDefinitions>
+                        </Grid>
+                        
                     </StackPanel>
 
                 </ScrollViewer>

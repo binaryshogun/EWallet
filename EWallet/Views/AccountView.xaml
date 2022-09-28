@@ -12,7 +12,43 @@
 
     <Grid>
 
-        <Label
+        <Grid Grid.Column="2" Margin="5 10">
+            <Border
+                Background="#773997"
+                BorderBrush="#773997"
+                CornerRadius="10">
+                <StackPanel>
+                    <WrapPanel
+                        HorizontalAlignment="Center">
+                        <Label
+                            Content="{Binding Login}"
+                            Foreground="White"
+                            FontWeight="Bold" />
+
+                        <Button
+                            x:Name="logOutButton"
+                            Style="{StaticResource ImageButtonStyle}"
+                            Command="{Binding ExitAccountCommand}"
+                            VerticalAlignment="Top"
+                            HorizontalAlignment="Right"
+                            Grid.Column="2"
+                            Margin="15 15 15 15">
+                            <Button.Content>
+                                <Image
+                                    Source="../Resources/icons/icon_exitButton_white.png" />
+                            </Button.Content>
+                        </Button>
+                    </WrapPanel>
+
+                    <Label
+                        Content="{Binding StringBalance, StringFormat=F2}"
+                        Foreground="White" />
+
+                </StackPanel>
+            </Border>
+        </Grid>
+
+        <!--<Label
             Content="{Binding StringBalance, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"
             HorizontalAlignment="Left"
             VerticalAlignment="Top"
@@ -26,17 +62,16 @@
             VerticalAlignment="Top"
             HorizontalAlignment="Right"
             Grid.Column="2"
-            Margin="15 15 15 0">
+            Margin="15 15 15 15">
             <Button.Content>
                 <Image
-                    Source="../Resources/icon_exitButton.png" />
+                    Source="../Resources/icons/icon_exitButton.png" />
             </Button.Content>
-        </Button>
+        </Button>-->
 
         <Grid.ColumnDefinitions>
-            <ColumnDefinition />
-            <ColumnDefinition Width="4*" />
-            <ColumnDefinition />
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="auto"/>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition 

@@ -6,7 +6,7 @@
              xmlns:local="clr-namespace:EWallet.Views"
              xmlns:components="clr-namespace:EWallet.Components"
              mc:Ignorable="d" 
-             d:DesignHeight="600" d:DesignWidth="800">
+             d:DesignHeight="800" d:DesignWidth="1024">
 
     <Grid>
         <Grid.Resources>
@@ -14,7 +14,7 @@
                 TargetType="{x:Type Label}">
                 <Setter
                     Property="FontSize"
-                    Value="28" />
+                    Value="54" />
                 <Setter
                     Property="FontWeight"
                     Value="SemiBold" />
@@ -24,21 +24,60 @@
                 <Setter
                     Property="FontFamily"
                     Value="Cascadia Mono" />
+                <Setter
+                    Property="HorizontalAlignment"
+                    Value="Center" />
+                <Setter
+                    Property="VerticalAlignment"
+                    Value="Center" />
+                <Setter
+                    Property="Margin"
+                    Value="25 10" />
             </Style>
-
         </Grid.Resources>
 
         <Label
             Content="Откройте для себя мир электронных денег"
-            Grid.ColumnSpan="3" 
-            Margin="15"/>
+            Grid.Column="0"
+            Grid.ColumnSpan="7"/>
+
+        <Image 
+            Grid.Column="8"
+            Source="../Resources/images/money1.png"
+            RenderTransformOrigin="0.5,0.5"
+            MaxWidth="150">
+            <Image.RenderTransform>
+                <TransformGroup>
+                    <ScaleTransform />
+                    <SkewTransform />
+                    <RotateTransform
+                        Angle="-20" />
+                    <TranslateTransform />
+                </TransformGroup>
+            </Image.RenderTransform>
+        </Image>
 
         <Label
             Content="Копите, оплачивайте покупки и делайте переводы"
             Grid.Row="1"
-            Grid.Column="2"
-            Grid.ColumnSpan="4" 
-            Margin="15"/>
+            Grid.Column="1"
+            Grid.ColumnSpan="7"/>
+
+        <Image 
+            Grid.Row="1"
+            Source="../Resources/images/money2.png"
+            MaxWidth="100"
+            RenderTransformOrigin="0.5,0.5">
+            <Image.RenderTransform>
+                <TransformGroup>
+                    <ScaleTransform />
+                    <SkewTransform />
+                    <RotateTransform
+                        Angle="25" />
+                    <TranslateTransform />
+                </TransformGroup>
+            </Image.RenderTransform>
+        </Image>
 
         <Button
             Grid.Row="3"
@@ -46,7 +85,7 @@
             Grid.ColumnSpan="2"
             Content="Создать аккаунт"
             Style="{DynamicResource WhiteButtonStyle}"
-            VerticalAlignment="Top"
+            VerticalAlignment="Center"
             Command="{Binding NavigateRegistrationCommand}" />
 
         <Button
@@ -55,7 +94,7 @@
             Grid.ColumnSpan="2"
             Content="Войти в аккаунт"
             Style="{DynamicResource PurpleButtonStyle}"
-            VerticalAlignment="Top"
+            VerticalAlignment="Center"
             Command="{Binding NavigateAuthorizationCommand}" />
 
         <Grid.RowDefinitions>

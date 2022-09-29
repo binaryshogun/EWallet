@@ -95,7 +95,7 @@
     </Style>
     <!--#endregion-->
     
-    <!--PasswordBox style-->
+    <!--#region PasswordBox style-->
     <Style TargetType="{x:Type PasswordBox}">
         <Setter Property="BorderThickness" Value="0 0 0 1"/>
         <Setter Property="VerticalAlignment" Value="Center"/>
@@ -139,8 +139,9 @@
             </MultiTrigger>
         </Style.Triggers>
     </Style>
+    <!--#endregion-->
     
-    <!--TextBox style-->
+    <!--#region TextBox style-->
     <Style TargetType="{x:Type TextBox}">
         <Setter Property="Margin" Value="10"/>
         <Setter Property="Padding" Value="5"/>
@@ -189,7 +190,9 @@
             </MultiTrigger>
         </Style.Triggers>
     </Style>
+    <!--#endregion-->
 
+    <!--#region Different styles for buttons-->
     <Style x:Key="WhiteButtonStyle" TargetType="{x:Type Button}">
         <Setter
             Property="Background"
@@ -377,19 +380,42 @@
             </Setter.Value>
         </Setter>
     </Style>
+    <!--#endregion-->
 
-    <Style TargetType="{x:Type TextBlock}">
-        <Setter Property="TextWrapping" Value="WrapWithOverflow"/>
+    <!--TextBlock style-->
+    <Style
+        TargetType="{x:Type TextBlock}">
+        <Setter
+            Property="FontFamily"
+            Value="Cascadia Mono" />
+        <Setter
+            Property="Padding"
+            Value="3" />
+        <Setter
+            Property="TextWrapping"
+            Value="WrapWithOverflow" />
     </Style>
     
+    <!--Label style-->
     <Style TargetType="{x:Type Label}">
-        <Setter Property="FontSize" Value="24"/>
-        <Setter Property="FontFamily" Value="Cascadia Mono"/>
-        <Setter Property="FontWeight" Value="Light"/>
-        <Setter Property="Padding" Value="5"/>
-        <Setter Property="Margin" Value="10"/>
+        <Setter
+            Property="FontSize"
+            Value="24" />
+        <Setter
+            Property="FontFamily"
+            Value="Cascadia Mono" />
+        <Setter
+            Property="FontWeight"
+            Value="Light" />
+        <Setter
+            Property="Padding"
+            Value="5" />
+        <Setter
+            Property="Margin"
+            Value="10" />
     </Style>
 
+    <!--BindablePasswordBox (custom component) style-->
     <Style TargetType="{x:Type components:BindablePasswordBox}">
         <Setter Property="Margin" Value="10"/>
         <Setter Property="Foreground" Value="Black"/>

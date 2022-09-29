@@ -182,6 +182,7 @@
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <None Include="..\.editorconfig">
       <Link>.editorconfig</Link>
@@ -260,6 +261,8 @@
       <DependentUpon>WalletEntities.edmx</DependentUpon>
       <LastGenOutput>WalletEntities.cs</LastGenOutput>
     </Content>
+    <Resource Include="Resources\images\money1.png" />
+    <Resource Include="Resources\images\money2.png" />
     <Resource Include="Resources\icons\icon_exitButton_white.png" />
     <Resource Include="Resources\icons\icon_closeModal.png" />
     <Resource Include="Resources\icons\icon.ico" />

@@ -18,12 +18,17 @@
                 BorderBrush="#773997"
                 CornerRadius="10">
                 <StackPanel>
-                    <WrapPanel
-                        HorizontalAlignment="Center">
-                        <Label
+                    <Grid
+                        HorizontalAlignment="Stretch">
+                        <Button
+                            Style="{StaticResource SmallButtonStyle}"
                             Content="{Binding Login}"
                             Foreground="White"
-                            FontWeight="Bold" />
+                            FontWeight="Bold" 
+                            Margin="10 5"
+                            HorizontalAlignment="Left"
+                            VerticalAlignment="Center"
+                            Command="{Binding NavigateUserProfileCommand}"/>
 
                         <Button
                             x:Name="logOutButton"
@@ -38,13 +43,39 @@
                                     Source="../Resources/icons/icon_exitButton_white.png" />
                             </Button.Content>
                         </Button>
-                    </WrapPanel>
+                    </Grid>
 
                     <Label
-                        Content="{Binding StringBalance, StringFormat=F2}"
-                        Foreground="White" />
+                        Foreground="White">
+                        <Label.Content>
+                            <TextBlock
+                                Text="{Binding StringBalance}"
+                                TextWrapping="NoWrap" />
+                        </Label.Content>
+                    </Label>
 
                 </StackPanel>
+            </Border>
+        </Grid>
+
+        <Grid
+            Margin="5 5"
+            Grid.Column="1"
+            Grid.Row="1"
+            VerticalAlignment="Top">
+            <Border
+                Background="White"
+                BorderBrush="#773997"
+                BorderThickness="1"
+                CornerRadius="10">
+                <Button
+                    Content="Отчёт о расходах"
+                    Style="{StaticResource SmallButtonStyle}"
+                    Foreground="#773997"
+                    FontSize="18"
+                    Margin="10"
+                    HorizontalAlignment="Center"
+                    Command="{Binding ExpenseReportCommand}"/>
             </Border>
         </Grid>
 

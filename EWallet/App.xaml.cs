@@ -104,7 +104,7 @@ namespace EWallet
         /// <returns>Навигационный сервис, привязанный к ViewModel аккаунта пользователя.</returns>
         public INavigationService CreateAccountNavigationService() 
             => new LayoutNavigationService<AccountViewModel>(navigationStore, CreateNavigationBarViewModel,
-                () => new AccountViewModel(userStore, CreateHomeNavigationService()));
+                () => new AccountViewModel(userStore, CreateHomeNavigationService(), CreateUserProfileNavigationService()));
 
         /// <summary>
         /// Метод, создающий NavigationService, привязанный к UserProfileViewModel.

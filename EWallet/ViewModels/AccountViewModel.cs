@@ -2,12 +2,10 @@
 using EWallet.Models;
 using EWallet.Services;
 using EWallet.Stores;
-using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Windows.Data;
 using System.Windows.Input;
-using System.Windows.Threading;
 
 namespace EWallet.ViewModels
 {
@@ -20,10 +18,8 @@ namespace EWallet.ViewModels
         public readonly UserStore userStore;
         private ICollectionView listServices;
 
-        private double balance;
         private double operationBalance;
         private string selectedService;
-        private string stringBalance;
         private string cardNumber;
 
         private bool isConfirmButtonEnabled = false;
@@ -35,56 +31,28 @@ namespace EWallet.ViewModels
         /// </summary>
         /// <param name="user">Пользователь, прошедший авторизацию в системе.</param>
         /// <param name="navigationStore">Хранилище данных, содержащее данные о текущей ViewModel.</param>
-        public AccountViewModel(UserStore userStore, INavigationService authorizationNavigationService)
+        public AccountViewModel(UserStore userStore, INavigationService homeNavigationService, INavigationService userProfileNavigationService)
         {
             this.userStore = userStore;
-            Balance = userStore.CurrentUser.Balance;
-            StringBalance = string.Format($"Баланс: {Balance}");
 
-            using (var db = new WalletEntities())
-            {
-                IList<Service> services = new List<Service>(db.Service);
-                ListServices = CollectionViewSource.GetDefaultView(services);
-                SelectedService = services != null ? services[0].Name : "";
-            }
-
-            DoOperationCommand = new DoOperationCommand(this);
-            ExitAccountCommand = new ExitAccountCommand(userStore, authorizationNavigationService);
+            //DoOperationCommand = new DoOperationCommand(this);
+            ExitAccountCommand = new ExitAccountCommand(userStore, homeNavigationService);
+            NavigateUserProfileCommand = new NavigateCommand(userProfileNavigationService);
         }
         #endregion
 
         #region Properties
-        /// <summary>
-        /// Баланс счёта пользователя.
-        /// </summary>
-        /// <value>Содержит баланс пользователя 
-        /// в виде десятичного числа с двойной точностью.</value>
-        public double Balance
-        {
-            get => balance;
-            set
-            {
-                balance = value;
-                StringBalance = string.Format($"Баланс:\n{Balance}");
-                OnPropertyChanged(nameof(Balance));
-            }
-        }
-
         /// <summary>
         /// Строка отображения баланса пользователя во View.
         /// </summary>
         /// <value>
         /// Строковое представление баланса пользователя.
         /// </value>
-        public string StringBalance
-        {
-            get => stringBalance;
-            set
-            {
-                stringBalance = value;
-                OnPropertyChanged(nameof(StringBalance));
-            }
-        }
+        public string StringBalance 
+            => string.Format($"Баланс: {userStore.CurrentUser.Balance} руб.");
+
+        public string Login 
+            => userStore.CurrentUser.Login;
 
         /// <summary>
         /// Список доступных пользователям услуг для отображения во View.
@@ -195,9 +163,8 @@ namespace EWallet.ViewModels
         #endregion
 
         #region Commands
-        public ICommand OpenCalculatorCommand { get; }
-        public ICommand DoOperationCommand { get; }
         public ICommand ExitAccountCommand { get; }
+        public ICommand NavigateUserProfileCommand { get; }
         #endregion
 
         #region Methods

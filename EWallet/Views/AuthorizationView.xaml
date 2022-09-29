@@ -64,63 +64,62 @@
                     ]]>
                     </x:Code>
 
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition />
-                        <ColumnDefinition
-                            Width="3*" />
-                    </Grid.ColumnDefinitions>
-                </Grid>
-
-            <Grid Margin="10">
                 <Label
                     Content="Пароль"
-                    HorizontalAlignment="Left" />
+                    HorizontalAlignment="Left" 
+                    Grid.Row="1"/>
 
                 <Label
-                        x:Name="PasswordHint"
-                        Content="Пароль"
-                        Grid.Column="1"
-                        Background="White"
-                        Foreground="Gray"/>
+                    x:Name="PasswordHint"
+                    Content="Пароль"
+                    Grid.Column="1"
+                    Background="White"
+                    Foreground="Gray" 
+                    Grid.Row="1"/>
 
-                    <components:BindablePasswordBox
-                        x:Name="PasswordBox"
-                        Grid.Column="1"
-                        Password="{Binding Password}"
-                        ToolTip="Пароль, длиной не более 16 символов"
-                        Background="Transparent"
-                        PasswordChanged="Password_PasswordChanged"
-                        MaxLength="16" />
+                <components:BindablePasswordBox
+                    x:Name="PasswordBox"
+                    Grid.Column="1"
+                    Grid.Row="1"
+                    Password="{Binding Password}"
+                    ToolTip="Пароль, длиной не более 16 символов"
+                    Background="Transparent"
+                    PasswordChanged="Password_PasswordChanged"
+                    MaxLength="16" />
 
-                    <x:Code>
-                        <![CDATA[
+                <x:Code>
+                    <![CDATA[
                         private void Password_PasswordChanged(object sender, RoutedEventArgs e)
                         {
                             PasswordHint.Visibility = PasswordBox.Password.Length == 0 ? Visibility.Visible : Visibility.Hidden;
                             PasswordBox.Background = PasswordBox.Password.Length == 0 ? null : new SolidColorBrush(Colors.White);
                         }
                     ]]>
-                    </x:Code>
+                </x:Code>
 
-                    <Grid.ColumnDefinitions>
+                <Grid.ColumnDefinitions>
                         <ColumnDefinition />
                         <ColumnDefinition
                             Width="3*" />
                     </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition />
+                    <RowDefinition />
+                </Grid.RowDefinitions>
                 </Grid>
 
-                <Button
-                    Content="Не зарегистрированы?"
-                    Style="{StaticResource SmallButtonStyle}"
-                    Command="{Binding NavigateCommand}" 
-                    Margin="10"/>
+            <Button
+                Style="{StaticResource SmallButtonStyle}"
+                Content="Не зарегестрированы?" 
+                ToolTip="Перейти на страницу регистрации"
+                Command="{Binding NavigateCommand}"/>
 
-                <Grid>
+            <Grid>
                 <Button
                     Content="Войти"
                     IsEnabled="{Binding IsEnterButtonEnabled}"
                     Command="{Binding AuthorizeUserCommand}"
-                    ToolTip="Вход в систему."
+                    ToolTip="Войти в систему"
                     IsDefault="True"
                     Grid.Column="1" 
                     Margin="10"/>
@@ -129,7 +128,7 @@
                         <ColumnDefinition Width="*"/>
                         <ColumnDefinition Width="auto"/>
                         <ColumnDefinition Width="*"/>
-                    </Grid.ColumnDefinitions>
+                </Grid.ColumnDefinitions>
                     
                 </Grid>
 

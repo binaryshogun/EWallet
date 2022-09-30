@@ -1,4 +1,4 @@
-﻿// Создание кода T4 для модели "C:\Users\Alexander\source\repos\AlexanderKarpovich\EWallet\EWallet\Models\WalletEntities.edmx" включено. 
+﻿// Создание кода T4 для модели "C:\Users\Alexander\source\repos\AlexanderKarpovich\EWallet\EWallet\Models\WalletModel.edmx" включено. 
 // Чтобы включить формирование кода прежних версий, измените значение свойства "Стратегия создания кода" конструктора
 // на "Legacy ObjectContext". Это свойство доступно в окне "Свойства", если модель
 // открыта в конструкторе.

@@ -22,17 +22,7 @@ namespace EWallet.Models
             this.Operation1 = new HashSet<Operation>();
             this.Passport = new HashSet<Passport>();
         }
-
-        public void UpdateUserBalance(double sum)
-        {
-            using (var db = new WalletEntities())
-            {
-                this.Balance += sum;
-
-                db.SaveChanges();
-            }
-        }
-
+    
         public int ID { get; set; }
         public string Login { get; set; }
         public string Password { get; set; }

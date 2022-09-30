@@ -1,10 +1,7 @@
 ﻿using EWallet.Commands;
-using EWallet.Models;
 using EWallet.Services;
 using EWallet.Stores;
-using System.Collections.Generic;
 using System.ComponentModel;
-using System.Windows.Data;
 using System.Windows.Input;
 
 namespace EWallet.ViewModels

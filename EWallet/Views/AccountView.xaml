@@ -37,7 +37,7 @@
                             VerticalAlignment="Top"
                             HorizontalAlignment="Right"
                             Grid.Column="2"
-                            Margin="15 15 15 15">
+                            Margin="15">
                             <Button.Content>
                                 <Image
                                     Source="../Resources/icons/icon_exitButton_white.png" />

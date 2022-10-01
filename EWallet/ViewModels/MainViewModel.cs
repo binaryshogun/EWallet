@@ -5,13 +5,13 @@ namespace EWallet.ViewModels
     /// <summary>
     /// ViewModel для MainWindow.xaml.
     /// </summary>
-    class DisplayViewModel : ViewModelBase
+    class MainViewModel : ViewModelBase
     {
         /// <summary>
-        /// Инициализирует объект класса DisplayViewModel.
+        /// Основной класс ViewModel.
         /// </summary>
         /// <param name="navigationStore">Навигационное хранилище.</param>
-        public DisplayViewModel(NavigationStore navigationStore, ModalNavigationStore modalNavigationStore)
+        public MainViewModel(NavigationStore navigationStore, ModalNavigationStore modalNavigationStore)
         {
             this.navigationStore = navigationStore;
             this.modalNavigationStore = modalNavigationStore;

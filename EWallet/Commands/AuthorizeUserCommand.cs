@@ -6,7 +6,7 @@ using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
 using System.Windows;
-using EWallet.Components.CS;
+using EWallet.Components;
 using System;
 using System.Data.Entity;
 using System.Threading.Tasks;

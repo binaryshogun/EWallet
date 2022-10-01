@@ -1,14 +1,10 @@
 ﻿using EWallet.Stores;
 using EWallet.ViewModels;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace EWallet.Services
 {
-    public class ModalNavigationService<TViewModel> : INavigationService
+    public sealed class ModalNavigationService<TViewModel> : INavigationService
         where TViewModel : ViewModelBase
     {
         private readonly ModalNavigationStore modalNavigationStore;

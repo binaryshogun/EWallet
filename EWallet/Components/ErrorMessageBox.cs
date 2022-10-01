@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Windows;
 
-namespace EWallet.Components.CS
+namespace EWallet.Components
 {
     public sealed class ErrorMessageBox
     {

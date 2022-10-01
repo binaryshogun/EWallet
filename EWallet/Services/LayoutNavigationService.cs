@@ -4,7 +4,7 @@ using System;
 
 namespace EWallet.Services
 {
-    public class LayoutNavigationService<TViewModel> : INavigationService 
+    public sealed class LayoutNavigationService<TViewModel> : INavigationService 
         where TViewModel : ViewModelBase
     {
         private readonly NavigationStore navigationStore;

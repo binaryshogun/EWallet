@@ -30,12 +30,9 @@ namespace EWallet.ViewModels
             INavigationService userProfileNavigationService)
         {
             this.userStore = userStore;
-
-            if (userStore.CurrentUser == null)
-                NavigateCommand = new NavigateCommand(homeNavigationService);
-            else
-                NavigateCommand = new NavigateCommand(accountNavigationService);
-
+                        
+            NavigateHomeCommand = new NavigateCommand(homeNavigationService);
+            NavigateAccountCommand = new NavigateCommand(accountNavigationService);
             NavigateAuthorizationCommand = new NavigateCommand(authorizationNavigationService);
             NavigateRegistrationCommand = new NavigateCommand(registrationNavigationService);
             NavigateUserProfileCommand = new NavigateCommand(userProfileNavigationService);
@@ -51,9 +48,10 @@ namespace EWallet.ViewModels
         #endregion
 
         #region Commands
-        public ICommand NavigateCommand { get; }
+        public ICommand NavigateHomeCommand { get; }
         public ICommand NavigateAuthorizationCommand { get; }
         public ICommand NavigateRegistrationCommand { get; }
+        public ICommand NavigateAccountCommand { get; }
         public ICommand NavigateUserProfileCommand { get; }
         public ICommand ExitAppCommand { get; }
         #endregion

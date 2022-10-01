@@ -3,12 +3,12 @@ using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Media;
 
-namespace EWallet.Components
+namespace EWallet.Controls
 {
     /// <summary>
     /// PasswordBox с возможностью привязки данных.
     /// </summary>
-    public partial class BindablePasswordBox : UserControl
+    public sealed partial class BindablePasswordBox : UserControl
     {
         #region Fields
         private bool _isPasswordChanging;
@@ -112,7 +112,7 @@ namespace EWallet.Components
             set => SetValue(BackgroundProperty, value);
         }
 
-        /// <inheritdoc cref="TextBox.MaxLength"/>
+        /// <inheritdoc cref="PasswordBox.MaxLength"/>
         public int MaxLength
         {
             get => (int)GetValue(MaxLengthProperty);

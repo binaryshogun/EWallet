@@ -7,7 +7,7 @@ namespace EWallet.Components
     /// <summary>
     /// Логика взаимодействия для NavigationBar.xaml
     /// </summary>
-    public partial class NavigationBar : UserControl
+    public sealed partial class NavigationBar : UserControl
     {
         public NavigationBar()
         {

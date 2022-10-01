@@ -1,7 +1,12 @@
 ﻿using EWallet.Commands;
+using EWallet.Models;
 using EWallet.Services;
 using EWallet.Stores;
+using System.Collections.Generic;
 using System.ComponentModel;
+using System.Data.Entity;
+using System.Linq;
+using System.Threading.Tasks;
 using System.Windows.Input;
 
 namespace EWallet.ViewModels
@@ -13,7 +18,15 @@ namespace EWallet.ViewModels
     {
         #region Fields
         public readonly UserStore userStore;
-        private ICollectionView listServices;
+
+        private string transfer;
+        private string transferDescription;
+
+        private string withdraw;
+        private string withdrawDescription;
+
+        private string refill;
+        private string refillDescription;
 
         private double operationBalance;
         private string selectedService;
@@ -31,6 +44,8 @@ namespace EWallet.ViewModels
         public AccountViewModel(UserStore userStore, INavigationService homeNavigationService, INavigationService userProfileNavigationService)
         {
             this.userStore = userStore;
+
+            FetchServices();
 
             //DoOperationCommand = new DoOperationCommand(this);
             ExitAccountCommand = new ExitAccountCommand(userStore, homeNavigationService);
@@ -57,15 +72,44 @@ namespace EWallet.ViewModels
         /// <value>
         /// Коллекция данных об услугах.
         /// </value>
-        public ICollectionView ListServices
+        public List<Service> ListServices { get; private set; }
+
+        //Перевод
+        public string Transfer
         {
-            get => listServices;
-            set
-            {
-                listServices = value;
-                OnPropertyChanged(nameof(ListServices));
-            }
+            get => ListServices[0]?.Name;
+            set => transfer = value;
         }
+        public string TransferDescription
+        {
+            get => ListServices[0]?.Caption;
+            set => transferDescription = value;
+        }
+
+        //Вывод
+        public string Withdraw
+        {
+            get => ListServices[1]?.Name;
+            set => withdraw = value;
+        }
+        public string WithdrawDescription
+        {
+            get => ListServices[1]?.Caption;
+            set => withdrawDescription = value;
+        }
+
+        //Пополнение баланса
+        public string Refill
+        {
+            get => ListServices[2]?.Name;
+            set => refill = value;
+        }
+        public string RefillDescription 
+        { 
+            get => ListServices[2]?.Caption; 
+            set => refillDescription = value; 
+        }
+
 
         /// <summary>
         /// Выбранное значение услуги в ListServices.
@@ -162,9 +206,18 @@ namespace EWallet.ViewModels
         #region Commands
         public ICommand ExitAccountCommand { get; }
         public ICommand NavigateUserProfileCommand { get; }
+        public ICommand ReportExpensesCommand { get; }
         #endregion
 
         #region Methods
+        public void FetchServices()
+        {
+            using (var dataBase = new WalletEntities())
+            {
+                ListServices = dataBase.Service.AsNoTracking().Select(s => s).ToList();
+            }
+        }
+        
         public override void Dispose() 
             => base.Dispose();
         #endregion

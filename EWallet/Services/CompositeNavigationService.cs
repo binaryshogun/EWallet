@@ -1,12 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 
 namespace EWallet.Services
 {
-    public class CompositeNavigationService : INavigationService
+    public sealed class CompositeNavigationService : INavigationService
     {
         private readonly IEnumerable<INavigationService> navigationServices;
 

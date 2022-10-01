@@ -8,36 +8,23 @@
              d:DesignHeight="100" d:DesignWidth="1200">
 
     <UserControl.Resources>
-        <Style TargetType="{x:Type Button}" BasedOn="{StaticResource SmallButtonStyle}">
-            <Setter Property="VerticalAlignment" Value="Center" />
-            <Setter Property="Foreground" Value="White"/>
-            <Setter Property="Padding" Value="5"/>
-            <Setter Property="Margin" Value="10"/>
+        <Style
+            TargetType="{x:Type Button}"
+            BasedOn="{StaticResource SmallButtonStyle}">
+            <Setter
+                Property="VerticalAlignment"
+                Value="Center" />
+            <Setter
+                Property="Foreground"
+                Value="White" />
+            <Setter
+                Property="Padding"
+                Value="5" />
+            <Setter
+                Property="Margin"
+                Value="10" />
         </Style>
-        
-        <Style x:Key="LogoButton" TargetType="{x:Type Button}">
-            <Setter Property="VerticalAlignment" Value="Center"/>
-            <Setter Property="Foreground" Value="White"/>
-            <Setter Property="Margin" Value="10"/>
-            <Setter Property="HorizontalAlignment" Value="Left"/>
-            <Setter Property="Template">
-                <Setter.Value>
-                    <ControlTemplate TargetType="{x:Type Button}">
-                        <Label Content="{TemplateBinding Content}" 
-                               Foreground="{TemplateBinding Foreground}"
-                               Margin="{TemplateBinding Margin}"
-                               Padding="{TemplateBinding Padding}"
-                               FontSize="{TemplateBinding FontSize}"/>
-                    </ControlTemplate>
-                </Setter.Value>
-            </Setter>
-            <Style.Triggers>
-                <Trigger Property="IsMouseOver" Value="True">
-                    <Setter Property="Cursor" Value="Hand"/>
-                </Trigger>
-            </Style.Triggers>
-        </Style>
-        
+
         <Style TargetType="{x:Type Grid}">
             <Setter Property="Background" Value="#773997"/>
         </Style>
@@ -55,12 +42,11 @@
     
     <Grid
         MouseLeftButtonDown="UserControl_MouseLeftButtonDown">
-        <Button
-            Command="{Binding NavigateCommand}"
-            Style="{StaticResource LogoButton}"
+        <Label
             Grid.Column="0"
             Content="E-Money"
-            FontSize="32" />
+            FontSize="32" 
+            FontWeight="Black"/>
 
         <Button
             Grid.Column="2"
@@ -76,7 +62,7 @@
 
         <Button
             Grid.Column="4"
-            Command="{Binding NavigateCommand}"
+            Command="{Binding NavigateAccountCommand}"
             Content="Операции"
             Visibility="{Binding Path=IsLoggedIn, Converter={StaticResource IsAuthorized}}" />
 

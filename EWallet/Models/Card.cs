@@ -9,9 +9,7 @@
 
 namespace EWallet.Models
 {
-    using System;
-    using System.Collections.Generic;
-    
+
     public partial class Card
     {
         public int ID { get; set; }

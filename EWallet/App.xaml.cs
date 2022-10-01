@@ -40,7 +40,7 @@ namespace EWallet
                 => new AccountViewModel(s.GetRequiredService<UserStore>(),
                     CreateHomeNavigationService(s), CreateUserProfileNavigationService(s)));
             services.AddTransient(s => new UserProfileViewModel(s.GetRequiredService<UserStore>(),
-                    CreateAccountNavigationService(s), CreateAuthorizationNavigationService(s)));
+                    CreateAccountNavigationService(s), CreateHomeNavigationService(s)));
             services.AddSingleton(CreateNavigationBarViewModel);
             services.AddSingleton<MainViewModel>();
 
@@ -114,7 +114,8 @@ namespace EWallet
         {
             var closeModalNavigationService = serviceProvider.GetRequiredService<CloseModalNavigationService>();
 
-            return new RegistrationViewModel(CreateAccountNavigationService(serviceProvider),
+            return new RegistrationViewModel(CreateAuthorizationNavigationService(serviceProvider),
+                CreateAccountNavigationService(serviceProvider),
                 closeModalNavigationService, serviceProvider.GetRequiredService<UserStore>());
         }
 

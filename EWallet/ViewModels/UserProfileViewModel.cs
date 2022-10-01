@@ -23,7 +23,7 @@ namespace EWallet.ViewModels
         #endregion
 
         #region Constructors
-        public UserProfileViewModel(UserStore userStore, INavigationService accountNavigationService, INavigationService authorizationNavigationService)
+        public UserProfileViewModel(UserStore userStore, INavigationService accountNavigationService, INavigationService homeNavigationService)
         {
 
             using (var dataBase = new WalletEntities())
@@ -43,7 +43,7 @@ namespace EWallet.ViewModels
             }
 
             NavigateCommand = new NavigateCommand(accountNavigationService);
-            ExitAccountCommand = new ExitAccountCommand(userStore, authorizationNavigationService);
+            ExitAccountCommand = new ExitAccountCommand(userStore, homeNavigationService);
             SaveCommand = new SavePassportDataCommand(this, userStore);
         }
         #endregion

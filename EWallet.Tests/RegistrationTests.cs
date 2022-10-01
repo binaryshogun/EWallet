@@ -17,7 +17,7 @@ namespace EWallet.Tests
         public void InitializeData()
         {
             userStore = new UserStore();
-            viewModel = new RegistrationViewModel(null, null, userStore);
+            viewModel = new RegistrationViewModel(null, null, null, userStore);
             registerUserCommand = new RegisterUserCommand(viewModel, null, null);
         }
 

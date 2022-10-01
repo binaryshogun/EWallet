@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace EWallet.Services
 {
-    public class ParameterNavigationService<TParameter, TViewModel>
+    public sealed class ParameterNavigationService<TParameter, TViewModel>
         where TViewModel : ViewModelBase
         where TParameter : User
     {

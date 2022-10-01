@@ -77,16 +77,20 @@
     <Compile Include="Commands\NavigateCommand.cs" />
     <Compile Include="Commands\RegisterUserCommand.cs" />
     <Compile Include="Commands\SavePassportDataCommand.cs" />
-    <Compile Include="Components\CS\ErrorMessageBox.cs" />
-    <Compile Include="Components\UI\BindablePasswordBox.xaml.cs">
+    <Compile Include="Components\ErrorMessageBox.cs" />
+    <Compile Include="Controls\BindablePasswordBox.xaml.cs">
       <DependentUpon>BindablePasswordBox.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Components\UI\Layout.xaml.cs">
+    <Compile Include="Controls\FlexWrapPanel.cs" />
+    <Compile Include="Controls\Layout.xaml.cs">
       <DependentUpon>Layout.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Components\CS\Modal.cs" />
-    <Compile Include="Components\UI\NavigationBar.xaml.cs">
+    <Compile Include="Components\Modal.cs" />
+    <Compile Include="Controls\NavigationBar.xaml.cs">
       <DependentUpon>NavigationBar.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\OperationButton.xaml.cs">
+      <DependentUpon>OperationButton.xaml</DependentUpon>
     </Compile>
     <Compile Include="Models\Card.cs">
       <DependentUpon>WalletModel.tt</DependentUpon>
@@ -200,15 +204,19 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <Page Include="Components\UI\BindablePasswordBox.xaml">
+    <Page Include="Controls\BindablePasswordBox.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Components\UI\Layout.xaml">
+    <Page Include="Controls\Layout.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Components\UI\NavigationBar.xaml">
+    <Page Include="Controls\NavigationBar.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\OperationButton.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -260,20 +268,22 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Converters\" />
-    <Folder Include="Extensions\" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="EntityFramework">
-      <Version>6.4.4</Version>
+      <Version>6.2.0</Version>
     </PackageReference>
     <PackageReference Include="EntityFramework.ru">
       <Version>6.2.0</Version>
     </PackageReference>
     <PackageReference Include="EntityFramework.SqlServerCompact">
-      <Version>6.4.4</Version>
+      <Version>6.2.0</Version>
     </PackageReference>
     <PackageReference Include="Microsoft.Bcl.AsyncInterfaces">
       <Version>6.0.0</Version>
+    </PackageReference>
+    <PackageReference Include="Microsoft.Data.Analysis">
+      <Version>0.19.1</Version>
     </PackageReference>
     <PackageReference Include="Microsoft.Extensions.DependencyInjection">
       <Version>6.0.0</Version>
@@ -305,6 +315,7 @@
       <DependentUpon>WalletModel.edmx</DependentUpon>
       <LastGenOutput>WalletModel.cs</LastGenOutput>
     </Content>
+    <Resource Include="Resources\images\card.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

@@ -29,9 +29,12 @@ namespace EWallet.ViewModels
         /// Инициализирует объект класса RegistrationViewModel.
         /// </summary>
         /// <param name="navigationStore">Навигационное хранилище.</param>
-        public RegistrationViewModel(INavigationService accountNavigationService, INavigationService homeNavigationService, UserStore userStore)
+        public RegistrationViewModel(INavigationService authorizationNavigationService, 
+            INavigationService accountNavigationService, 
+            INavigationService homeNavigationService, UserStore userStore)
         {
-            NavigateCommand = new NavigateCommand(accountNavigationService);
+            NavigateCommand = new NavigateCommand(authorizationNavigationService);
+            NavigateAccountCommand = new NavigateCommand(accountNavigationService);
             NavigateHomeCommand = new NavigateCommand(homeNavigationService);
             RegisterUserCommand = new RegisterUserCommand(this, accountNavigationService, userStore);
             ExitAppCommand = new ExitAppCommand();
@@ -151,6 +154,7 @@ namespace EWallet.ViewModels
         public ICommand RegisterUserCommand { get; }
         public ICommand NavigateCommand { get; }
         public ICommand NavigateHomeCommand { get; }
+        public ICommand NavigateAccountCommand { get; }
         public ICommand ExitAppCommand { get; }
         #endregion
 

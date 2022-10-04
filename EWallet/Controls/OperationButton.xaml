@@ -1,56 +1,73 @@
 ﻿<UserControl
+    x:Name="container"
     x:Class="EWallet.Controls.OperationButton"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:local="clr-namespace:EWallet.Controls"
+    xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
+    xmlns:behaviors="clr-namespace:EWallet.Behaviors"
     mc:Ignorable="d"
     d:DesignHeight="450"
     d:DesignWidth="800">
     <Button
         Style="{StaticResource PurpleButtonStyle}"
-        VerticalAlignment="Stretch"
-        HorizontalAlignment="Stretch">
-        <Button.Resources>
-            <Style
-                TargetType="{x:Type TextBlock}">
-                <Setter
-                    Property="FontSize"
-                    Value="32" />
-                <Setter
-                    Property="TextWrapping"
-                    Value="Wrap" />
-            </Style>
-        </Button.Resources>
+        x:Name="button">
         <Button.Content>
             <Grid
                 VerticalAlignment="Stretch"
                 HorizontalAlignment="Stretch">
-                <Image
-                    HorizontalAlignment="Left"
-                    Source="../Resources/images/card.png"
-                    Margin="3" 
-                    MinWidth="100"
-                    MaxWidth="300"/>
-
-                <StackPanel
-                    Grid.Column="1"
-                    Margin="3"
-                    HorizontalAlignment="Right"
-                    Width="500">
+                <Grid
+                    VerticalAlignment="Center"
+                    HorizontalAlignment="Left">
+                    <Image
+                        x:Name="operationImage"
+                        HorizontalAlignment="Left"
+                        Margin="25"
+                        MinWidth="100"
+                        MaxWidth="250" />
+                </Grid>
+                <Grid 
+                    Grid.Column="1">
+                    <i:Interaction.Behaviors>
+                        <behaviors:ScaleFontBehavior
+                            MaxFontSize="54" />
+                    </i:Interaction.Behaviors>
                     <TextBlock
                         x:Name="operation"
-                        FontWeight="Bold" />
+                        FontWeight="Bold"
+                        Grid.Row="0"
+                        Grid.Column="0"
+                        Margin="10 0"
+                        VerticalAlignment="Center"
+                        TextWrapping="NoWrap"/>
                     <TextBlock
-                        x:Name="operationDescription" />
-                </StackPanel>
-
+                        x:Name="operationDescription"
+                        Grid.Row="1" 
+                        Grid.Column="0"
+                        Margin="10 0"
+                        VerticalAlignment="Center"
+                        TextWrapping="NoWrap"/>
+                    <Grid.RowDefinitions>
+                        <RowDefinition
+                            Height="Auto" />
+                        <RowDefinition />
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition />
+                    </Grid.ColumnDefinitions>
+                </Grid>
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition 
-                        Width="0.25*"/>
-                    <ColumnDefinition />
+                    <ColumnDefinition
+                        Width="Auto"
+                        MaxWidth="350" />
+                    <ColumnDefinition
+                        Width="*" />
                 </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition />
+                </Grid.RowDefinitions>
             </Grid>
         </Button.Content>
     </Button>

@@ -19,20 +19,14 @@ namespace EWallet.ViewModels
         #region Fields
         public readonly UserStore userStore;
 
+        //services
+        private bool areServicesLoading;
         private string transfer;
         private string transferDescription;
-
         private string withdraw;
         private string withdrawDescription;
-
         private string refill;
         private string refillDescription;
-
-        private double operationBalance;
-        private string selectedService;
-        private string cardNumber;
-
-        private bool isConfirmButtonEnabled = false;
         #endregion
 
         #region Constructors
@@ -41,11 +35,13 @@ namespace EWallet.ViewModels
         /// </summary>
         /// <param name="user">Пользователь, прошедший авторизацию в системе.</param>
         /// <param name="navigationStore">Хранилище данных, содержащее данные о текущей ViewModel.</param>
-        public AccountViewModel(UserStore userStore, INavigationService homeNavigationService, INavigationService userProfileNavigationService)
+        public AccountViewModel(UserStore userStore, 
+            INavigationService homeNavigationService, 
+            INavigationService userProfileNavigationService)
         {
             this.userStore = userStore;
 
-            FetchServices();
+            Task.Run(FetchServices);
 
             //DoOperationCommand = new DoOperationCommand(this);
             ExitAccountCommand = new ExitAccountCommand(userStore, homeNavigationService);
@@ -66,139 +62,73 @@ namespace EWallet.ViewModels
         public string Login 
             => userStore.CurrentUser.Login;
 
-        /// <summary>
-        /// Список доступных пользователям услуг для отображения во View.
-        /// </summary>
-        /// <value>
-        /// Коллекция данных об услугах.
-        /// </value>
-        public List<Service> ListServices { get; private set; }
+        public bool AreServicesLoading
+        {
+            get => areServicesLoading;
+            set
+            {
+                areServicesLoading = value;
+                OnPropertyChanged(nameof(AreServicesLoading));
+            }
+        }
 
         //Перевод
         public string Transfer
         {
-            get => ListServices[0]?.Name;
-            set => transfer = value;
+            get => transfer;
+            set
+            {
+                transfer = value;
+                OnPropertyChanged(nameof(Transfer));
+            }
         }
         public string TransferDescription
         {
-            get => ListServices[0]?.Caption;
-            set => transferDescription = value;
+            get => transferDescription;
+            set
+            {
+                transferDescription = value;
+                OnPropertyChanged(nameof(TransferDescription));
+            }
         }
 
         //Вывод
         public string Withdraw
         {
-            get => ListServices[1]?.Name;
-            set => withdraw = value;
+            get => withdraw;
+            set
+            {
+                withdraw = value;
+                OnPropertyChanged(nameof(Withdraw));
+            }
         }
         public string WithdrawDescription
         {
-            get => ListServices[1]?.Caption;
-            set => withdrawDescription = value;
+            get => withdrawDescription;
+            set
+            {
+                withdrawDescription = value;
+                OnPropertyChanged(nameof(WithdrawDescription));
+            }
         }
 
         //Пополнение баланса
         public string Refill
         {
-            get => ListServices[2]?.Name;
-            set => refill = value;
-        }
-        public string RefillDescription 
-        { 
-            get => ListServices[2]?.Caption; 
-            set => refillDescription = value; 
-        }
-
-
-        /// <summary>
-        /// Выбранное значение услуги в ListServices.
-        /// </summary>
-        /// <value>
-        /// Строковое представление названия услуги.
-        /// </value>
-        public string SelectedService
-        {
-            get => selectedService;
+            get => refill;
             set
             {
-                selectedService = value;
-                OnPropertyChanged(nameof(SelectedService));
-                if (selectedService != null && cardNumber != "" && operationBalance != 0) IsConfirmButtonEnabled = true;
+                refill = value;
+                OnPropertyChanged(nameof(Refill));
             }
         }
-
-        /// <summary>
-        /// Номер карты пользователя.
-        /// </summary>
-        /// <value>
-        /// Строковое представление номера карты пользователя.
-        /// </value>
-        public string CardNumber
+        public string RefillDescription
         {
-            get => cardNumber;
+            get => refillDescription;
             set
             {
-                long.TryParse(value.Replace(" ", ""), out long number);
-
-                if (number != 0 || value != " ")
-                {
-                    int length = value.Replace(" ", "").Length;
-                    if (length <= 4)
-                        cardNumber = value;
-                    else if (length <= 8)
-                        cardNumber = string.Format($"{number:#### ####}");
-                    else if (length <= 12)
-                        cardNumber = string.Format($"{number:#### #### ####}");
-                    else
-                        cardNumber = string.Format($"{number:#### #### #### ####}");
-                }
-
-                if (cardNumber != null)
-                {
-                    cardNumber.Trim(' ');
-                }
-
-                OnPropertyChanged(nameof(CardNumber));
-                if (cardNumber != "" && operationBalance != 0 && selectedService != null)
-                    IsConfirmButtonEnabled = true;
-            }
-        }
-
-        /// <summary>
-        /// Баланс операции.
-        /// </summary>
-        /// <value>
-        /// Действительное число с двойной точностью, содержащее баланс операции.
-        /// </value>
-        public double OperationBalance
-        {
-            get => operationBalance;
-            set
-            {
-                if (operationBalance != value)
-                {
-                    operationBalance = value;
-                    OnPropertyChanged(nameof(OperationBalance));
-                    if (cardNumber != "" && operationBalance != 0 && selectedService != null)
-                        IsConfirmButtonEnabled = true;
-                }
-            }
-        }
-
-        /// <summary>
-        /// Флаг, отвечающий за включение и отключение кнопки проведения операции.
-        /// </summary>
-        /// <value>
-        /// Булева переменная, содержащая состояние кнопки проведения операции.
-        /// </value>
-        public bool IsConfirmButtonEnabled
-        {
-            get => isConfirmButtonEnabled;
-            set
-            {
-                isConfirmButtonEnabled = value;
-                OnPropertyChanged(nameof(IsConfirmButtonEnabled));
+                refillDescription = value;
+                OnPropertyChanged(nameof(RefillDescription));
             }
         }
         #endregion
@@ -206,16 +136,27 @@ namespace EWallet.ViewModels
         #region Commands
         public ICommand ExitAccountCommand { get; }
         public ICommand NavigateUserProfileCommand { get; }
+        public ICommand NavigateTransferCommand { get; }
+        public ICommand NavigateWithdrawCommand { get; }
+        public ICommand NavigateRefillCommand { get; }
         public ICommand ReportExpensesCommand { get; }
         #endregion
 
         #region Methods
         public void FetchServices()
         {
+            AreServicesLoading = true;
             using (var dataBase = new WalletEntities())
             {
-                ListServices = dataBase.Service.AsNoTracking().Select(s => s).ToList();
+                List<Service> ListServices = dataBase.Service.AsNoTracking().Select(s => s).ToList();
+                Transfer = ListServices[0]?.Name;
+                TransferDescription = ListServices[0]?.Caption;
+                Withdraw = ListServices[1]?.Name;
+                WithdrawDescription = ListServices[1]?.Caption;
+                Refill = ListServices[2]?.Name;
+                RefillDescription = ListServices[2]?.Caption;
             }
+            AreServicesLoading = false;
         }
         
         public override void Dispose() 

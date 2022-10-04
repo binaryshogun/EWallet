@@ -52,19 +52,19 @@
             Grid.Column="2"
             Command="{Binding NavigateAuthorizationCommand}"
             Content="Войти"
-            Visibility="{Binding Path=IsLoggedOut, Converter={StaticResource IsAuthorized}}" />
+            Visibility="{Binding Path=IsLoggedOut, Converter={StaticResource IsAuthorized}, UpdateSourceTrigger=PropertyChanged}" />
 
         <Button
             Grid.Column="3"
             Command="{Binding NavigateRegistrationCommand}"
             Content="Зарегистрироваться"
-            Visibility="{Binding Path=IsLoggedOut, Converter={StaticResource IsAuthorized}}" />
+            Visibility="{Binding Path=IsLoggedOut, Converter={StaticResource IsAuthorized}, UpdateSourceTrigger=PropertyChanged}" />
 
         <Button
             Grid.Column="4"
             Command="{Binding NavigateAccountCommand}"
             Content="Операции"
-            Visibility="{Binding Path=IsLoggedIn, Converter={StaticResource IsAuthorized}}" />
+            Visibility="{Binding Path=IsLoggedIn, Converter={StaticResource IsAuthorized}, UpdateSourceTrigger=PropertyChanged}" />
 
         <Button
             Grid.Column="5"

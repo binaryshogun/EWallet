@@ -7,6 +7,7 @@
     xmlns:local="clr-namespace:EWallet.Views"
     xmlns:components="clr-namespace:EWallet.Components"
     xmlns:viewmodels="clr-namespace:EWallet.ViewModels"
+    xmlns:controls="clr-namespace:EWallet.Controls"
     mc:Ignorable="d"
     d:DesignHeight="800"
     d:DesignWidth="1024"

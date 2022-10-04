@@ -14,6 +14,7 @@ namespace EWallet.Commands
         #region Fields
         private readonly UserStore userStore;
         private readonly INavigationService navigationService;
+        private readonly NavigationBarViewModel navigationBarViewModel;
         #endregion
 
         #region Constructors

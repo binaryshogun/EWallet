@@ -31,6 +31,8 @@ namespace EWallet
             services.AddSingleton(s => CreateHomeNavigationService(s));
             services.AddSingleton<CloseModalNavigationService>();
 
+            services.AddSingleton(CreateNavigationBarViewModel);
+            services.AddSingleton<MainViewModel>();
             services.AddTransient(s 
                 => new HomeViewModel(CreateAuthorizationNavigationService(serviceProvider), 
                     CreateRegistrationNavigationService(serviceProvider)));
@@ -40,9 +42,7 @@ namespace EWallet
                 => new AccountViewModel(s.GetRequiredService<UserStore>(),
                     CreateHomeNavigationService(s), CreateUserProfileNavigationService(s)));
             services.AddTransient(s => new UserProfileViewModel(s.GetRequiredService<UserStore>(),
-                    CreateAccountNavigationService(s), CreateHomeNavigationService(s)));
-            services.AddSingleton(CreateNavigationBarViewModel);
-            services.AddSingleton<MainViewModel>();
+                    CreateAccountNavigationService(s)));
 
             services.AddSingleton(s => new MainWindow()
             {
@@ -114,9 +114,9 @@ namespace EWallet
         {
             var closeModalNavigationService = serviceProvider.GetRequiredService<CloseModalNavigationService>();
 
-            return new RegistrationViewModel(CreateAuthorizationNavigationService(serviceProvider),
+            return new RegistrationViewModel(serviceProvider.GetRequiredService<UserStore>(),
                 CreateAccountNavigationService(serviceProvider),
-                closeModalNavigationService, serviceProvider.GetRequiredService<UserStore>());
+                closeModalNavigationService, CreateAuthorizationNavigationService(serviceProvider));
         }
 
         /// <summary>

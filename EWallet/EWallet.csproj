@@ -45,6 +45,7 @@
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Design" />
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Security" />
     <Reference Include="System.Xml" />
@@ -69,6 +70,8 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Behaviors\ScaleFontBehavior.cs" />
+    <Compile Include="Behaviors\VisualHelper.cs" />
     <Compile Include="Commands\AuthorizeUserCommand.cs" />
     <Compile Include="Commands\CommandBase.cs" />
     <Compile Include="Commands\DoOperationCommand.cs" />
@@ -294,6 +297,9 @@
     <PackageReference Include="Microsoft.SqlServer.Compact">
       <Version>4.0.8876.1</Version>
     </PackageReference>
+    <PackageReference Include="Microsoft.Xaml.Behaviors.Wpf">
+      <Version>1.1.39</Version>
+    </PackageReference>
     <PackageReference Include="NUnit">
       <Version>3.13.3</Version>
     </PackageReference>
@@ -315,6 +321,8 @@
       <DependentUpon>WalletModel.edmx</DependentUpon>
       <LastGenOutput>WalletModel.cs</LastGenOutput>
     </Content>
+    <Resource Include="Resources\images\refill.png" />
+    <Resource Include="Resources\images\withdraw.png" />
     <Resource Include="Resources\images\card.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

@@ -38,7 +38,7 @@ namespace EWallet.ViewModels
             NavigateUserProfileCommand = new NavigateCommand(userProfileNavigationService);
             ExitAppCommand = new ExitAppCommand();
 
-            this.userStore.CurrentUserChanged += OnCurrentAccountChanged;
+            this.userStore.CurrentUserChanged += OnCurrentUserChanged;
         }
         #endregion
 
@@ -57,7 +57,7 @@ namespace EWallet.ViewModels
         #endregion
 
         #region Methods
-        private void OnCurrentAccountChanged()
+        public void OnCurrentUserChanged()
         {
             OnPropertyChanged(nameof(IsLoggedIn));
             OnPropertyChanged(nameof(IsLoggedOut));
@@ -65,8 +65,6 @@ namespace EWallet.ViewModels
 
         public override void Dispose() 
         {
-            userStore.CurrentUserChanged -= OnCurrentAccountChanged;
-
             base.Dispose(); 
         }
         #endregion

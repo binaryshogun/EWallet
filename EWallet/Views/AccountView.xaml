@@ -19,18 +19,28 @@
             HorizontalAlignment="Center"
             VerticalAlignment="Center"
             Orientation="Vertical"
-            ItemWidth="800">
+            RequestItemWidth="1700"
+            RequestItemHeight="350">
             <controls:OperationButton
-                Operation="{Binding Transfer}"
-                OperationDescription="{Binding TransferDescription}" />
+                Operation="{Binding Transfer, UpdateSourceTrigger=PropertyChanged}"
+                OperationDescription="{Binding TransferDescription, UpdateSourceTrigger=PropertyChanged}"
+                ImageSource="../Resources/images/card.png"
+                Command="{Binding NavigateTransferCommand}"
+                Margin="50 15"/>
 
             <controls:OperationButton
-                Operation="{Binding Withdraw}"
-                OperationDescription="{Binding WithdrawDescription}" />
+                Operation="{Binding Withdraw, UpdateSourceTrigger=PropertyChanged}"
+                OperationDescription="{Binding WithdrawDescription, UpdateSourceTrigger=PropertyChanged}"
+                ImageSource="../Resources/images/withdraw.png"
+                Command="{Binding NavigateWithdrawCommand}"
+                Margin="50 15"/>
 
             <controls:OperationButton
-                Operation="{Binding Refill}"
-                OperationDescription="{Binding RefillDescription}" />
+                Operation="{Binding Refill, UpdateSourceTrigger=PropertyChanged}"
+                OperationDescription="{Binding RefillDescription, UpdateSourceTrigger=PropertyChanged}" 
+                Command="{Binding NavigateRefillCommand}"
+                ImageSource="../Resources/images/refill.png"
+                Margin="50 15"/>
 
             <WrapPanel.Resources>
                 <Style

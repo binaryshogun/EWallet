@@ -22,6 +22,7 @@ namespace EWallet.Commands
         private readonly AuthorizationViewModel viewModel;
         private readonly INavigationService navigationService;
         private readonly UserStore userStore;
+        private readonly NavigationBarViewModel navigationBarViewModel;
         #endregion
 
         #region Constructors
@@ -30,7 +31,9 @@ namespace EWallet.Commands
         /// </summary>
         /// <param name="viewModel">ViewModel данных авторизации.</param>
         /// <param name="navigationStore">Хранилище данных.</param>
-        public AuthorizeUserCommand(AuthorizationViewModel viewModel, INavigationService navigationService, UserStore userStore)
+        public AuthorizeUserCommand(AuthorizationViewModel viewModel, 
+            INavigationService navigationService, 
+            UserStore userStore)
         {
             this.viewModel = viewModel;
             this.navigationService = navigationService;
@@ -64,6 +67,7 @@ namespace EWallet.Commands
 
                     userStore.CurrentUser = user ?? throw new Exception("Пользователь не найден!");
                     navigationService?.Navigate();
+
                 }
                 catch (Exception e) { ErrorMessageBox.Show(e); }
             }

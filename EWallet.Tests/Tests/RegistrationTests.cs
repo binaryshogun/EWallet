@@ -17,8 +17,8 @@ namespace EWallet.Tests
         public void InitializeData()
         {
             userStore = new UserStore();
-            viewModel = new RegistrationViewModel(null, null, null, userStore);
-            registerUserCommand = new RegisterUserCommand(viewModel, null, null);
+            viewModel = new RegistrationViewModel(userStore, null, null, null);
+            registerUserCommand = new RegisterUserCommand(viewModel, null, userStore);
         }
 
         public void ChangeUserDataAndTest(string login, string password)
@@ -31,13 +31,13 @@ namespace EWallet.Tests
         }
         public async void PassRegistrationTest()
         {
-            await Task.Run(() => registerUserCommand.RegisterUserInDataBase());
+            await Task.Run(registerUserCommand.RegisterUserInDataBase);
             Assert.AreEqual(userStore.CurrentUser != null, true);
         }
 
         public async void AlreadyRegistredTest()
         {
-            await Task.Run(() => registerUserCommand.RegisterUserInDataBase());
+            await Task.Run(registerUserCommand.RegisterUserInDataBase);
             Assert.AreEqual(userStore.CurrentUser == null, true);
         }
 

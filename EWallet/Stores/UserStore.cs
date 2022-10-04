@@ -35,6 +35,6 @@ namespace EWallet.Stores
 
         public event Action CurrentUserChanged;
 
-        public void Logout() => currentUser = null;
+        public void Logout() => CurrentUser = null;
     }
 }

@@ -22,6 +22,7 @@ namespace EWallet.Commands
         private readonly RegistrationViewModel viewModel;
         private readonly INavigationService accountNavigationService;
         private readonly UserStore userStore;
+        private readonly NavigationBarViewModel navigationBarViewModel;
         #endregion
 
         #region Constructors
@@ -30,7 +31,9 @@ namespace EWallet.Commands
         /// </summary>
         /// <param name="viewModel">ViewModel страницы регистрации пользователя.</param>
         /// <param name="accountNavigationService">Сервис навигации, привязанный к AccountViewModel.</param>
-        public RegisterUserCommand(RegistrationViewModel viewModel, INavigationService accountNavigationService, UserStore userStore)
+        public RegisterUserCommand(RegistrationViewModel viewModel, 
+            INavigationService accountNavigationService, 
+            UserStore userStore)
         {
             this.viewModel = viewModel;
             this.accountNavigationService = accountNavigationService;

@@ -10,7 +10,7 @@
         <DoubleAnimation
             Storyboard.TargetName="itemScaleTransform"
             Storyboard.TargetProperty="ScaleX"
-            To="1.1"
+            To="1.05"
             Duration="00:00:00.4">
             <DoubleAnimation.EasingFunction>
                 <QuarticEase />
@@ -19,7 +19,7 @@
         <DoubleAnimation
             Storyboard.TargetName="itemScaleTransform"
             Storyboard.TargetProperty="ScaleY"
-            To="1.1"
+            To="1.05"
             Duration="00:00:00.4">
             <DoubleAnimation.EasingFunction>
                 <QuarticEase />
@@ -234,15 +234,17 @@
                         Background="{TemplateBinding Background}"
                         BorderBrush="{TemplateBinding BorderBrush}"
                         BorderThickness="{TemplateBinding BorderThickness}"
+                        VerticalAlignment="{TemplateBinding VerticalAlignment}"
+                        HorizontalAlignment="{TemplateBinding HorizontalAlignment}"
                         RenderTransformOrigin="0.5, 0.5">
                         <Border.RenderTransform>
                             <ScaleTransform
                                 x:Name="itemScaleTransform" />
                         </Border.RenderTransform>
 
-                        <ContentPresenter
-                            HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
-                            VerticalAlignment="{TemplateBinding VerticalContentAlignment}" />
+                        <ContentPresenter 
+                            VerticalAlignment="{TemplateBinding VerticalAlignment}"
+                            HorizontalAlignment="{TemplateBinding HorizontalAlignment}"/>
 
                     </Border>
 
@@ -395,6 +397,9 @@
         <Setter
             Property="TextWrapping"
             Value="WrapWithOverflow" />
+        <Setter
+            Property="HorizontalAlignment"
+            Value="Center" />
     </Style>
     
     <!--Label style-->

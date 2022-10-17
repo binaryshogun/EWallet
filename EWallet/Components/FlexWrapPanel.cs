@@ -1,7 +1,7 @@
 ﻿using System.Windows;
 using System.Windows.Controls;
 
-namespace EWallet.Controls
+namespace EWallet.Components
 {
     public sealed class FlexWrapPanel : WrapPanel
     {

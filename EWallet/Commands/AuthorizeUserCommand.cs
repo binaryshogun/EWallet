@@ -22,7 +22,6 @@ namespace EWallet.Commands
         private readonly AuthorizationViewModel viewModel;
         private readonly INavigationService navigationService;
         private readonly UserStore userStore;
-        private readonly NavigationBarViewModel navigationBarViewModel;
         #endregion
 
         #region Constructors
@@ -46,7 +45,7 @@ namespace EWallet.Commands
         public override void Execute(object parameter) 
             => Task.Run(FetchUserFromDataBase);
 
-        public async void FetchUserFromDataBase()
+        public async Task FetchUserFromDataBase()
         {
             using (var dataBase = new WalletEntities())
             {
@@ -67,7 +66,6 @@ namespace EWallet.Commands
 
                     userStore.CurrentUser = user ?? throw new Exception("Пользователь не найден!");
                     navigationService?.Navigate();
-
                 }
                 catch (Exception e) { ErrorMessageBox.Show(e); }
             }

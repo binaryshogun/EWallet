@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data.Entity;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Input;
 
@@ -37,15 +38,20 @@ namespace EWallet.ViewModels
         /// <param name="navigationStore">Хранилище данных, содержащее данные о текущей ViewModel.</param>
         public AccountViewModel(UserStore userStore, 
             INavigationService homeNavigationService, 
-            INavigationService userProfileNavigationService)
+            INavigationService userProfileNavigationService,
+            INavigationService transferNavigationService,
+            INavigationService withdrawNavigationService,
+            INavigationService refillNavigationService)
         {
             this.userStore = userStore;
 
             Task.Run(FetchServices);
 
-            //DoOperationCommand = new DoOperationCommand(this);
-            ExitAccountCommand = new ExitAccountCommand(userStore, homeNavigationService);
+            NavigateTransferCommand = new NavigateCommand(transferNavigationService);
+            NavigateWithdrawCommand = new NavigateCommand(withdrawNavigationService);
+            NavigateRefillCommand = new NavigateCommand(refillNavigationService);
             NavigateUserProfileCommand = new NavigateCommand(userProfileNavigationService);
+            ExitAccountCommand = new ExitAccountCommand(userStore, homeNavigationService);
         }
         #endregion
 

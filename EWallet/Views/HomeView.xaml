@@ -8,6 +8,8 @@
     xmlns:components="clr-namespace:EWallet.Components"
     xmlns:viewmodels="clr-namespace:EWallet.ViewModels"
     xmlns:controls="clr-namespace:EWallet.Controls"
+    xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
+    xmlns:behaviors="clr-namespace:EWallet.Behaviors"
     mc:Ignorable="d"
     d:DesignHeight="800"
     d:DesignWidth="1024"
@@ -16,10 +18,10 @@
     <Grid>
         <Grid.Resources>
             <Style
-                TargetType="{x:Type Label}">
+                TargetType="{x:Type TextBlock}">
                 <Setter
                     Property="FontSize"
-                    Value="54" />
+                    Value="40" />
                 <Setter
                     Property="FontWeight"
                     Value="SemiBold" />
@@ -38,13 +40,33 @@
                 <Setter
                     Property="Margin"
                     Value="25 10" />
+                <Setter
+                    Property="TextWrapping"
+                    Value="Wrap" />
             </Style>
         </Grid.Resources>
 
-        <Label
-            Content="Откройте для себя мир электронных денег"
+        <Grid
             Grid.Column="0"
-            Grid.ColumnSpan="7"/>
+            Grid.Row="0"
+            Grid.ColumnSpan="7">
+            <i:Interaction.Behaviors>
+                <behaviors:ScaleFontBehavior
+                    MaxFontSize="72" />
+            </i:Interaction.Behaviors>
+
+            <TextBlock
+                Text="Откройте для себя мир электронных денег" 
+                Grid.Row="0"
+                Grid.Column="0"/>
+
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition />
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition />
+            </Grid.RowDefinitions>
+        </Grid>
 
         <Image 
             Grid.Column="8"
@@ -62,11 +84,26 @@
             </Image.RenderTransform>
         </Image>
 
-        <Label
-            Content="Копите, оплачивайте покупки и делайте переводы"
+        <Grid
             Grid.Row="1"
             Grid.Column="1"
-            Grid.ColumnSpan="7"/>
+            Grid.ColumnSpan="7">
+            <i:Interaction.Behaviors>
+                <behaviors:ScaleFontBehavior
+                    MaxFontSize="72" />
+            </i:Interaction.Behaviors>
+            <TextBlock
+                Text="Копите, оплачивайте покупки и делайте переводы"
+                Grid.Row="0"
+                Grid.Column="0"/>
+
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition />
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition />
+            </Grid.RowDefinitions>
+        </Grid>
 
         <Image 
             Grid.Row="1"
@@ -92,7 +129,8 @@
             Style="{DynamicResource WhiteButtonStyle}"
             VerticalAlignment="Center"
             Margin="10"
-            Command="{Binding NavigateRegistrationCommand}" />
+            Command="{Binding NavigateRegistrationCommand}" 
+            ToolTip="Зарегистрировать новый аккаунт в системе"/>
 
         <Button
             Grid.Row="3"
@@ -102,7 +140,8 @@
             Style="{DynamicResource PurpleButtonStyle}"
             VerticalAlignment="Center"
             Margin="10"
-            Command="{Binding NavigateAuthorizationCommand}" />
+            Command="{Binding NavigateAuthorizationCommand}" 
+            ToolTip="Переход на страницу авторизации"/>
 
         <Grid.RowDefinitions>
             <RowDefinition />

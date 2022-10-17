@@ -15,11 +15,14 @@ namespace EWallet.ViewModels
         private string firstName;
         private string lastName;
         private string patronymic;
+        private string saveDataMessage;
         private int serialNumber;
         private int number;
         private int divisionCode;
 
         private bool doesUserHavePatronymic;
+        private bool isDataSave;
+        private bool isDataSaved;
         #endregion
 
         #region Constructors
@@ -43,7 +46,9 @@ namespace EWallet.ViewModels
                 DivisionCode = passport.DivisionCode;
             }
 
-            NavigateCommand = new NavigateCommand(accountNavigationService);
+            IsDataSaved = true;
+
+            CloseModalCommand = new NavigateCommand(accountNavigationService);
             SaveCommand = new SavePassportDataCommand(this, userStore);
         }
         #endregion
@@ -76,6 +81,16 @@ namespace EWallet.ViewModels
             {
                 patronymic = value;
                 OnPropertyChanged(nameof(Patronymic));
+            }
+        }
+
+        public string SaveDataMessage
+        {
+            get => saveDataMessage;
+            set
+            {
+                saveDataMessage = value;
+                OnPropertyChanged(nameof(SaveDataMessage));
             }
         }
 
@@ -119,10 +134,29 @@ namespace EWallet.ViewModels
                 OnPropertyChanged(nameof(DoesUserHavePatronymic));
             }
         }
+
+        public bool IsDataSave
+        {
+            get => isDataSave;
+            set
+            {
+                isDataSave = value;
+                OnPropertyChanged(nameof(IsDataSave));
+            }
+        }
+        public bool IsDataSaved
+        {
+            get => isDataSaved;
+            set
+            {
+                isDataSaved = value;
+                OnPropertyChanged(nameof(IsDataSaved));
+            }
+        }
         #endregion
 
         #region Commands
-        public ICommand NavigateCommand { get; }
+        public ICommand CloseModalCommand { get; }
         public ICommand SaveCommand { get; }
         #endregion
     }

@@ -7,6 +7,7 @@
     xmlns:local="clr-namespace:EWallet.Views"
     xmlns:controls="clr-namespace:EWallet.Controls"
     xmlns:viewmodels="clr-namespace:EWallet.ViewModels"
+    xmlns:components="clr-namespace:EWallet.Components"
     mc:Ignorable="d"
     d:DesignHeight="600"
     d:DesignWidth="800"
@@ -18,7 +19,8 @@
             HorizontalAlignment="Right"
             Margin="5"
             Command="{Binding NavigateHomeCommand}"
-            Style="{StaticResource ImageButtonStyle}">
+            Style="{StaticResource ImageButtonStyle}"
+            ToolTip="Закрыть окно авторизации">
             <Image
                 Source="../Resources/icons/icon_closeModal.png"/>
         </Button>
@@ -42,66 +44,28 @@
                     Content="Логин"
                     HorizontalAlignment="Left" />
 
-                <Label
-                    x:Name="LoginHint"
-                    Content="Логин"
-                    Grid.Column="1"
-                    Background="White"
-                    Foreground="Gray" />
-
-                <TextBox
+                <components:PlaceholderTextBox
                     x:Name="LoginBox"
-                    Grid.Column="1"
-                    Text="{Binding Login, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
-                    ToolTip="Уникальный логин пользователя."
-                    Background="{x:Null}"
-                    TextChanged="Login_TextChanged"
+                    Text="{Binding Login}"
+                    Placeholder="Логин"
+                    Language="en"
+                    ToolTip="Уникальный логин пользователя"
                     MaxLength="16"
                     ForceCursor="True"
-                    InputScope="Default" />
-
-                <x:Code>
-                    <![CDATA[
-                        private void Login_TextChanged(object sender, RoutedEventArgs e)
-                        {
-                            LoginHint.Visibility = LoginBox.Text.Length == 0 ? Visibility.Visible : Visibility.Hidden;
-                            LoginBox.Background = LoginBox.Text.Length == 0 ? null : new SolidColorBrush(Colors.White); 
-                        }
-                    ]]>
-                </x:Code>
+                    InputScope="Default"
+                    Grid.Column="1" />
 
                 <Label
                     Content="Пароль"
                     HorizontalAlignment="Left"
                     Grid.Row="1" />
 
-                <Label
-                    x:Name="PasswordHint"
-                    Content="Пароль"
-                    Grid.Column="1"
-                    Background="White"
-                    Foreground="Gray"
-                    Grid.Row="1" />
-
                 <controls:BindablePasswordBox
-                    x:Name="PasswordBox"
                     Grid.Column="1"
                     Grid.Row="1"
                     Password="{Binding Password}"
                     ToolTip="Пароль, длиной не более 16 символов"
-                    Background="Transparent"
-                    PasswordChanged="Password_PasswordChanged"
                     MaxLength="16" />
-
-                <x:Code>
-                    <![CDATA[
-                        private void Password_PasswordChanged(object sender, RoutedEventArgs e)
-                        {
-                            PasswordHint.Visibility = PasswordBox.Password.Length == 0 ? Visibility.Visible : Visibility.Hidden;
-                            PasswordBox.Background = PasswordBox.Password.Length == 0 ? null : new SolidColorBrush(Colors.White);
-                        }
-                    ]]>
-                </x:Code>
 
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition />
@@ -116,7 +80,7 @@
 
             <Button
                 Style="{StaticResource SmallButtonStyle}"
-                Content="Не зарегестрированы?"
+                Content="Не зарегистрированы?"
                 ToolTip="Перейти на страницу регистрации"
                 Command="{Binding NavigateCommand}" />
 

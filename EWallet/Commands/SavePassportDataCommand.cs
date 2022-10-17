@@ -2,6 +2,9 @@
 using EWallet.Stores;
 using EWallet.ViewModels;
 using System.Data.Entity;
+using System.Data.Entity.Migrations;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace EWallet.Commands
 {
@@ -17,10 +20,13 @@ namespace EWallet.Commands
         }
 
         public override void Execute(object parameter) 
-            => SavePassportData();
+            => Task.Run(SavePassportData);
 
-        public async void SavePassportData()
+        public async Task SavePassportData()
         {
+            viewModel.IsDataSaved = false;
+            viewModel.IsDataSave = true;
+            viewModel.SaveDataMessage = "Данные сохраняются...";
             using (var dataBase = new WalletEntities())
             {
                 Passport passport = await dataBase
@@ -37,6 +43,7 @@ namespace EWallet.Commands
                     passport.Number = viewModel.Number;
                     passport.SerialNumber = viewModel.SerialNumber;
                     passport.DivisionCode = viewModel.DivisionCode;
+                    dataBase.Passport.AddOrUpdate(passport);
                 }
                 else
                 {
@@ -55,6 +62,11 @@ namespace EWallet.Commands
                 }
 
                 await dataBase.SaveChangesAsync();
+
+                viewModel.IsDataSave = false;
+                viewModel.SaveDataMessage = "Данные сохранены!";
+                viewModel.SaveDataMessage = "";
+                viewModel.IsDataSaved = true;
             }
         }
     }

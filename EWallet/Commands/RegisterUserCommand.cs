@@ -22,7 +22,6 @@ namespace EWallet.Commands
         private readonly RegistrationViewModel viewModel;
         private readonly INavigationService accountNavigationService;
         private readonly UserStore userStore;
-        private readonly NavigationBarViewModel navigationBarViewModel;
         #endregion
 
         #region Constructors
@@ -46,7 +45,7 @@ namespace EWallet.Commands
         public override void Execute(object parameter) 
             => Task.Run(RegisterUserInDataBase);
 
-        public async void RegisterUserInDataBase()
+        public async Task RegisterUserInDataBase()
         {
             using (var dataBase = new WalletEntities())
             {

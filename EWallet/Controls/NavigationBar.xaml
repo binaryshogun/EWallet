@@ -44,7 +44,7 @@
         MouseLeftButtonDown="UserControl_MouseLeftButtonDown">
         <Label
             Grid.Column="0"
-            Content="E-Money"
+            Content="EWallet"
             FontSize="32" 
             FontWeight="Black"/>
 
@@ -52,25 +52,29 @@
             Grid.Column="2"
             Command="{Binding NavigateAuthorizationCommand}"
             Content="Войти"
-            Visibility="{Binding Path=IsLoggedOut, Converter={StaticResource IsAuthorized}, UpdateSourceTrigger=PropertyChanged}" />
+            Visibility="{Binding Path=IsLoggedOut, Converter={StaticResource IsAuthorized}, UpdateSourceTrigger=PropertyChanged}" 
+            ToolTip="Войти в аккаунт"/>
 
         <Button
             Grid.Column="3"
             Command="{Binding NavigateRegistrationCommand}"
             Content="Зарегистрироваться"
-            Visibility="{Binding Path=IsLoggedOut, Converter={StaticResource IsAuthorized}, UpdateSourceTrigger=PropertyChanged}" />
+            Visibility="{Binding Path=IsLoggedOut, Converter={StaticResource IsAuthorized}, UpdateSourceTrigger=PropertyChanged}" 
+            ToolTip="Зарегистрировать новый аккаунт в системе"/>
 
         <Button
             Grid.Column="4"
             Command="{Binding NavigateAccountCommand}"
             Content="Операции"
-            Visibility="{Binding Path=IsLoggedIn, Converter={StaticResource IsAuthorized}, UpdateSourceTrigger=PropertyChanged}" />
+            Visibility="{Binding Path=IsLoggedIn, Converter={StaticResource IsAuthorized}, UpdateSourceTrigger=PropertyChanged}" 
+            ToolTip="Переход на страницу со списком операций"/>
 
         <Button
             Grid.Column="5"
             Command="{Binding NavigateUserProfileCommand}"
             Content="Профиль"
-            Visibility="{Binding Path=IsLoggedIn, Converter={StaticResource IsAuthorized}}" />
+            Visibility="{Binding Path=IsLoggedIn, Converter={StaticResource IsAuthorized}}" 
+            ToolTip="Переход на страницу профиля пользователя"/>
 
         <Button
             Content="Выйти"

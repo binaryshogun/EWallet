@@ -77,8 +77,6 @@ namespace EWallet.Controls
 
         // Using a DependencyProperty as the backing store for ImageSource.  This enables animation, styling, binding, etc...
         public static readonly DependencyProperty ImageSourceProperty =
-            DependencyProperty.Register("ImageSource", typeof(string), typeof(OperationButton), new PropertyMetadata(""));
-
-
+            DependencyProperty.Register("ImageSource", typeof(string), typeof(OperationButton), new PropertyMetadata("../Resources/images/refill.png"));
     }
 }

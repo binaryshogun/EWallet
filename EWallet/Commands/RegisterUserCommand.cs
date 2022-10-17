@@ -22,7 +22,6 @@ namespace EWallet.Commands
         private readonly RegistrationViewModel viewModel;
         private readonly INavigationService accountNavigationService;
         private readonly UserStore userStore;
-        private readonly NavigationBarViewModel navigationBarViewModel;
         #endregion
 
         #region Constructors
@@ -46,8 +45,9 @@ namespace EWallet.Commands
         public override void Execute(object parameter) 
             => Task.Run(RegisterUserInDataBase);
 
-        public async void RegisterUserInDataBase()
+        public async Task RegisterUserInDataBase()
         {
+            viewModel.IsUserAuthorizing = true;
             using (var dataBase = new WalletEntities())
             {
                 try
@@ -91,15 +91,16 @@ namespace EWallet.Commands
                     else
                         throw new Exception("Пользователь уже зарегистрирован в системе!");
 
-                    MessageBox.Show("Пользователь успешно зарегистрирован!\n" +
-                        "Перенаправление на страницу авторизации...", "Успешно", MessageBoxButton.OK, MessageBoxImage.Information);
-
                     userStore.CurrentUser = user;
                     accountNavigationService?.Navigate();
                 }
                 catch (Exception ex)
                 {
                     ErrorMessageBox.Show(ex);
+                }
+                finally
+                {
+                    viewModel.IsUserAuthorizing = false;
                 }
             }
         }

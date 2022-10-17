@@ -8,7 +8,7 @@ namespace EWallet.Controls
     /// <summary>
     /// PasswordBox с возможностью привязки данных.
     /// </summary>
-    public sealed partial class BindablePasswordBox : UserControl
+    public partial class BindablePasswordBox : UserControl
     {
         #region Fields
         private bool _isPasswordChanging;
@@ -50,6 +50,9 @@ namespace EWallet.Controls
         /// <inheritdoc cref="RoutedEventHandler"/>
         private void PasswordBox_PasswordChanged(object sender, RoutedEventArgs e)
         {
+            passwordHint.Visibility = passwordBox.Password.Length == 0 ? Visibility.Visible : Visibility.Collapsed;
+            passwordBox.Background = passwordBox.Password.Length == 0 ? null : new SolidColorBrush(Colors.White);
+
             _isPasswordChanging = true;
             Password = passwordBox.Password;
             _isPasswordChanging = false;

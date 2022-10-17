@@ -17,6 +17,7 @@ namespace EWallet.ViewModels
         private string login = "";
         private string password = "";
         private bool isEnterButtonEnabled = false;
+        private bool isUserAuthorizing = false;
         #endregion
 
         #region Constructors
@@ -85,6 +86,19 @@ namespace EWallet.ViewModels
             {
                 isEnterButtonEnabled = value;
                 OnPropertyChanged(nameof(IsEnterButtonEnabled));
+            }
+        }
+
+        public bool IsUserAuthorizing
+        {
+            get
+            {
+                return isUserAuthorizing;
+            }
+            set
+            {
+                isUserAuthorizing = value;
+                OnPropertyChanged(nameof(IsUserAuthorizing));
             }
         }
         #endregion

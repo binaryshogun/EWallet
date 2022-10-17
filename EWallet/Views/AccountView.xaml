@@ -5,42 +5,53 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:local="clr-namespace:EWallet.Views"
-    xmlns:components="clr-namespace:EWallet.Components"
     xmlns:controls="clr-namespace:EWallet.Controls"
     xmlns:viewmodels="clr-namespace:EWallet.ViewModels"
+    xmlns:components="clr-namespace:EWallet.Components"
+    xmlns:converters="clr-namespace:EWallet.Converters"
     mc:Ignorable="d"
     d:DataContext="{d:DesignInstance Type=viewmodels:AccountViewModel}"
     d:DesignHeight="600"
     d:DesignWidth="1024">
 
     <Grid>
-        <controls:FlexWrapPanel
+        <components:Loader
+            IsLoading="{Binding AreServicesLoading}" 
+            VerticalAlignment="Center"
+            HorizontalAlignment="Center"
+            Grid.RowSpan="2"/>
+        <components:FlexWrapPanel
             Grid.RowSpan="2"
             HorizontalAlignment="Center"
             VerticalAlignment="Center"
             Orientation="Vertical"
             RequestItemWidth="1700"
-            RequestItemHeight="350">
+            RequestItemHeight="350"
+            Visibility="{Binding AreServicesLoading, Converter={StaticResource InversedConverter}}">
+
             <controls:OperationButton
                 Operation="{Binding Transfer, UpdateSourceTrigger=PropertyChanged}"
                 OperationDescription="{Binding TransferDescription, UpdateSourceTrigger=PropertyChanged}"
                 ImageSource="../Resources/images/card.png"
                 Command="{Binding NavigateTransferCommand}"
-                Margin="50 15"/>
+                Margin="50 15"
+                ToolTip="Перевод пользователю по логину или номеру карты"/>
 
             <controls:OperationButton
                 Operation="{Binding Withdraw, UpdateSourceTrigger=PropertyChanged}"
                 OperationDescription="{Binding WithdrawDescription, UpdateSourceTrigger=PropertyChanged}"
                 ImageSource="../Resources/images/withdraw.png"
                 Command="{Binding NavigateWithdrawCommand}"
-                Margin="50 15"/>
+                Margin="50 15"
+                ToolTip="Вывод средств на карту пользователя"/>
 
             <controls:OperationButton
                 Operation="{Binding Refill, UpdateSourceTrigger=PropertyChanged}"
                 OperationDescription="{Binding RefillDescription, UpdateSourceTrigger=PropertyChanged}" 
                 Command="{Binding NavigateRefillCommand}"
                 ImageSource="../Resources/images/refill.png"
-                Margin="50 15"/>
+                Margin="50 15"
+                ToolTip="Пополнение счёта с использованием карты"/>
 
             <WrapPanel.Resources>
                 <Style
@@ -75,7 +86,7 @@
                     
                 </Style>
             </WrapPanel.Resources>
-        </controls:FlexWrapPanel>
+        </components:FlexWrapPanel>
 
         <Grid Grid.Column="2" Margin="5 10">
             <Border
@@ -88,12 +99,13 @@
                         <Button
                             Style="{StaticResource SmallButtonStyle}"
                             Content="{Binding Login}"
+                            Command="{Binding NavigateUserProfileCommand}"
                             Foreground="White"
                             FontWeight="Bold" 
                             Margin="10 5"
                             HorizontalAlignment="Left"
                             VerticalAlignment="Center"
-                            Command="{Binding NavigateUserProfileCommand}"/>
+                            ToolTip="Переход в профиль"/>
 
                         <Button
                             x:Name="logOutButton"
@@ -102,7 +114,8 @@
                             VerticalAlignment="Top"
                             HorizontalAlignment="Right"
                             Grid.Column="2"
-                            Margin="15">
+                            Margin="15"
+                            ToolTip="Выход из профиля">
                             <Button.Content>
                                 <Image
                                     Source="../Resources/icons/icon_exitButton_white.png" />
@@ -131,9 +144,10 @@
                 Background="White"
                 BorderBrush="#773997"
                 BorderThickness="1"
-                CornerRadius="10">
+                CornerRadius="10"
+                ToolTip="Отчёт о расходах и доходах за всё время или за определенный период времени">
                 <Button
-                    Content="Отчёт о расходах"
+                    Content="Отчёт о финансах"
                     Style="{StaticResource SmallButtonStyle}"
                     Foreground="#773997"
                     FontSize="18"

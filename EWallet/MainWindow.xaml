@@ -10,11 +10,16 @@
         mc:Ignorable="d"
         Title="E-Money" 
         MinHeight="800" MinWidth="1024"
+        MaxHeight="1100" MaxWidth="2000"
+        WindowState="Normal"
         WindowStartupLocation="CenterOwner" 
-        WindowStyle="SingleBorderWindow"
-        WindowState="Normal">
+        WindowStyle="SingleBorderWindow">
     <Grid>
         <Grid.Resources>
+            <DataTemplate
+                DataType="{x:Type viewmodels:HomeViewModel}">
+                <views:HomeView />
+            </DataTemplate>
             <DataTemplate
                 DataType="{x:Type viewmodels:AuthorizationViewModel}">
                 <views:AuthorizationView />
@@ -32,8 +37,16 @@
                 <views:UserProfileView />
             </DataTemplate>
             <DataTemplate
-                DataType="{x:Type viewmodels:HomeViewModel}">
-                <views:HomeView />
+                DataType="{x:Type viewmodels:TransferViewModel}">
+                <views:TransferView />
+            </DataTemplate>
+            <DataTemplate
+                DataType="{x:Type viewmodels:WithdrawViewModel}">
+                <views:WithdrawView />
+            </DataTemplate>
+            <DataTemplate
+                DataType="{x:Type viewmodels:RefillViewModel}">
+                <views:RefillView />
             </DataTemplate>
             <DataTemplate
                 DataType="{x:Type viewmodels:LayoutViewModel}">

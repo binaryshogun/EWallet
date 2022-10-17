@@ -6,9 +6,13 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:local="clr-namespace:EWallet.Views"
     xmlns:controls="clr-namespace:EWallet.Controls"
+    xmlns:components="clr-namespace:EWallet.Components"
+    xmlns:converters="clr-namespace:EWallet.Converters"
+    xmlns:viewmodels="clr-namespace:EWallet.ViewModels"
     mc:Ignorable="d"
     d:DesignHeight="600"
     d:DesignWidth="800"
+    d:DataContext="{d:DesignInstance Type=viewmodels:RegistrationViewModel}"
     FocusManager.FocusedElement="{Binding ElementName=lastNameBox}">
 
     <Grid>
@@ -19,7 +23,9 @@
             HorizontalAlignment="Right"
             Margin="5"
             Command="{Binding NavigateHomeCommand}"
-            Style="{StaticResource ImageButtonStyle}">
+            Style="{StaticResource ImageButtonStyle}"
+            ToolTip="Закрыть окно регистрации"
+            Visibility="{Binding IsUserAuthorizing, Converter={StaticResource InversedConverter}}">
             <Image
                 Source="../Resources/icons/icon_closeModal.png" />
         </Button>
@@ -28,7 +34,8 @@
             Grid.Row="1"
             Grid.Column="1"
             VerticalAlignment="Center"
-            Margin="50 0">
+            Margin="50 0"
+            Visibility="{Binding IsUserAuthorizing, Converter={StaticResource InversedConverter}}">
 
             <TextBlock
                 Text="Регистрация"
@@ -40,161 +47,73 @@
 
             <Grid
                 Margin="5">
-                
+
                 <Label
                     Content="Фамилия"
-                    HorizontalAlignment="Left"/>
+                    HorizontalAlignment="Left" />
 
-                <Label
-                    x:Name="lastNameHint"
-                    Content="Иванов"
-                    Grid.Column="1"
-                    Background="White"
-                    Foreground="Gray"
-                    VerticalAlignment="Center" />
-
-                <TextBox
+                <components:PlaceholderTextBox
                     x:Name="lastNameBox"
+                    Placeholder="Иванов"
                     Grid.Column="1"
                     Text="{Binding LastName, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
                     ToolTip="Ваша фамилия, пожалуйста, указывайте настоящие данные!"
-                    Background="{x:Null}"
-                    TextChanged="LastName_TextChanged"
                     MaxLength="16" />
-
-                <x:Code>
-                    <![CDATA[
-                        private void LastName_TextChanged(object sender, RoutedEventArgs e)
-                        {
-                            lastNameHint.Visibility = lastNameBox.Text.Length == 0 ? Visibility.Visible : Visibility.Hidden;
-                            lastNameBox.Background = lastNameBox.Text.Length == 0 ? null : new SolidColorBrush(Colors.White); 
-                        }
-                    ]]>
-                </x:Code>
 
                 <Label
                     Content="Имя"
                     HorizontalAlignment="Left"
                     Grid.Row="1" />
 
-                <Label
-                    x:Name="firstNameHint"
-                    Content="Иван"
-                    Grid.Column="1"
-                    Grid.Row="1"
-                    Background="White"
-                    Foreground="Gray"
-                    VerticalAlignment="Center" />
-
-                <TextBox
-                    x:Name="firstNameBox"
+                <components:PlaceholderTextBox
+                    Placeholder="Иван"
                     Grid.Column="1"
                     Grid.Row="1"
                     Text="{Binding FirstName, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
-                    ToolTip="Уникальный логин пользователя."
-                    Background="{x:Null}"
-                    TextChanged="FirstName_TextChanged"
+                    ToolTip="Ваше полное имя"
                     MaxLength="16" />
-
-                <x:Code>
-                    <![CDATA[
-                        private void FirstName_TextChanged(object sender, RoutedEventArgs e)
-                        {
-                            firstNameHint.Visibility = firstNameBox.Text.Length == 0 ? Visibility.Visible : Visibility.Hidden;
-                            firstNameBox.Background = firstNameBox.Text.Length == 0 ? null : new SolidColorBrush(Colors.White); 
-                        }
-                    ]]>
-                </x:Code>
 
                 <Label
                     Content="Отчество"
                     HorizontalAlignment="Left"
                     Grid.Row="2" />
 
-                <Label
-                    x:Name="patronymicHint"
-                    Content="Иванович"
-                    Grid.Column="1"
-                    Grid.Row="2"
-                    Background="White"
-                    Foreground="Gray"
-                    VerticalAlignment="Center" />
-
-                <TextBox
-                    x:Name="patronymicBox"
+                <components:PlaceholderTextBox
+                    Placeholder="Иванович"
                     Grid.Column="1"
                     Grid.Row="2"
                     Text="{Binding Patronymic, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
-                    ToolTip="Уникальный логин пользователя."
+                    ToolTip="Ваше отчество при наличии"
                     Background="{x:Null}"
-                    TextChanged="Patronymic_TextChanged"
                     MaxLength="16" 
                     IsEnabled="{Binding DoesUserHavePatronymic}"/>
 
-                <CheckBox 
+                <CheckBox
                     Grid.Row="2"
                     Grid.Column="2"
                     IsChecked="{Binding DoesUserHavePatronymic}"
                     VerticalAlignment="Center"
-                    HorizontalAlignment="Left"/>
-
-                <x:Code>
-                    <![CDATA[
-                        private void Patronymic_TextChanged(object sender, RoutedEventArgs e)
-                        {
-                            patronymicHint.Visibility = patronymicBox.Text.Length == 0 ? Visibility.Visible : Visibility.Hidden;
-                            patronymicBox.Background = patronymicBox.Text.Length == 0 ? null : new SolidColorBrush(Colors.White); 
-                        }
-                    ]]>
-                </x:Code>
+                    HorizontalAlignment="Left" />
 
                 <Label
                     Content="Логин"
                     HorizontalAlignment="Left"
                     Grid.Row="3" />
 
-                <Label
-                    x:Name="loginHint"
-                    Content="Логин"
-                    Grid.Column="1"
-                    Grid.Row="3"
-                    Background="White"
-                    Foreground="Gray"
-                    VerticalAlignment="Center" />
-
-                <TextBox
-                    x:Name="loginBox"
+                <components:PlaceholderTextBox
+                    Language="en"
+                    Placeholder="Логин"
                     Grid.Column="1"
                     Grid.Row="3"
                     Text="{Binding Login, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
-                    ToolTip="Уникальный логин пользователя."
+                    ToolTip="Уникальный логин пользователя"
                     Background="{x:Null}"
-                    TextChanged="Login_TextChanged"
                     MaxLength="16" />
-
-                <x:Code>
-                    <![CDATA[
-                        private void Login_TextChanged(object sender, RoutedEventArgs e)
-                        {
-                            loginHint.Visibility = loginBox.Text.Length == 0 ? Visibility.Visible : Visibility.Hidden;
-                            loginBox.Background = loginBox.Text.Length == 0 ? null : new SolidColorBrush(Colors.White); 
-                        }
-                    ]]>
-                </x:Code>
 
                 <Label
                     Content="Пароль"
                     HorizontalAlignment="Left"
                     Grid.Row="4" />
-
-                <Label
-                    x:Name="passwordHint"
-                    Content="Пароль"
-                    Grid.Column="1"
-                    Grid.Row="4"
-                    Background="White"
-                    Foreground="Gray"
-                    VerticalAlignment="Center" />
 
                 <controls:BindablePasswordBox
                     x:Name="passwordBox"
@@ -202,19 +121,7 @@
                     Grid.Row="4"
                     Password="{Binding Password}"
                     ToolTip="Пароль, длиной не более 16 символов"
-                    Background="Transparent"
-                    PasswordChanged="Password_PasswordChanged"
                     MaxLength="16" />
-
-                <x:Code>
-                    <![CDATA[
-                        private void Password_PasswordChanged(object sender, RoutedEventArgs e)
-                        {
-                            passwordHint.Visibility = passwordBox.Password.Length == 0 ? Visibility.Visible : Visibility.Hidden;
-                            passwordBox.Background = passwordBox.Password.Length == 0 ? null : new SolidColorBrush(Colors.White);
-                        }
-                    ]]>
-                </x:Code>
 
                 <Label
                     HorizontalAlignment="Left"
@@ -227,35 +134,14 @@
                     </Label.Content>
                 </Label>
 
-                <Label
-                    x:Name="repeatedPasswordHint"
-                    Content="Повторите пароль"
-                    Grid.Column="1"
-                    Grid.Row="5"
-                    Background="White"
-                    Foreground="Gray"
-                    VerticalAlignment="Center" />
-
                 <controls:BindablePasswordBox
-                    x:Name="repeatedPasswordBox"
                     Grid.Column="1"
                     Grid.Row="5"
                     Password="{Binding RepeatedPassword}"
                     ToolTip="Повторно введённый пароль"
                     Background="Transparent"
-                    PasswordChanged="RepeatedPassword_PasswordChanged"
                     MaxLength="16"
                     VerticalAlignment="Center" />
-
-                <x:Code>
-                    <![CDATA[
-                        private void RepeatedPassword_PasswordChanged(object sender, RoutedEventArgs e)
-                        {
-                            repeatedPasswordHint.Visibility = repeatedPasswordBox.Password.Length == 0 ? Visibility.Visible : Visibility.Hidden;
-                            repeatedPasswordBox.Background = repeatedPasswordBox.Password.Length == 0 ? null : new SolidColorBrush(Colors.White);
-                        }
-                    ]]>
-                </x:Code>
 
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition />
@@ -279,7 +165,8 @@
                 Content="Уже есть аккаунт?"
                 Style="{StaticResource SmallButtonStyle}"
                 Command="{Binding NavigateCommand}"
-                Margin="10" />
+                Margin="10" 
+                ToolTip="Переход на страницу авторизации"/>
 
             <Grid>
                 <Button
@@ -287,7 +174,7 @@
                     IsDefault="True"
                     IsEnabled="{Binding IsRegistrationButtonEnabled}"
                     Command="{Binding RegisterUserCommand}"
-                    ToolTip="Регистрация в системе."
+                    ToolTip="Регистрация в системе"
                     Grid.Column="1"
                     Padding="15"
                     Margin="10" />
@@ -302,6 +189,18 @@
                 </Grid.ColumnDefinitions>
             </Grid>
 
+        </StackPanel>
+
+        <StackPanel
+            Visibility="{Binding IsUserAuthorizing, Converter={StaticResource BooleanToVisibilityConverter}}"
+            VerticalAlignment="Center"
+            HorizontalAlignment="Center"
+            Grid.ColumnSpan="2"
+            Grid.RowSpan="2">
+            <Label
+                Content="Выполняется регистрация и последующая авторизация..." />
+            <components:Loader
+                IsLoading="{Binding IsUserAuthorizing}" />
         </StackPanel>
 
         <Grid.RowDefinitions>

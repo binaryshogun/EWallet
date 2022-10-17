@@ -3,7 +3,15 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:components="clr-namespace:EWallet.Components"
     xmlns:controls="clr-namespace:EWallet.Controls"
-    xmlns:theme="clr-namespace:Microsoft.Windows.Themes;assembly=PresentationFramework.Aero2">
+    xmlns:theme="clr-namespace:Microsoft.Windows.Themes;assembly=PresentationFramework.Aero2"
+    xmlns:converters="clr-namespace:EWallet.Converters">
+
+    <!--#region Converters-->
+    <BooleanToVisibilityConverter
+        x:Key="BooleanToVisibilityConverter" />
+    <converters:InversedBooleanToVisibilityConverter
+        x:Key="InversedConverter" />
+    <!--#endregion-->
 
     <!--#region Animation storyboards-->
     <Storyboard x:Key="mouseEnteredButton">
@@ -339,6 +347,9 @@
         <Setter Property="HorizontalAlignment" Value="Left"/>
         <Setter Property="MaxHeight" Value="30"/>
         <Setter
+            Property="Margin"
+            Value="10" />
+        <Setter
             Property="Template">
             <Setter.Value>
                 <ControlTemplate
@@ -422,7 +433,7 @@
             Value="10" />
     </Style>
 
-    <!--BindablePasswordBox (custom component) style-->
+    <!--BindablePasswordBox style-->
     <Style TargetType="{x:Type controls:BindablePasswordBox}">
         <Setter Property="Margin" Value="10"/>
         <Setter Property="Foreground" Value="Black"/>
@@ -431,6 +442,87 @@
         <Setter Property="FontWeight" Value="Light"/>
     </Style>
 
-    
+    <!--Loader style-->
+    <Style
+        TargetType="{x:Type components:Loader}">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate
+                    TargetType="{x:Type components:Loader}">
+                    <Ellipse
+                        Width="150"
+                        Height="150"
+                        RenderTransformOrigin="0.5 0.5"
+                        Stroke="Black"
+                        StrokeDashArray="260 90"
+                        Visibility="{TemplateBinding IsLoading, 
+                            Converter={StaticResource BooleanToVisibilityConverter}}">
+                        <Ellipse.RenderTransform>
+                            <RotateTransform
+                                x:Name="Rotate"
+                                Angle="0" />
+                        </Ellipse.RenderTransform>
+                        <Ellipse.Triggers>
+                            <EventTrigger
+                                RoutedEvent="Loaded">
+                                <BeginStoryboard>
+                                    <Storyboard
+                                        RepeatBehavior="Forever">
+                                        <DoubleAnimation 
+                                            Storyboard.TargetName="Rotate"
+                                            Storyboard.TargetProperty="Angle"
+                                            From="0"
+                                            To="360"/>
+                                    </Storyboard>
+                                </BeginStoryboard>
+                            </EventTrigger>
+                        </Ellipse.Triggers>
+                    </Ellipse>
+
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>    
+    </Style>
+
+    <!--PlaceholderTextBox style-->
+    <Style
+        BasedOn="{StaticResource {x:Type TextBox}}"
+        TargetType="{x:Type components:PlaceholderTextBox}">
+        <Setter
+            Property="Template">
+            <Setter.Value>
+                <ControlTemplate
+                    TargetType="{x:Type components:PlaceholderTextBox}">
+                    <Border
+                        Background="{TemplateBinding Background}"
+                        BorderBrush="{TemplateBinding BorderBrush}"
+                        BorderThickness="{TemplateBinding BorderThickness}"
+                        MaxHeight="{TemplateBinding MaxHeight}"
+                        MaxWidth="{TemplateBinding MaxWidth}"
+                        Margin="{TemplateBinding Margin}">
+                        <Grid>
+                            <Label
+                                Padding="5 0"
+                                Margin="0"
+                                FontSize="{TemplateBinding FontSize}"
+                                Visibility="{TemplateBinding IsEmpty, Converter={StaticResource BooleanToVisibilityConverter}}"
+                                IsHitTestVisible="False"
+                                Foreground="Gray"
+                                Panel.ZIndex="1">
+                                <Label.Content>
+                                    <TextBlock
+                                        Text="{TemplateBinding Placeholder}" 
+                                        Margin="0"/>
+                                </Label.Content>
+                            </Label>
+                            <ScrollViewer
+                                x:Name="PART_ContentHost" 
+                                MaxHeight="{TemplateBinding MaxHeight}"/>
+                        </Grid>
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>    
+    </Style>
 
 </ResourceDictionary>

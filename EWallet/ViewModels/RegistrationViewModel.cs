@@ -22,6 +22,7 @@ namespace EWallet.ViewModels
 
         private bool doesUserHavePatronymic;
         private bool isRegistrationButtonEnabled;
+        private bool isUserAuthorizing;
         #endregion
 
         #region Constructors
@@ -146,6 +147,16 @@ namespace EWallet.ViewModels
             {
                 isRegistrationButtonEnabled = value;
                 OnPropertyChanged(nameof(IsRegistrationButtonEnabled));
+            }
+        }
+
+        public bool IsUserAuthorizing
+        {
+            get => isUserAuthorizing;
+            set
+            {
+                isUserAuthorizing = value;
+                OnPropertyChanged(nameof(IsUserAuthorizing));
             }
         }
         #endregion

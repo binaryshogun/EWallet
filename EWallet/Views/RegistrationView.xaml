@@ -56,6 +56,13 @@
                     x:Name="lastNameBox"
                     Placeholder="Иванов"
                     Grid.Column="1"
+                    Background="White"
+                    Foreground="Gray"
+                    VerticalAlignment="Center" />
+
+                <TextBox
+                    x:Name="lastNameBox"
+                    Grid.Column="1"
                     Text="{Binding LastName, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
                     ToolTip="Ваша фамилия, пожалуйста, указывайте настоящие данные!"
                     MaxLength="16" />
@@ -93,16 +100,24 @@
                     Grid.Column="2"
                     IsChecked="{Binding DoesUserHavePatronymic}"
                     VerticalAlignment="Center"
-                    HorizontalAlignment="Left" />
-
-                <Label
-                    Content="Логин"
-                    HorizontalAlignment="Left"
-                    Grid.Row="3" />
-
                 <components:PlaceholderTextBox
                     Language="en"
                     Placeholder="Логин"
+                    Grid.Column="1"
+                    Grid.Row="3"
+                    Grid.Row="3" />
+
+                <Label
+                    x:Name="loginHint"
+                    Content="Логин"
+                    Grid.Column="1"
+                    Grid.Row="3"
+                    Background="White"
+                    Foreground="Gray"
+                    VerticalAlignment="Center" />
+
+                <TextBox
+                    x:Name="loginBox"
                     Grid.Column="1"
                     Grid.Row="3"
                     Text="{Binding Login, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"

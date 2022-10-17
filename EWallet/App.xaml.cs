@@ -150,6 +150,13 @@ namespace EWallet
                     CreateTransferNavigationService(serviceProvider), CreateWithdrawNavigationService(serviceProvider),
                     CreateRefillNavigationService(serviceProvider));
 
+        #region Account
+        public AccountViewModel CreateAccountViewModel(IServiceProvider serviceProvider)
+            => new AccountViewModel(serviceProvider.GetRequiredService<UserStore>(),
+                    CreateHomeNavigationService(serviceProvider), CreateUserProfileNavigationService(serviceProvider),
+                    CreateTransferNavigationService(serviceProvider), CreateWithdrawNavigationService(serviceProvider),
+                    CreateRefillNavigationService(serviceProvider));
+
         /// <summary>
         /// Метод, создающий NavigationService, привязанный к AccountViewModel.
         /// </summary>

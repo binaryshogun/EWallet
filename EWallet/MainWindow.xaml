@@ -8,7 +8,7 @@
         xmlns:views="clr-namespace:EWallet.Views"
         xmlns:components="clr-namespace:EWallet.Components"
         mc:Ignorable="d"
-        Title="E-Money" 
+        Title="EWallet" 
         MinHeight="800" MinWidth="1024"
         MaxHeight="1100" MaxWidth="2000"
         WindowState="Normal"

@@ -494,12 +494,11 @@
                 <ControlTemplate
                     TargetType="{x:Type components:PlaceholderTextBox}">
                     <Border
+                        x:Name="border"
                         Background="{TemplateBinding Background}"
                         BorderBrush="{TemplateBinding BorderBrush}"
                         BorderThickness="{TemplateBinding BorderThickness}"
-                        MaxHeight="{TemplateBinding MaxHeight}"
-                        MaxWidth="{TemplateBinding MaxWidth}"
-                        Margin="{TemplateBinding Margin}">
+                        SnapsToDevicePixels="True">
                         <Grid>
                             <Label
                                 Padding="5 0"
@@ -511,18 +510,61 @@
                                 Panel.ZIndex="1">
                                 <Label.Content>
                                     <TextBlock
-                                        Text="{TemplateBinding Placeholder}" 
-                                        Margin="0"/>
+                                        Text="{TemplateBinding Placeholder}"
+                                        Margin="0" />
                                 </Label.Content>
                             </Label>
                             <ScrollViewer
-                                x:Name="PART_ContentHost" 
-                                MaxHeight="{TemplateBinding MaxHeight}"/>
+                                x:Name="PART_ContentHost"
+                                Focusable="false"
+                                HorizontalScrollBarVisibility="Hidden"
+                                VerticalScrollBarVisibility="Hidden" />
                         </Grid>
                     </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger
+                            Property="IsEnabled"
+                            Value="false">
+                            <Setter
+                                Property="Opacity"
+                                TargetName="border"
+                                Value="0.56" />
+                        </Trigger>
+                        <Trigger
+                            Property="IsMouseOver"
+                            Value="true">
+                            <Setter
+                                Property="BorderBrush"
+                                TargetName="border"
+                                Value="#FFB32BF9" />
+                        </Trigger>
+                        <Trigger
+                            Property="IsKeyboardFocused"
+                            Value="true">
+                            <Setter
+                                Property="BorderBrush"
+                                TargetName="border"
+                                Value="#773997" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
                 </ControlTemplate>
             </Setter.Value>
-        </Setter>    
+        </Setter>
+        <Style.Triggers>
+            <MultiTrigger>
+                <MultiTrigger.Conditions>
+                    <Condition
+                        Property="IsInactiveSelectionHighlightEnabled"
+                        Value="true" />
+                    <Condition
+                        Property="IsSelectionActive"
+                        Value="false" />
+                </MultiTrigger.Conditions>
+                <Setter
+                    Property="SelectionBrush"
+                    Value="{DynamicResource {x:Static SystemColors.InactiveSelectionHighlightBrushKey}}" />
+            </MultiTrigger>
+        </Style.Triggers>
     </Style>
 
 </ResourceDictionary>

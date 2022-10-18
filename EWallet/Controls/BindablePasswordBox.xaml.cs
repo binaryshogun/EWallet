@@ -1,6 +1,8 @@
-﻿using System.Windows;
+﻿using System.Text.RegularExpressions;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
+using System.Windows.Input;
 using System.Windows.Media;
 
 namespace EWallet.Controls
@@ -11,7 +13,7 @@ namespace EWallet.Controls
     public partial class BindablePasswordBox : UserControl
     {
         #region Fields
-        private bool _isPasswordChanging;
+        private bool isPasswordChanging;
         public event RoutedEventHandler PasswordChanged;
         #endregion
 
@@ -19,7 +21,16 @@ namespace EWallet.Controls
         /// <summary>
         /// Инициализирует PasswordBox с возможностью привязки.
         /// </summary>
-        public BindablePasswordBox() => InitializeComponent();
+        public BindablePasswordBox()
+        {
+            InitializeComponent();
+
+            Binding placeholderBinding = new Binding();
+            placeholderBinding.Source = this;
+            placeholderBinding.Mode = BindingMode.TwoWay;
+            placeholderBinding.Path = new PropertyPath("Placeholder");
+            passwordHint.SetBinding(Label.ContentProperty, placeholderBinding);
+        }
         #endregion
 
         #region Methods
@@ -28,7 +39,7 @@ namespace EWallet.Controls
         /// </summary>
         private void UpdatePassword()
         {
-            if (!_isPasswordChanging)
+            if (!isPasswordChanging)
                 passwordBox.Password = Password;
         }
 
@@ -43,6 +54,24 @@ namespace EWallet.Controls
         /// </summary>
         private void UpdateMaxLength() 
             => passwordBox.MaxLength = MaxLength;
+
+        private bool IsValidPassword(string text)
+        {
+            string pattern = @"\w*";
+
+            if (OnlyNumbers)
+                pattern = @"^[0-9]*$";
+
+            return Regex.IsMatch(text, pattern);
+        }
+
+        private void ExtractInt(string text)
+        {
+            text = Regex.Replace(text, @"[^0-9]", string.Empty);
+            text = text.TrimStart('0');
+
+            Password = text;
+        }
         #endregion
 
         #region MethodsRoutedEventHandlers
@@ -50,15 +79,35 @@ namespace EWallet.Controls
         /// <inheritdoc cref="RoutedEventHandler"/>
         private void PasswordBox_PasswordChanged(object sender, RoutedEventArgs e)
         {
-            passwordHint.Visibility = passwordBox.Password.Length == 0 ? Visibility.Visible : Visibility.Collapsed;
-            passwordBox.Background = passwordBox.Password.Length == 0 ? null : new SolidColorBrush(Colors.White);
+            passwordHint.Visibility = passwordBox.Password.Length == 0 
+                ? Visibility.Visible : Visibility.Collapsed;
+            passwordBox.Background = passwordBox.Password.Length == 0 
+                ? new SolidColorBrush(Colors.Transparent) : new SolidColorBrush(Colors.White);
 
-            _isPasswordChanging = true;
-            Password = passwordBox.Password;
-            _isPasswordChanging = false;
+            isPasswordChanging = true;
+            if (OnlyNumbers)
+                ExtractInt(passwordBox.Password);
+            else
+            {
+                Password = passwordBox.Password;
+            }
+            isPasswordChanging = false;
             PasswordChanged?.Invoke(this, new RoutedEventArgs());
         }
+        /// <inheritdoc cref="TextCompositionEventHandler"/>
+        private void PasswordBox_PreviewTextInput(object sender, TextCompositionEventArgs e)
+        {
+            e.Handled = !IsValidPassword(passwordBox.Password + e.Text);
 
+            base.OnPreviewTextInput(e);
+        }
+        /// <inheritdoc cref="KeyEventHandler"/>
+        private void PasswordBox_PreviewKeyDown(object sender, KeyEventArgs e)
+        {
+            e.Handled = e.Key == Key.Space;
+
+            base.OnPreviewKeyDown(e);
+        }
         /// <inheritdoc cref="PropertyChangedCallback"/>
         private static void PasswordPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
@@ -121,6 +170,18 @@ namespace EWallet.Controls
             get => (int)GetValue(MaxLengthProperty);
             set => SetValue(MaxLengthProperty, value);
         }
+
+        public string Placeholder
+        {
+            get => (string)GetValue(PlaceholderProperty);
+            set => SetValue(PlaceholderProperty, value);
+        }
+
+        public bool OnlyNumbers
+        {
+            get { return (bool)GetValue(OnlyNumbersProperty); }
+            set { SetValue(OnlyNumbersProperty, value); }
+        }
         #endregion
 
         #region DependencyProperties
@@ -141,6 +202,14 @@ namespace EWallet.Controls
             DependencyProperty.Register("MaxLength", typeof(int), typeof(BindablePasswordBox), 
                 new FrameworkPropertyMetadata(0, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault,
                     MaxLengthPropertyChanged, null, false, UpdateSourceTrigger.PropertyChanged));
+
+        // Using a DependencyProperty as the backing store for Placeholder.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty PlaceholderProperty =
+            DependencyProperty.Register("Placeholder", typeof(string), typeof(BindablePasswordBox), new PropertyMetadata(""));
+
+        // Using a DependencyProperty as the backing store for OnlyNumbers.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty OnlyNumbersProperty =
+            DependencyProperty.Register("OnlyNumbers", typeof(bool), typeof(BindablePasswordBox), new PropertyMetadata(false));
         #endregion
     }
 }

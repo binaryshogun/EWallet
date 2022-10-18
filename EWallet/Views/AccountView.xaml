@@ -14,11 +14,6 @@
     d:DesignHeight="600"
     d:DesignWidth="1024">
 
-    <UserControl.Resources>
-        <converters:InversedBooleanToVisibilityConverter
-            x:Key="InversedConverter" />
-    </UserControl.Resources>
-
     <Grid>
         <components:Loader
             IsLoading="{Binding AreServicesLoading}" 
@@ -145,21 +140,39 @@
             Grid.Column="1"
             Grid.Row="1"
             VerticalAlignment="Top">
-            <Border
-                Background="White"
-                BorderBrush="#773997"
-                BorderThickness="1"
-                CornerRadius="10"
-                ToolTip="Отчёт о расходах и доходах за всё время или за определенный период времени">
-                <Button
-                    Content="Отчёт о финансах"
-                    Style="{StaticResource SmallButtonStyle}"
-                    Foreground="#773997"
-                    FontSize="18"
-                    Margin="10"
-                    HorizontalAlignment="Center"
-                    Command="{Binding ReportExpensesCommand}"/>
-            </Border>
+            <StackPanel>
+                <Border
+                    Background="White"
+                    BorderBrush="#773997"
+                    BorderThickness="1"
+                    CornerRadius="10"
+                    ToolTip="Отчёт о расходах и доходах за всё время или за определенный период времени">
+                    <Button
+                        Content="Управление картами"
+                        Style="{StaticResource SmallButtonStyle}"
+                        Foreground="#773997"
+                        FontSize="18"
+                        Margin="10"
+                        HorizontalAlignment="Center"
+                        Command="{Binding ReportExpensesCommand}" />
+                </Border>
+                <Border
+                    Background="White"
+                    BorderBrush="#773997"
+                    BorderThickness="1"
+                    CornerRadius="10"
+                    ToolTip="Отчёт о расходах и доходах за всё время или за определенный период времени"
+                    Margin="0 15">
+                    <Button
+                        Content="Отчёт о финансах"
+                        Style="{StaticResource SmallButtonStyle}"
+                        Foreground="#773997"
+                        FontSize="18"
+                        Margin="10"
+                        HorizontalAlignment="Center"
+                        Command="{Binding ReportExpensesCommand}" />
+                </Border>
+            </StackPanel>
         </Grid>
 
         <Grid.ColumnDefinitions>

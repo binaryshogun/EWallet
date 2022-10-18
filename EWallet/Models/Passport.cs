@@ -9,7 +9,9 @@
 
 namespace EWallet.Models
 {
-
+    using System;
+    using System.Collections.Generic;
+    
     public partial class Passport
     {
         public int ID { get; set; }

@@ -36,7 +36,7 @@ namespace EWallet
             services.AddTransient(CreateHomeViewModel);
             services.AddTransient(CreateAuthorizationViewModel);
             services.AddTransient(CreateRegistrationViewModel);
-            services.AddTransient<TransferViewModel>();
+            services.AddTransient(CreateTransferViewModel);
             services.AddTransient<WithdrawViewModel>();
             services.AddTransient<RefillViewModel>();
             services.AddTransient(CreateAccountViewModel);
@@ -150,13 +150,6 @@ namespace EWallet
                     CreateTransferNavigationService(serviceProvider), CreateWithdrawNavigationService(serviceProvider),
                     CreateRefillNavigationService(serviceProvider));
 
-        #region Account
-        public AccountViewModel CreateAccountViewModel(IServiceProvider serviceProvider)
-            => new AccountViewModel(serviceProvider.GetRequiredService<UserStore>(),
-                    CreateHomeNavigationService(serviceProvider), CreateUserProfileNavigationService(serviceProvider),
-                    CreateTransferNavigationService(serviceProvider), CreateWithdrawNavigationService(serviceProvider),
-                    CreateRefillNavigationService(serviceProvider));
-
         /// <summary>
         /// Метод, создающий NavigationService, привязанный к AccountViewModel.
         /// </summary>
@@ -171,7 +164,7 @@ namespace EWallet
         public UserProfileViewModel CreateUserProfileViewModel(IServiceProvider serviceProvider)
         {
             var closeModalNavigationService = serviceProvider.GetRequiredService<CloseModalNavigationService>();
-            CompositeNavigationService navigationService = new CompositeNavigationService(
+            var navigationService = new CompositeNavigationService(
                 closeModalNavigationService,
                 CreateAccountNavigationService(serviceProvider));
 
@@ -192,6 +185,17 @@ namespace EWallet
         #endregion
 
         #region Transfer
+        public TransferViewModel CreateTransferViewModel(IServiceProvider serviceProvider)
+        {
+            var closeModalNavigationService = serviceProvider.GetRequiredService<CloseModalNavigationService>();
+            var navigationService = new CompositeNavigationService(
+                closeModalNavigationService, 
+                CreateAccountNavigationService(serviceProvider));
+
+            return new TransferViewModel(serviceProvider.GetRequiredService<UserStore>(),
+                navigationService);
+        }
+
         public INavigationService CreateTransferNavigationService(IServiceProvider serviceProvider)
         {
             var modalNavigationStore = serviceProvider.GetRequiredService<ModalNavigationStore>();

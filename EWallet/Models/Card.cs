@@ -9,13 +9,14 @@
 
 namespace EWallet.Models
 {
-
+    using System;
+    using System.Collections.Generic;
+    
     public partial class Card
     {
         public int ID { get; set; }
         public string Number { get; set; }
         public System.DateTime ValidThru { get; set; }
-        public int CVC { get; set; }
         public int UserID { get; set; }
     
         public virtual User User { get; set; }

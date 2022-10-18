@@ -7,23 +7,18 @@
     xmlns:local="clr-namespace:EWallet.Views"
     xmlns:components="clr-namespace:EWallet.Components"
     xmlns:viewmodels="clr-namespace:EWallet.ViewModels"
-    xmlns:converters="clr-namespace:EWallet.Converters"
+    xmlns:controls="clr-namespace:EWallet.Controls"
     mc:Ignorable="d"
     d:DesignHeight="800"
     d:DesignWidth="800"
     d:DataContext="{d:DesignInstance Type=viewmodels:UserProfileViewModel}">
 
     <Grid>
-        <Button
+        <controls:CloseModalButton
             Command="{Binding CloseModalCommand}"
-            Style="{StaticResource ImageButtonStyle}"
             Grid.Column="2"
-            HorizontalAlignment="Right"
             Visibility="{Binding IsDataSaved, Converter={StaticResource BooleanToVisibilityConverter}}"
-            ToolTip="Закрыть профиль">
-            <Image
-                Source="../Resources/icons/icon_closeModal.png" />
-        </Button>
+            ToolTip="Закрыть профиль" />
 
         <Grid
             Grid.Row="1"

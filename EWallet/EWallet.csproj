@@ -71,6 +71,8 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Behaviors\ScaleFontBehavior.cs" />
+    <Compile Include="Commands\WithdrawCommand.cs" />
+    <Compile Include="Helpers\EncryptionHelper.cs" />
     <Compile Include="Helpers\VisualHelper.cs" />
     <Compile Include="Commands\AuthorizeUserCommand.cs" />
     <Compile Include="Commands\CommandBase.cs" />

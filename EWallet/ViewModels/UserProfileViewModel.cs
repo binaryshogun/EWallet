@@ -16,9 +16,9 @@ namespace EWallet.ViewModels
         private string lastName;
         private string patronymic;
         private string saveDataMessage;
-        private int serialNumber;
-        private int number;
-        private int divisionCode;
+        private int? serialNumber;
+        private int? number;
+        private int? divisionCode;
 
         private bool isDataSave;
         private bool isDataSaved;
@@ -93,7 +93,7 @@ namespace EWallet.ViewModels
             }
         }
 
-        public int SerialNumber
+        public int? SerialNumber
         {
             get => serialNumber;
             set
@@ -103,7 +103,7 @@ namespace EWallet.ViewModels
             }
         }
 
-        public int Number
+        public int? Number
         {
             get => number;
             set 
@@ -113,7 +113,7 @@ namespace EWallet.ViewModels
             }
         }
 
-        public int DivisionCode
+        public int? DivisionCode
         {
             get => divisionCode;
             set 

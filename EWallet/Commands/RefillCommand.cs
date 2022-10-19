@@ -1,15 +1,11 @@
 ﻿using EWallet.Components;
 using EWallet.Helpers;
 using EWallet.Models;
+using EWallet.Services;
 using EWallet.Stores;
 using EWallet.ViewModels;
 using System;
-using System.Collections.Generic;
-using System.Data.Entity;
 using System.Data.Entity.Migrations;
-using System.Linq;
-using System.Security.Cryptography;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace EWallet.Commands
@@ -19,21 +15,23 @@ namespace EWallet.Commands
         #region Fields
         private readonly UserStore userStore;
         private readonly RefillViewModel refillViewModel;
+        private readonly INavigationService accountNavigationService;
         #endregion
 
         #region Constructors
-        public RefillCommand(UserStore userStore, RefillViewModel refillViewModel)
+        public RefillCommand(UserStore userStore, RefillViewModel refillViewModel, INavigationService accountNavigationService)
         {
             this.userStore = userStore;
             this.refillViewModel = refillViewModel;
+            this.accountNavigationService = accountNavigationService;
         }
         #endregion
 
         #region Methods
         public override void Execute(object parameter)
-            => Task.Run(ProvideTransfer);
+            => Task.Run(ProvideRefill);
 
-        private async Task ProvideTransfer()
+        private async Task ProvideRefill()
         {
             refillViewModel.IsOperationBeingProvided = true;
 
@@ -41,16 +39,17 @@ namespace EWallet.Commands
             {
                 using (var database = new WalletEntities())
                 {
-                    string cardNumber = HashHelper.GetHash(refillViewModel.CardNumber, 16);
-                    Card card = await OperationsHelper.FetchCard(database, cardNumber);
-                    OperationsHelper.CheckCard(card, this.userStore);
+                    if (refillViewModel.SaveCardData)
+                    {
+                        await SaveCardData(database);
+                    }
 
                     User user = await OperationsHelper.FetchUser(database, this.userStore);
                     double sum = SetSum();
                     OperationsHelper.TryUpdateBalance(user, this.userStore, sum);
 
-                    Service service = await OperationsHelper.FetchService(database, 1);
-                    Operation operation = OperationsHelper.GenerateOperation(database, card, user, sum, service);
+                    Service service = await OperationsHelper.FetchService(database, 4);
+                    Operation operation = OperationsHelper.GenerateSingleUserOperation(database, user, sum, service);
 
                     database.User.AddOrUpdate(user);
                     database.Operation.Add(operation);
@@ -61,7 +60,27 @@ namespace EWallet.Commands
             finally
             {
                 refillViewModel.IsOperationBeingProvided = false;
+                accountNavigationService?.Navigate();
             }
+        }
+
+        private async Task SaveCardData(WalletEntities database)
+        {
+            string cardNumber = EncryptionHelper.Encrypt(refillViewModel.CardNumber);
+            Card card = await OperationsHelper.FetchCard(database, cardNumber);
+            if (card == null)
+            {
+                int.TryParse(refillViewModel.ValidThruYear, out int year);
+                int.TryParse(refillViewModel.ValidThruMonth, out int month);
+                card = new Card()
+                {
+                    Number = cardNumber,
+                    ValidThru = new DateTime(2000 + year, month, 1),
+                    UserID = userStore.CurrentUser.ID
+                };
+                database.Card.Add(card);
+            }
+            await database.SaveChangesAsync();
         }
 
         private double SetSum()

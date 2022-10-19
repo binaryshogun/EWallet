@@ -32,8 +32,8 @@
             <Border
                 CornerRadius="25"
                 BorderThickness="2"
-                BorderBrush="{Binding BankBorderBrush}"
-                Background="{Binding BankBackground}"
+                BorderBrush="{Binding BankBorderBrush, UpdateSourceTrigger=PropertyChanged}"
+                Background="{Binding BankBackground, UpdateSourceTrigger=PropertyChanged}"
                 Margin="0 0 0 40">
                 <Border.Resources>
                     <Style
@@ -41,7 +41,7 @@
                         BasedOn="{StaticResource {x:Type Label}}">
                         <Setter
                             Property="Foreground"
-                            Value="{Binding BankForeground}" />
+                            Value="{Binding BankForeground, UpdateSourceTrigger=PropertyChanged}" />
                         <Setter
                             Property="FontSize"
                             Value="16" />
@@ -52,7 +52,7 @@
                 </Border.Resources>
                 <Grid>
                     <Label
-                        Content="{Binding BankName}"
+                        Content="{Binding BankName, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
                         FontWeight="Bold"
                         Margin="5"
                         FontSize="32" />
@@ -69,11 +69,11 @@
                                 HorizontalAlignment="Right"
                                 VerticalAlignment="Center">
                                 <Label
-                                    Content="{Binding UserBalance}"
-                                    Margin="5" />
+                                    Content="{Binding UserBalance, UpdateSourceTrigger=PropertyChanged}"
+                                    Margin="0 5" />
                                 <Label
                                     Content="рублей"
-                                    Margin="5" />
+                                    Margin="0 5" />
                             </WrapPanel>
 
                         </Grid>
@@ -251,7 +251,7 @@
                 FontSize="28"
                 Content="{Binding ButtonContent}"
                 BorderBrush="{Binding BankBackground, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
-                Command="{Binding ProvideTransferCommand}"
+                Command="{Binding ProvideOperationCommand}"
                 IsEnabled="{Binding IsConfirmButtonEnabled, Mode=OneWay}"
                 Margin="0"
                 Padding="50 15"

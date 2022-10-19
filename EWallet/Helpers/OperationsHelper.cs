@@ -1,6 +1,7 @@
 ﻿using EWallet.Models;
 using EWallet.Stores;
 using System;
+using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
 using System.Threading.Tasks;
@@ -18,18 +19,17 @@ namespace EWallet.Helpers
                 .Where(u => u.ID == userStore.CurrentUser.ID).FirstAsync();
         public static async Task<Card> FetchCard(WalletEntities database, string cardNumber)
             => await database.Card.AsNoTracking().Where(c => c.Number == cardNumber).FirstOrDefaultAsync();
-
         #endregion
 
         public static void TryUpdateBalance(User user, UserStore userStore, double sum)
         {
-            if (userStore.CurrentUser.Balance < sum)
+            if (sum < 0 && userStore.CurrentUser.Balance < sum)
                 throw new Exception("Недостаточно денег на счёте!");
 
-            userStore.CurrentUser.Balance -= sum;
-            user.Balance -= sum;
+            userStore.CurrentUser.Balance += sum;
+            user.Balance += sum;
         }
-        public static Operation GenerateOperation(WalletEntities database, Card card, User user, double sum, Service service)
+        public static Operation GenerateMultiUserOperation(WalletEntities database, Card card, User user, double sum, Service service)
         {
             Operation operation = new Operation
             {
@@ -40,12 +40,32 @@ namespace EWallet.Helpers
                 ServiceID = service.ID
             };
 
-            Operation lastOperation = database.Operation.Last();
+            List<Operation> operations = database.Operation.ToList();
 
-            if (lastOperation == null)
+            if (operations.Count == 0)
                 operation.Number = 1;
             else
-                operation.Number = lastOperation.Number + 1;
+                operation.Number = operations.Last().Number + 1;
+
+            return operation;
+        }
+        public static Operation GenerateSingleUserOperation(WalletEntities database, User user, double sum, Service service)
+        {
+            Operation operation = new Operation
+            {
+                Date = DateTime.Now,
+                Sum = sum,
+                UserID = user.ID,
+                ToUserID = user.ID,
+                ServiceID = service.ID
+            };
+
+            List<Operation> operations = database.Operation.ToList();
+
+            if (operations.Count == 0)
+                operation.Number = 1;
+            else
+                operation.Number = operations.Last().Number + 1;
 
             return operation;
         }

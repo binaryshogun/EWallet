@@ -133,7 +133,9 @@ namespace EWallet.Components
                 if (e.Text == ",")
                     CaretIndex = Text.Length - 2;
                 e.Handled = !IsValidText(Text.Insert(CaretIndex, e.Text).TrimEnd('0'));
-            }    
+            }
+            else
+                e.Handled = !IsValidText(Text.Insert(CaretIndex, e.Text));
 
             base.OnPreviewTextInput(e);
         }

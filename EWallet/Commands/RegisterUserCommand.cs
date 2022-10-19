@@ -64,7 +64,8 @@ namespace EWallet.Commands
                     else
                         throw new Exception("Пользователь уже зарегистрирован в системе!");
 
-                    userStore.CurrentUser = user;
+                    var registredUser = await FetchUser(database);
+                    userStore.CurrentUser = registredUser;
                     accountNavigationService?.Navigate();
                 }
             }
@@ -89,15 +90,13 @@ namespace EWallet.Commands
         }
         private async Task AddPassportToDataBase(WalletEntities database)
         {
+            var user = await FetchUser(database);
             Passport userPassport = new Passport()
             {
                 FirstName = registrationViewModel.FirstName,
                 LastName = registrationViewModel.LastName,
                 Patronymic = registrationViewModel?.Patronymic,
-                SerialNumber = 0,
-                DivisionCode = 0,
-                Number = 0,
-                UserID = FetchUser(database).Result.ID
+                UserID = user.ID
             };
 
             database.Passport.Add(userPassport);

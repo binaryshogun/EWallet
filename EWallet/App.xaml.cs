@@ -37,8 +37,8 @@ namespace EWallet
             services.AddTransient(CreateAuthorizationViewModel);
             services.AddTransient(CreateRegistrationViewModel);
             services.AddTransient(CreateTransferViewModel);
-            services.AddTransient<WithdrawViewModel>();
-            services.AddTransient<RefillViewModel>();
+            services.AddTransient(CreateWithdrawViewModel);
+            services.AddTransient(CreateRefillViewModel);
             services.AddTransient(CreateAccountViewModel);
             services.AddTransient(CreateUserProfileViewModel);
 
@@ -68,7 +68,7 @@ namespace EWallet
         #region Methods
 
         #region NavigationBar
-        private NavigationBarViewModel CreateNavigationBarViewModel(IServiceProvider serviceProvider) 
+        private NavigationBarViewModel CreateNavigationBarViewModel(IServiceProvider serviceProvider)
             => new NavigationBarViewModel(
                         serviceProvider.GetRequiredService<UserStore>(),
                         CreateHomeNavigationService(serviceProvider),
@@ -87,8 +87,8 @@ namespace EWallet
         /// Метод, создающий NavigationService, привязанный к HomeViewModel.
         /// </summary>
         /// <returns>Навигационный сервис, привязанный к ViewModel домашней страницы.</returns>
-        public INavigationService CreateHomeNavigationService(IServiceProvider serviceProvider) 
-            => new LayoutNavigationService<HomeViewModel>(serviceProvider.GetRequiredService<NavigationStore>(), 
+        public INavigationService CreateHomeNavigationService(IServiceProvider serviceProvider)
+            => new LayoutNavigationService<HomeViewModel>(serviceProvider.GetRequiredService<NavigationStore>(),
                 () => serviceProvider.GetRequiredService<NavigationBarViewModel>(),
                 () => serviceProvider.GetRequiredService<HomeViewModel>());
         #endregion
@@ -154,7 +154,7 @@ namespace EWallet
         /// Метод, создающий NavigationService, привязанный к AccountViewModel.
         /// </summary>
         /// <returns>Навигационный сервис, привязанный к ViewModel аккаунта пользователя.</returns>
-        public INavigationService CreateAccountNavigationService(IServiceProvider serviceProvider) 
+        public INavigationService CreateAccountNavigationService(IServiceProvider serviceProvider)
             => new LayoutNavigationService<AccountViewModel>(serviceProvider.GetRequiredService<NavigationStore>(),
                 () => serviceProvider.GetRequiredService<NavigationBarViewModel>(),
                 () => serviceProvider.GetRequiredService<AccountViewModel>());
@@ -189,7 +189,7 @@ namespace EWallet
         {
             var closeModalNavigationService = serviceProvider.GetRequiredService<CloseModalNavigationService>();
             var navigationService = new CompositeNavigationService(
-                closeModalNavigationService, 
+                closeModalNavigationService,
                 CreateAccountNavigationService(serviceProvider));
 
             return new TransferViewModel(serviceProvider.GetRequiredService<UserStore>(),
@@ -205,6 +205,16 @@ namespace EWallet
         #endregion
 
         #region Withdraw
+        private WithdrawViewModel CreateWithdrawViewModel(IServiceProvider serviceProvider)
+        {
+            var closeModalNavigationService = serviceProvider.GetRequiredService<CloseModalNavigationService>();
+            var navigationService = new CompositeNavigationService(
+                closeModalNavigationService,
+                CreateAccountNavigationService(serviceProvider));
+
+            return new WithdrawViewModel(serviceProvider.GetRequiredService<UserStore>(),
+                navigationService);
+        }
         public INavigationService CreateWithdrawNavigationService(IServiceProvider serviceProvider)
         {
             var modalNavigationStore = serviceProvider.GetRequiredService<ModalNavigationStore>();
@@ -214,6 +224,17 @@ namespace EWallet
         #endregion
 
         #region Refill
+        private RefillViewModel CreateRefillViewModel(IServiceProvider serviceProvider)
+        {
+            var closeModalNavigationService = serviceProvider.GetRequiredService<CloseModalNavigationService>();
+            var navigationService = new CompositeNavigationService(
+                closeModalNavigationService,
+                CreateAccountNavigationService(serviceProvider));
+
+            return new RefillViewModel(serviceProvider.GetRequiredService<UserStore>(),
+                navigationService);
+        }
+
         public INavigationService CreateRefillNavigationService(IServiceProvider serviceProvider)
         {
             var modalNavigationStore = serviceProvider.GetRequiredService<ModalNavigationStore>();

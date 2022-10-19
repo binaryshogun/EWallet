@@ -1,10 +1,13 @@
 ﻿using EWallet.Components;
 using EWallet.Helpers;
 using EWallet.Models;
+using EWallet.Services;
 using EWallet.Stores;
 using EWallet.ViewModels;
 using System;
+using System.Data.Entity;
 using System.Data.Entity.Migrations;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace EWallet.Commands
@@ -14,13 +17,15 @@ namespace EWallet.Commands
         #region Fields
         private readonly UserStore userStore;
         private readonly TransferViewModel transferViewModel;
+        private readonly INavigationService accountNavigationService;
         #endregion
 
         #region Constructors
-        public TransferCommand(UserStore userStore, TransferViewModel transferViewModel)
+        public TransferCommand(UserStore userStore, TransferViewModel transferViewModel, INavigationService accountNavigationService)
         {
             this.userStore = userStore;
             this.transferViewModel = transferViewModel;
+            this.accountNavigationService = accountNavigationService;
         }
         #endregion
 
@@ -36,18 +41,24 @@ namespace EWallet.Commands
             {
                 using (var database = new WalletEntities())
                 {
-                    string cardNumber = HashHelper.GetHash(transferViewModel.CardNumber, 16);
+                    string cardNumber = EncryptionHelper.Encrypt(transferViewModel.CardNumber);
                     Card card = await OperationsHelper.FetchCard(database, cardNumber);
                     OperationsHelper.CheckCard(card, this.userStore);
-
+                    
+                    User otherUser = GetOtherUser(database, card);
                     User user = await OperationsHelper.FetchUser(database, this.userStore);
-                    double sum = SetSum();
-                    OperationsHelper.TryUpdateBalance(user, this.userStore, sum);
+
+                    double.TryParse(transferViewModel.OperationSum, out double sum);
+                    otherUser.Balance += sum;
+
+                    sum = SetSum();
+                    OperationsHelper.TryUpdateBalance(user, this.userStore, -sum);
 
                     Service service = await OperationsHelper.FetchService(database, 1);
-                    Operation operation = OperationsHelper.GenerateOperation(database, card, user, sum, service);
+                    Operation operation = OperationsHelper.GenerateMultiUserOperation(database, card, user, sum, service);
 
                     database.User.AddOrUpdate(user);
+                    database.User.AddOrUpdate(otherUser);
                     database.Operation.Add(operation);
                     await database.SaveChangesAsync();
                 }
@@ -56,6 +67,7 @@ namespace EWallet.Commands
             finally
             {
                 transferViewModel.IsOperationBeingProvided = false;
+                accountNavigationService.Navigate();
             }
         }
 
@@ -67,6 +79,9 @@ namespace EWallet.Commands
 
             return sum;
         }
+
+        private User GetOtherUser(WalletEntities database, Card card)
+            => database.User.First(u => u.Login == card.User.Login);
         #endregion
     }
 }

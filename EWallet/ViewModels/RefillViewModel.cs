@@ -4,13 +4,11 @@ using EWallet.Models;
 using EWallet.Services;
 using EWallet.Stores;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using static EWallet.Models.BanksData;
 using System.Windows.Input;
 using System.Windows.Media;
+using EWallet.Helpers;
 
 namespace EWallet.ViewModels
 {
@@ -43,33 +41,25 @@ namespace EWallet.ViewModels
         public RefillViewModel(UserStore userStore, INavigationService accountNavigationService)
         {
             this.userStore = userStore;
+            BankBorderBrush = new SolidColorBrush(Color.FromRgb(77, 39, 97));
+            BankBackground = new SolidColorBrush(Color.FromRgb(255, 255, 255));
+            BankForeground = new SolidColorBrush(Color.FromRgb(0, 0, 0));
+            BankName = "БАНК";
+            Comission = "0,00";
 
             try
             {
                 using (var database = new WalletEntities())
                 {
-                    //var card = database.Card.AsNoTracking().Where(c => c.UserID == userStore.CurrentUser.ID).FirstOrDefault();
-                    //if (card != null)
-                    //{
-                    //    CardNumber = card.Number;
-                    //    ValidThruMonth = card.ValidThru.ToString("M");
-                    //    ValidThruYear = card.ValidThru.ToString("yy");
-                    //    SaveCardData = true;
-                    //}
-                    var service = database.Service.AsNoTracking().Where(s => s.ID == 1).First();
+                    SetExistingCardData(userStore, database);
+                    var service = database.Service.AsNoTracking().Where(s => s.ID == 4).First();
                     double.TryParse(service.Comission.ToString(), out percent);
                 }
             }
             catch (Exception e) { ErrorMessageBox.Show(e); }
             finally
             {
-                BankBorderBrush = new SolidColorBrush(Color.FromRgb(77, 39, 97));
-                BankBackground = new SolidColorBrush(Color.FromRgb(255, 255, 255));
-                BankForeground = new SolidColorBrush(Color.FromRgb(0, 0, 0));
-                BankName = "БАНК";
-                Comission = "0,00";
-
-                ProvideRefillCommand = new RefillCommand(userStore, this);
+                ProvideOperationCommand = new RefillCommand(userStore, this, accountNavigationService);
                 CloseModalCommand = new NavigateCommand(accountNavigationService);
             }
         }
@@ -93,6 +83,8 @@ namespace EWallet.ViewModels
                         CurrentBank = Banks.AlfaBank;
                     else if (firstDigit >= '7' && firstDigit <= '9')
                         CurrentBank = Banks.Tinkoff;
+
+                    OnPropertyChanged(nameof(CurrentBank));
                 }
 
                 UpdateConfirmButton();
@@ -164,7 +156,7 @@ namespace EWallet.ViewModels
         #endregion
 
         #region BankData
-        private BanksData.Banks CurrentBank
+        private Banks CurrentBank
         {
             set
             {
@@ -217,7 +209,7 @@ namespace EWallet.ViewModels
         #region VisualProperties
         public string UserBalance
             => userStore.CurrentUser.Balance.ToString();
-        public string ButtonContent => "Перевести";
+        public string ButtonContent => "Пополнить";
         public bool IsOperationBeingProvided
         {
             get => isOperationBeingProvided;
@@ -227,7 +219,7 @@ namespace EWallet.ViewModels
                 OnPropertyChanged(nameof(IsOperationBeingProvided));
             }
         }
-        public bool OperationWithTransfer => true;
+        public bool OperationWithTransfer => false;
         public bool IsConfirmButtonEnabled
         {
             get => isConfirmButtonEnabled;
@@ -242,6 +234,21 @@ namespace EWallet.ViewModels
         #endregion
 
         #region Methods
+        private void SetExistingCardData(UserStore userStore, WalletEntities database)
+        {
+            var card = database.Card.AsNoTracking().Where(c => c.UserID == userStore.CurrentUser.ID).FirstOrDefault();
+            if (card != null)
+            {
+                CardNumber = EncryptionHelper.Decrypt(card.Number);
+                if (card.ValidThru.ToString("MM")[0] == '0')
+                    ValidThruMonth += card.ValidThru.ToString("MM")[1];
+                else
+                    ValidThruMonth = card.ValidThru.ToString("MM");
+                ValidThruYear = card.ValidThru.ToString("yy");
+                SaveCardData = true;
+            }
+        }
+
         private string GetComission()
         {
             double.TryParse(OperationSum, out double sum);
@@ -250,7 +257,9 @@ namespace EWallet.ViewModels
 
         private void UpdateConfirmButton()
         {
-            if (!string.IsNullOrEmpty(cardNumber) && !string.IsNullOrEmpty(OperationSum))
+            if (!string.IsNullOrEmpty(CardNumber) && CardNumber.Length == 16 
+                && !string.IsNullOrEmpty(OperationSum) && !string.IsNullOrEmpty(CVV)
+                && !string.IsNullOrEmpty(ValidThruMonth) && !string.IsNullOrEmpty(ValidThruYear))
                 IsConfirmButtonEnabled = true;
             else
                 IsConfirmButtonEnabled = false;
@@ -258,7 +267,7 @@ namespace EWallet.ViewModels
         #endregion
 
         #region Commands
-        public ICommand ProvideRefillCommand { get; }
+        public ICommand ProvideOperationCommand { get; }
         public ICommand CloseModalCommand { get; }
         #endregion
     }

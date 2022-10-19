@@ -42,7 +42,7 @@ namespace EWallet.Commands
         public override void Execute(object parameter) 
             => Task.Run(FetchUserFromDataBase);
 
-        private async Task FetchUserFromDataBase()
+        public async Task FetchUserFromDataBase()
         {
             viewModel.IsUserAuthorizing = true;
 

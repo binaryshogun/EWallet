@@ -18,9 +18,9 @@ namespace EWallet.Models
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public string Patronymic { get; set; }
-        public int SerialNumber { get; set; }
-        public int Number { get; set; }
-        public int DivisionCode { get; set; }
+        public Nullable<int> SerialNumber { get; set; }
+        public Nullable<int> Number { get; set; }
+        public Nullable<int> DivisionCode { get; set; }
         public int UserID { get; set; }
     
         public virtual User User { get; set; }

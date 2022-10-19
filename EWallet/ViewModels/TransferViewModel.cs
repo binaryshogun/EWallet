@@ -58,7 +58,7 @@ namespace EWallet.ViewModels
                 BankName = "БАНК";
                 Comission = "0,00";
 
-                ProvideTransferCommand = new TransferCommand(userStore, this);
+                ProvideOperationCommand = new TransferCommand(userStore, this, accountNavigationService);
                 CloseModalCommand = new NavigateCommand(accountNavigationService);
             }
         }
@@ -239,7 +239,8 @@ namespace EWallet.ViewModels
 
         private void UpdateConfirmButton()
         {
-            if (cardNumber.Length == 16 && !string.IsNullOrEmpty(OperationSum))
+            if (!string.IsNullOrEmpty(CardNumber) && CardNumber.Length == 16 
+                && !string.IsNullOrEmpty(OperationSum))
                 IsConfirmButtonEnabled = true;
             else
                 IsConfirmButtonEnabled = false;
@@ -247,7 +248,7 @@ namespace EWallet.ViewModels
         #endregion
 
         #region Commands
-        public ICommand ProvideTransferCommand { get; }
+        public ICommand ProvideOperationCommand { get; }
         public ICommand CloseModalCommand { get; }
         #endregion
     }

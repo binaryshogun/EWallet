@@ -5,14 +5,17 @@ namespace EWallet.Components
 {
     public class Loader : Control
     {
+        #region Properties
         public bool IsLoading
         {
-            get { return (bool)GetValue(IsLoadingProperty); }
-            set { SetValue(IsLoadingProperty, value); }
+            get => (bool)GetValue(IsLoadingProperty);
+            set => SetValue(IsLoadingProperty, value);
         }
+        #endregion
 
-        // Using a DependencyProperty as the backing store for IsLoading.  This enables animation, styling, binding, etc...
+        #region Dependency properties
         public static readonly DependencyProperty IsLoadingProperty =
             DependencyProperty.Register("IsLoading", typeof(bool), typeof(Loader), new PropertyMetadata(false));
+        #endregion
     }
 }

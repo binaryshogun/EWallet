@@ -45,15 +45,7 @@ namespace EWallet.ViewModels
             {
                 using (var database = new WalletEntities())
                 {
-                    //var card = database.Card.AsNoTracking().Where(c => c.UserID == userStore.CurrentUser.ID).FirstOrDefault();
-                    //if (card != null)
-                    //{
-                    //    CardNumber = card.Number;
-                    //    ValidThruMonth = card.ValidThru.ToString("M");
-                    //    ValidThruYear = card.ValidThru.ToString("yy");
-                    //    SaveCardData = true;
-                    //}
-                    var service = database.Service.AsNoTracking().Where(s => s.ID == 1).First();
+                    Service service = database.Service.First(s => s.ID == 1);
                     double.TryParse(service.Comission.ToString(), out percent);
                 }
             }
@@ -161,7 +153,7 @@ namespace EWallet.ViewModels
         #endregion
 
         #region BankData
-        private BanksData.Banks CurrentBank
+        private Banks CurrentBank
         {
             set
             {
@@ -247,7 +239,7 @@ namespace EWallet.ViewModels
 
         private void UpdateConfirmButton()
         {
-            if (!string.IsNullOrEmpty(cardNumber) && !string.IsNullOrEmpty(OperationSum))
+            if (cardNumber.Length == 16 && !string.IsNullOrEmpty(OperationSum))
                 IsConfirmButtonEnabled = true;
             else
                 IsConfirmButtonEnabled = false;

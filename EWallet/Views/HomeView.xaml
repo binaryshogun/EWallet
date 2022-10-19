@@ -45,120 +45,102 @@
                     Value="Wrap" />
             </Style>
         </Grid.Resources>
-
-        <Grid
-            Grid.Column="0"
-            Grid.Row="0"
-            Grid.ColumnSpan="7">
+        <Grid>
             <i:Interaction.Behaviors>
                 <behaviors:ScaleFontBehavior
                     MaxFontSize="72" />
             </i:Interaction.Behaviors>
 
             <TextBlock
-                Text="Откройте для себя мир электронных денег" 
+                Text="Откройте для себя мир электронных денег"
                 Grid.Row="0"
-                Grid.Column="0"/>
+                Grid.Column="0"
+                Grid.ColumnSpan="7" />
 
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition />
-            </Grid.ColumnDefinitions>
-            <Grid.RowDefinitions>
-                <RowDefinition />
-            </Grid.RowDefinitions>
-        </Grid>
+            <Image
+                Grid.Column="8"
+                Source="../Resources/images/money1.png"
+                RenderTransformOrigin="0.5,0.5"
+                MaxWidth="150">
+                <Image.RenderTransform>
+                    <TransformGroup>
+                        <ScaleTransform />
+                        <SkewTransform />
+                        <RotateTransform
+                            Angle="-20" />
+                        <TranslateTransform />
+                    </TransformGroup>
+                </Image.RenderTransform>
+            </Image>
 
-        <Image 
-            Grid.Column="8"
-            Source="../Resources/images/money1.png"
-            RenderTransformOrigin="0.5,0.5"
-            MaxWidth="150">
-            <Image.RenderTransform>
-                <TransformGroup>
-                    <ScaleTransform />
-                    <SkewTransform />
-                    <RotateTransform
-                        Angle="-20" />
-                    <TranslateTransform />
-                </TransformGroup>
-            </Image.RenderTransform>
-        </Image>
-
-        <Grid
-            Grid.Row="1"
-            Grid.Column="1"
-            Grid.ColumnSpan="7">
-            <i:Interaction.Behaviors>
-                <behaviors:ScaleFontBehavior
-                    MaxFontSize="72" />
-            </i:Interaction.Behaviors>
             <TextBlock
                 Text="Копите, оплачивайте покупки и делайте переводы"
-                Grid.Row="0"
-                Grid.Column="0"/>
+                Grid.Row="1"
+                Grid.Column="1"
+                Grid.ColumnSpan="7" />
+
+            <Image
+                Grid.Row="1"
+                Source="../Resources/images/money2.png"
+                MaxWidth="100"
+                RenderTransformOrigin="0.5,0.5">
+                <Image.RenderTransform>
+                    <TransformGroup>
+                        <ScaleTransform />
+                        <SkewTransform />
+                        <RotateTransform
+                            Angle="25" />
+                        <TranslateTransform />
+                    </TransformGroup>
+                </Image.RenderTransform>
+            </Image>
+
+            <Grid.RowDefinitions>
+                <RowDefinition />
+                <RowDefinition />
+            </Grid.RowDefinitions>
 
             <Grid.ColumnDefinitions>
                 <ColumnDefinition />
+                <ColumnDefinition />
+                <ColumnDefinition />
+                <ColumnDefinition />
+                <ColumnDefinition />
+                <ColumnDefinition />
+                <ColumnDefinition />
+                <ColumnDefinition />
             </Grid.ColumnDefinitions>
-            <Grid.RowDefinitions>
-                <RowDefinition />
-            </Grid.RowDefinitions>
         </Grid>
 
-        <Image 
+        <WrapPanel
             Grid.Row="1"
-            Source="../Resources/images/money2.png"
-            MaxWidth="100"
-            RenderTransformOrigin="0.5,0.5">
-            <Image.RenderTransform>
-                <TransformGroup>
-                    <ScaleTransform />
-                    <SkewTransform />
-                    <RotateTransform
-                        Angle="25" />
-                    <TranslateTransform />
-                </TransformGroup>
-            </Image.RenderTransform>
-        </Image>
+            Margin="50"
+            HorizontalAlignment="Right">
+            <Button
+                
+                Grid.ColumnSpan="2"
+                Content="Создать аккаунт"
+                Style="{DynamicResource WhiteButtonStyle}"
+                VerticalAlignment="Center"
+                Margin="10"
+                Command="{Binding NavigateRegistrationCommand}"
+                ToolTip="Зарегистрировать новый аккаунт в системе" />
 
-        <Button
-            Grid.Row="3"
-            Grid.Column="4"
-            Grid.ColumnSpan="2"
-            Content="Создать аккаунт"
-            Style="{DynamicResource WhiteButtonStyle}"
-            VerticalAlignment="Center"
-            Margin="10"
-            Command="{Binding NavigateRegistrationCommand}" 
-            ToolTip="Зарегистрировать новый аккаунт в системе"/>
-
-        <Button
-            Grid.Row="3"
-            Grid.Column="6"
-            Grid.ColumnSpan="2"
-            Content="Войти в аккаунт"
-            Style="{DynamicResource PurpleButtonStyle}"
-            VerticalAlignment="Center"
-            Margin="10"
-            Command="{Binding NavigateAuthorizationCommand}" 
-            ToolTip="Переход на страницу авторизации"/>
+            <Button
+                Grid.Row="3"
+                Grid.Column="6"
+                Grid.ColumnSpan="2"
+                Content="Войти в аккаунт"
+                Style="{DynamicResource PurpleButtonStyle}"
+                VerticalAlignment="Center"
+                Margin="10"
+                Command="{Binding NavigateAuthorizationCommand}"
+                ToolTip="Переход на страницу авторизации" />
+        </WrapPanel>
 
         <Grid.RowDefinitions>
             <RowDefinition />
-            <RowDefinition />
-            <RowDefinition />
+            <RowDefinition Height="auto"/>
         </Grid.RowDefinitions>
-
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition />
-            <ColumnDefinition />
-            <ColumnDefinition />
-            <ColumnDefinition />
-            <ColumnDefinition />
-            <ColumnDefinition />
-            <ColumnDefinition />
-            <ColumnDefinition />
-        </Grid.ColumnDefinitions>
-
     </Grid>
 </UserControl>

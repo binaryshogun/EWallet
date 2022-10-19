@@ -9,11 +9,18 @@ namespace EWallet.Stores
 {
     public class ModalNavigationStore
     {
+        #region Fields
+        private ViewModelBase currentViewModel;
+        #endregion
+
+        #region Events
         /// <summary>
         /// Событие при изменении CurrentViewModel.
         /// </summary>
         public event Action CurrentViewModelChanged;
-        private ViewModelBase currentViewModel;
+        #endregion
+
+        #region Properties
         /// <summary>
         /// Текущая ViewModel.
         /// </summary>
@@ -32,14 +39,18 @@ namespace EWallet.Stores
                 OnCurrentViewModelChanged();
             }
         }
+        public bool IsOpen 
+            => CurrentViewModel != null;
+        #endregion
 
-        public bool IsOpen => CurrentViewModel != null;
-
+        #region Methods
         /// <summary>
         /// Метод, обрабатывающий изменение текущей ViewModel.
         /// </summary>
-        private void OnCurrentViewModelChanged() => CurrentViewModelChanged?.Invoke();
-
-        public void Close() => CurrentViewModel = null;
+        private void OnCurrentViewModelChanged() 
+            => CurrentViewModelChanged?.Invoke();
+        public void Close() 
+            => CurrentViewModel = null;
+        #endregion
     }
 }

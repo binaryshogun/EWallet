@@ -20,7 +20,6 @@ namespace EWallet.ViewModels
         private int number;
         private int divisionCode;
 
-        private bool doesUserHavePatronymic;
         private bool isDataSave;
         private bool isDataSaved;
         #endregion
@@ -49,7 +48,7 @@ namespace EWallet.ViewModels
             IsDataSaved = true;
 
             CloseModalCommand = new NavigateCommand(accountNavigationService);
-            SaveCommand = new SavePassportDataCommand(this, userStore);
+            SaveCommand = new SavePassportDataCommand(userStore, this);
         }
         #endregion
 
@@ -130,7 +129,6 @@ namespace EWallet.ViewModels
             set 
             {
                 Patronymic = value ? "" : null;
-                doesUserHavePatronymic = value;
                 OnPropertyChanged(nameof(DoesUserHavePatronymic));
             }
         }

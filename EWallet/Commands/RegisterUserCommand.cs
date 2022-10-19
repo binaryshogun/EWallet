@@ -1,15 +1,12 @@
 ﻿using EWallet.Components;
+using EWallet.Helpers;
 using EWallet.Models;
 using EWallet.Services;
 using EWallet.Stores;
 using EWallet.ViewModels;
 using System;
 using System.Data.Entity;
-using System.Linq;
-using System.Security.Cryptography;
-using System.Text;
 using System.Threading.Tasks;
-using System.Windows;
 
 namespace EWallet.Commands
 {
@@ -19,7 +16,7 @@ namespace EWallet.Commands
     public sealed class RegisterUserCommand : CommandBase
     {
         #region Fields
-        private readonly RegistrationViewModel viewModel;
+        private readonly RegistrationViewModel registrationViewModel;
         private readonly INavigationService accountNavigationService;
         private readonly UserStore userStore;
         #endregion
@@ -28,13 +25,13 @@ namespace EWallet.Commands
         /// <summary>
         /// Инициализирует команду регистрации пользователя.
         /// </summary>
-        /// <param name="viewModel">ViewModel страницы регистрации пользователя.</param>
+        /// <param name="registrationViewModel">ViewModel страницы регистрации пользователя.</param>
         /// <param name="accountNavigationService">Сервис навигации, привязанный к AccountViewModel.</param>
-        public RegisterUserCommand(RegistrationViewModel viewModel, 
+        public RegisterUserCommand(RegistrationViewModel registrationViewModel, 
             INavigationService accountNavigationService, 
             UserStore userStore)
         {
-            this.viewModel = viewModel;
+            this.registrationViewModel = registrationViewModel;
             this.accountNavigationService = accountNavigationService;
             this.userStore = userStore;
         }
@@ -47,46 +44,22 @@ namespace EWallet.Commands
 
         public async Task RegisterUserInDataBase()
         {
-            viewModel.IsUserAuthorizing = true;
-            using (var dataBase = new WalletEntities())
+            registrationViewModel.IsUserAuthorizing = true;
+
+            try
             {
-                try
+                using (var database = new WalletEntities())
                 {
-                    User user = await dataBase
-                        .User
-                        .AsNoTracking()
-                        .FirstOrDefaultAsync(u => u.Login == viewModel.Login);
+                    var user = await FetchUser(database);
 
                     if (user == null)
                     {
                         int length = 16;
-                        if (viewModel.Password.Length < 16)
-                            length = viewModel.Password.Length;
+                        if (registrationViewModel.Password.Length < 16)
+                            length = registrationViewModel.Password.Length;
 
-                        user = new User()
-                        {
-                            Login = viewModel.Login,
-                            Password = GetHash(viewModel.Password, length),
-                            RoleID = 1,
-                            Balance = 0
-                        };
-
-                        dataBase.User.Add(user);
-                        dataBase.SaveChanges();
-
-                        Passport userPassport = new Passport()
-                        {
-                            FirstName = viewModel.FirstName,
-                            LastName = viewModel.LastName,
-                            Patronymic = viewModel?.Patronymic,
-                            SerialNumber = 0,
-                            DivisionCode = 0,
-                            Number = 0,
-                            UserID = dataBase
-                                    .User
-                                    .AsNoTracking()
-                                    .FirstOrDefault(u => u.Login == viewModel.Login).ID
-                        };
+                        await AddUserToDataBase(database, length);
+                        await AddPassportToDataBase(database);
                     }
                     else
                         throw new Exception("Пользователь уже зарегистрирован в системе!");
@@ -94,27 +67,41 @@ namespace EWallet.Commands
                     userStore.CurrentUser = user;
                     accountNavigationService?.Navigate();
                 }
-                catch (Exception ex)
-                {
-                    ErrorMessageBox.Show(ex);
-                }
-                finally
-                {
-                    viewModel.IsUserAuthorizing = false;
-                }
             }
+            catch (Exception ex) { ErrorMessageBox.Show(ex); }
+            finally { registrationViewModel.IsUserAuthorizing = false; }
         }
 
-        /// <inheritdoc cref="AuthorizeUserCommand.GetHash(string, int)"/>
-        public static string GetHash(string password, int length)
+        private async Task<User> FetchUser(WalletEntities database)
+            => await database.User.AsNoTracking().FirstOrDefaultAsync(
+                u => u.Login == registrationViewModel.Login);
+        private async Task AddUserToDataBase(WalletEntities database, int length)
         {
-            using (var hash = SHA1.Create())
+            var user = new User()
             {
-                return string
-                    .Concat(hash.ComputeHash(Encoding.UTF8.GetBytes(password))
-                    .Select(x => x.ToString("X2")))
-                    .Substring(0, length);
-            }
+                Login = registrationViewModel.Login,
+                Password = HashHelper.GetHash(registrationViewModel.Password, length),
+                RoleID = 1,
+                Balance = 0
+            };
+            database.User.Add(user);
+            await database.SaveChangesAsync();
+        }
+        private async Task AddPassportToDataBase(WalletEntities database)
+        {
+            Passport userPassport = new Passport()
+            {
+                FirstName = registrationViewModel.FirstName,
+                LastName = registrationViewModel.LastName,
+                Patronymic = registrationViewModel?.Patronymic,
+                SerialNumber = 0,
+                DivisionCode = 0,
+                Number = 0,
+                UserID = FetchUser(database).Result.ID
+            };
+
+            database.Passport.Add(userPassport);
+            await database.SaveChangesAsync();
         }
         #endregion
     }

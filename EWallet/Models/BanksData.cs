@@ -5,16 +5,16 @@ namespace EWallet.Models
 {
     public class BanksData
     {
+        #region Enums
         public enum Banks
         {
             Tinkoff,
             Sberbank,
             AlfaBank
         }
-        public static readonly Dictionary<Banks, Brush> BankBorderColors;
-        public static readonly Dictionary<Banks, Brush> BankForegrounds;
-        public static readonly Dictionary<Banks, string> BankNames;
+        #endregion
 
+        #region Constructors
         static BanksData()
         {
             BankBorderColors = new Dictionary<Banks, Brush>()
@@ -36,5 +36,12 @@ namespace EWallet.Models
                 { Banks.AlfaBank, "АЛЬФА-БАНК" }
             };
         }
+        #endregion
+
+        #region Properties
+        public static Dictionary<Banks, Brush> BankBorderColors { get; private set; }
+        public static Dictionary<Banks, Brush> BankForegrounds { get; private set; }
+        public static Dictionary<Banks, string> BankNames { get; private set; }
+        #endregion
     }
 }

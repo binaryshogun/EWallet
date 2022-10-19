@@ -1,10 +1,8 @@
-﻿using Microsoft.Xaml.Behaviors;
+﻿using EWallet.Helpers;
+using Microsoft.Xaml.Behaviors;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
@@ -13,15 +11,26 @@ namespace EWallet.Behaviors
 {
     public class ScaleFontBehavior : Behavior<Grid>
     {
-        public double MaxFontSize { get { return (double)GetValue(MaxFontSizeProperty); } set { SetValue(MaxFontSizeProperty, value); } }
-        public static readonly DependencyProperty MaxFontSizeProperty = DependencyProperty.Register("MaxFontSize", typeof(double), typeof(ScaleFontBehavior), new PropertyMetadata(20d));
+        #region Properties
+        public double MaxFontSize
+        {
+            get => (double)GetValue(MaxFontSizeProperty);
+            set => SetValue(MaxFontSizeProperty, value);
+        }
+        #endregion
 
+        #region Dependency properties
+        public static readonly DependencyProperty MaxFontSizeProperty = 
+            DependencyProperty.Register("MaxFontSize", typeof(double), 
+                typeof(ScaleFontBehavior), new PropertyMetadata(20d));
+        #endregion
+
+        #region Methods
         protected override void OnAttached()
         {
             CalculateFontSize();
             AssociatedObject.SizeChanged += (s, e) => CalculateFontSize();
         }
-
         protected override void OnDetaching()
         {
             AssociatedObject.SizeChanged -= (s, e) => CalculateFontSize();
@@ -36,17 +45,15 @@ namespace EWallet.Behaviors
 
             foreach (var tb in tbs)
             {
-                RowDefinition row = AssociatedObject.RowDefinitions[Grid.GetRow(tb)];
-                double rowHeight = row.Height.IsAuto ? double.MaxValue : AssociatedObject.ActualHeight;
-
+                double rowHeight = GetRowHeight(tb);
                 // get column width (if limited)
                 ColumnDefinition col = AssociatedObject.ColumnDefinitions[Grid.GetColumn(tb)];
-                double colWidth = col.Width.IsAuto ? double.MaxValue : col.ActualWidth;
+                
+                double colWidth = col.Width.IsAuto ? double.MaxValue : col.ActualWidth ;
+                double colActualWidth = col.ActualWidth == double.MaxValue ? col.ActualWidth : col.ActualWidth * Grid.GetColumnSpan(tb);
 
                 // get desired size with fontsize = MaxFontSize
-                Size desiredSize = MeasureText(tb);
-                double widthMargins = tb.Margin.Left + tb.Margin.Right;
-                double heightMargins = tb.Margin.Top + tb.Margin.Bottom;
+                GetMarginSize(tb, out var desiredSize, out double widthMargins, out double heightMargins);
 
                 double desiredHeight = desiredSize.Height + heightMargins;
                 double desiredWidth = desiredSize.Width + widthMargins;
@@ -54,7 +61,7 @@ namespace EWallet.Behaviors
                 // adjust fontsize if text would be clipped horizontally
                 if (colWidth < desiredWidth)
                 {
-                    double factor = (desiredWidth - widthMargins) / (col.ActualWidth - widthMargins);
+                    double factor = (desiredWidth - widthMargins) / (colActualWidth - widthMargins);
                     fontSize = Math.Min(fontSize, MaxFontSize / factor);
                 }
 
@@ -73,6 +80,19 @@ namespace EWallet.Behaviors
             }
         }
 
+        private void GetMarginSize(TextBlock tb, out Size desiredSize, out double widthMargins, out double heightMargins)
+        {
+            desiredSize = MeasureText(tb);
+            widthMargins = tb.Margin.Left + tb.Margin.Right;
+            heightMargins = tb.Margin.Top + tb.Margin.Bottom;
+        }
+        private double GetRowHeight(TextBlock tb)
+        {
+            RowDefinition row = AssociatedObject.RowDefinitions[Grid.GetRow(tb)];
+            double rowHeight = row.Height.IsAuto ? double.MaxValue : AssociatedObject.ActualHeight;
+            return rowHeight;
+        }
+
         // Measures text size of textblock
         private Size MeasureText(TextBlock tb)
         {
@@ -83,5 +103,6 @@ namespace EWallet.Behaviors
 
             return new Size(formattedText.Width, formattedText.Height);
         }
+        #endregion
     }
 }

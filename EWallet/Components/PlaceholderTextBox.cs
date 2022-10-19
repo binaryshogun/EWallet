@@ -8,63 +8,40 @@ namespace EWallet.Components
 {
     public class PlaceholderTextBox : TextBox
     {
-        public enum DateFormatParameters
-        {
-            Month,
-            Year
-        };
+        #region Enums
+        public enum DateFormatParameters { Month, Year };
+        public enum Languages { Ru, En };
+        #endregion
 
-        public enum Languages
-        {
-            Ru,
-            En
-        };
+        #region Constructors
+        public PlaceholderTextBox() : base() 
+            => Background = new SolidColorBrush(Colors.White);
 
-        // Using a DependencyProperty as the backing store for IsEmpty.  This enables animation, styling, binding, etc...
-        private static readonly DependencyPropertyKey IsEmptyPropertyKey =
-            DependencyProperty.RegisterReadOnly("IsEmpty", typeof(bool), typeof(PlaceholderTextBox), new PropertyMetadata(true));
+        static PlaceholderTextBox() 
+            => DefaultStyleKeyProperty.OverrideMetadata(typeof(PlaceholderTextBox), 
+                new FrameworkPropertyMetadata(typeof(TextBox)));
+        #endregion
 
-        public PlaceholderTextBox() : base()
-        {
-            Background = new SolidColorBrush(Colors.White);
-        }
-
-        static PlaceholderTextBox()
-        {
-            DefaultStyleKeyProperty.OverrideMetadata(typeof(PlaceholderTextBox), new FrameworkPropertyMetadata(typeof(TextBox)));
-        }
-
+        #region Properties
         public string Placeholder
         {
-            get { return (string)GetValue(PlaceholderProperty); }
-            set { SetValue(PlaceholderProperty, value); }
+            get => (string)GetValue(PlaceholderProperty);
+            set => SetValue(PlaceholderProperty, value);
         }
-
-        // Using a DependencyProperty as the backing store for Placeholder.  This enables animation, styling, binding, etc...
-        public static readonly DependencyProperty PlaceholderProperty =
-            DependencyProperty.Register("Placeholder", typeof(string), typeof(PlaceholderTextBox), new PropertyMetadata(""));
-
         public bool IsEmpty
         {
-            get { return (bool)GetValue(IsEmptyProperty); }
-            private set { SetValue(IsEmptyPropertyKey, value); }
+            get => (bool)GetValue(IsEmptyProperty);
+            private set => SetValue(IsEmptyPropertyKey, value);
         }
-
-        public static readonly DependencyProperty IsEmptyProperty = IsEmptyPropertyKey.DependencyProperty;
-
         public new Languages Language
         {
-            get { return (Languages)GetValue(LanguageProperty); }
-            set { SetValue(LanguageProperty, value); }
+            get => (Languages)GetValue(LanguageProperty);
+            set => SetValue(LanguageProperty, value);
         }
-        // Using a DependencyProperty as the backing store for LanguageOption.  This enables animation, styling, binding, etc...
-        public static new readonly DependencyProperty LanguageProperty =
-            DependencyProperty.Register("Language", typeof(Languages), typeof(PlaceholderTextBox), new PropertyMetadata(Languages.Ru));
-
         public bool IntFormat
         {
-            get { return (bool)GetValue(IntFormatProperty); }
-            set 
+            get => (bool)GetValue(IntFormatProperty);
+            set
             {
                 if (value == true && (DoubleFormat == true || DateFormat == true))
                 {
@@ -75,15 +52,11 @@ namespace EWallet.Components
                 SetValue(IntFormatProperty, value);
             }
         }
-        // Using a DependencyProperty as the backing store for IntFormat.  This enables animation, styling, binding, etc...
-        public static readonly DependencyProperty IntFormatProperty =
-            DependencyProperty.Register("IntFormat", typeof(bool), typeof(PlaceholderTextBox), new PropertyMetadata(false));
-
         public bool DoubleFormat
         {
-            get { return (bool)GetValue(DoubleFormatProperty); }
-            set 
-            { 
+            get => (bool)GetValue(DoubleFormatProperty);
+            set
+            {
                 if (value == true && (IntFormat == true || DateFormat == true))
                 {
                     SetValue(IntFormatProperty, false);
@@ -93,13 +66,9 @@ namespace EWallet.Components
                 SetValue(DoubleFormatProperty, value);
             }
         }
-        // Using a DependencyProperty as the backing store for DoubleFormat.  This enables animation, styling, binding, etc...
-        public static readonly DependencyProperty DoubleFormatProperty =
-            DependencyProperty.Register("DoubleFormat", typeof(bool), typeof(PlaceholderTextBox), new PropertyMetadata(false));
-
         public bool DateFormat
         {
-            get { return (bool)GetValue(DateFormatProperty); }
+            get => (bool)GetValue(DateFormatProperty);
             set
             {
                 if (value == true && (IntFormat == true || DoubleFormat == true))
@@ -111,21 +80,39 @@ namespace EWallet.Components
                 SetValue(DateFormatProperty, value);
             }
         }
-        // Using a DependencyProperty as the backing store for DateFormat.  This enables animation, styling, binding, etc...
+        public DateFormatParameters DateFormatParameter
+        {
+            get => (DateFormatParameters)GetValue(DateFormatParameterProperty);
+            set => SetValue(DateFormatParameterProperty, value);
+        }
+        #endregion
+
+        #region Dependency properties
+        private static readonly DependencyPropertyKey IsEmptyPropertyKey =
+            DependencyProperty.RegisterReadOnly("IsEmpty", typeof(bool), typeof(PlaceholderTextBox), new PropertyMetadata(true));
+        public static readonly DependencyProperty IsEmptyProperty = IsEmptyPropertyKey.DependencyProperty;
+        
+        public static readonly DependencyProperty PlaceholderProperty =
+            DependencyProperty.Register("Placeholder", typeof(string), typeof(PlaceholderTextBox), new PropertyMetadata(""));
+
+        public static new readonly DependencyProperty LanguageProperty =
+            DependencyProperty.Register("Language", typeof(Languages), typeof(PlaceholderTextBox), new PropertyMetadata(Languages.Ru));
+
+        public static readonly DependencyProperty IntFormatProperty =
+            DependencyProperty.Register("IntFormat", typeof(bool), typeof(PlaceholderTextBox), new PropertyMetadata(false));
+
+        public static readonly DependencyProperty DoubleFormatProperty =
+            DependencyProperty.Register("DoubleFormat", typeof(bool), typeof(PlaceholderTextBox), new PropertyMetadata(false));
+
         public static readonly DependencyProperty DateFormatProperty =
             DependencyProperty.Register("DateFormat", typeof(bool), typeof(PlaceholderTextBox), new PropertyMetadata(false));
 
-        public DateFormatParameters DateFormatParameter
-        {
-            get { return (DateFormatParameters)GetValue(DateFormatParameterProperty); }
-            set { SetValue(DateFormatParameterProperty, value); }
-        }
-
-        // Using a DependencyProperty as the backing store for DateFormatParameter.  This enables animation, styling, binding, etc...
         public static readonly DependencyProperty DateFormatParameterProperty =
             DependencyProperty.Register("DateFormatParameter", typeof(DateFormatParameters), 
                 typeof(PlaceholderTextBox), new PropertyMetadata(DateFormatParameters.Month));
+        #endregion
 
+        #region Methods
         protected override void OnTextChanged(TextChangedEventArgs e)
         {
             IsEmpty = string.IsNullOrEmpty(Text);
@@ -139,7 +126,6 @@ namespace EWallet.Components
 
             base.OnTextChanged(e);
         }
-
         protected override void OnPreviewTextInput(TextCompositionEventArgs e)
         {
             if (DoubleFormat)
@@ -151,7 +137,6 @@ namespace EWallet.Components
 
             base.OnPreviewTextInput(e);
         }
-
         protected override void OnPreviewKeyDown(KeyEventArgs e)
         {
             e.Handled = e.Key == Key.Space;
@@ -167,7 +152,6 @@ namespace EWallet.Components
 
             base.OnPreviewKeyDown(e);
         }
-
         private void OnPaste(object sender, DataObjectPastingEventArgs e)
         {
             if (e.SourceDataObject.GetData(typeof(string)) is string text)
@@ -209,7 +193,6 @@ namespace EWallet.Components
 
             Text = text;
         }
-
         private void ExtractDouble(string text)
         {
             text = Regex.Replace(text, @"[^0-9,]", string.Empty);
@@ -228,11 +211,11 @@ namespace EWallet.Components
             Text = string.Format("{0:f2}", result);
             CaretIndex = index;
         }
-
         private void ExtractDate(string text)
         {
             text = Regex.Replace(text, @"[^0-9]", string.Empty);
             Text = text.ToString();
         }
+        #endregion
     }
 }

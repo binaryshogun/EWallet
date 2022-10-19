@@ -7,9 +7,8 @@ namespace EWallet.Components
     /// </summary>
     public sealed partial class Layout : UserControl
     {
-        public Layout()
-        {
-            InitializeComponent();
-        }
+        #region Constructors
+        public Layout() => InitializeComponent();
+        #endregion
     }
 }

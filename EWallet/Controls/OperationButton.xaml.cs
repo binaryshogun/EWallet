@@ -10,73 +10,68 @@ namespace EWallet.Controls
     /// </summary>
     public sealed partial class OperationButton : UserControl
     {
+        #region Constructors
         public OperationButton()
         {
             InitializeComponent();
 
-            Binding bindOperation = new Binding();
+            Binding bindOperation = new Binding("Operation");
             bindOperation.Source = this;
-            bindOperation.Path = new PropertyPath("Operation");
-            bindOperation.Mode = BindingMode.TwoWay;
+            bindOperation.Mode = BindingMode.OneWay;
             operation.SetBinding(TextBlock.TextProperty, bindOperation);
 
-            Binding bindOperationDescription = new Binding();
+            Binding bindOperationDescription = new Binding("OperationDescription");
             bindOperationDescription.Source = this;
-            bindOperationDescription.Path = new PropertyPath("OperationDescription");
-            bindOperationDescription.Mode = BindingMode.TwoWay;
+            bindOperationDescription.Mode = BindingMode.OneWay;
             operationDescription.SetBinding(TextBlock.TextProperty, bindOperationDescription);
 
-            Binding bindCommand = new Binding();
+            Binding bindCommand = new Binding("Command");
             bindCommand.Source = this;
-            bindCommand.Path = new PropertyPath("Command");
-            bindCommand.Mode = BindingMode.TwoWay;
+            bindCommand.Mode = BindingMode.OneWay;
             button.SetBinding(Button.CommandProperty, bindCommand);
 
-            Binding bindImage = new Binding();
+            Binding bindImage = new Binding("ImageSource");
             bindImage.Source = this;
-            bindImage.Path = new PropertyPath("ImageSource");
             bindImage.Mode = BindingMode.OneWay;
             operationImage.SetBinding(Image.SourceProperty, bindImage);
         }
+        #endregion
 
+        #region Properties
         public string Operation
         {
             get => (string)GetValue(OperationProperty);
             set => SetValue(OperationProperty, value);
         }
-
-        // Using a DependencyProperty as the backing store for Operation.  This enables animation, styling, binding, etc...
-        public static readonly DependencyProperty OperationProperty =
-            DependencyProperty.Register("Operation", typeof(string), typeof(OperationButton), new PropertyMetadata(""));
-
         public string OperationDescription
         {
             get => (string)GetValue(OperationDescriptionProperty);
             set => SetValue(OperationDescriptionProperty, value);
         }
-
-        // Using a DependencyProperty as the backing store for OperationDescription.  This enables animation, styling, binding, etc...
-        public static readonly DependencyProperty OperationDescriptionProperty =
-            DependencyProperty.Register("OperationDescription", typeof(string), typeof(OperationButton), new PropertyMetadata(""));
-
         public ICommand Command
         {
             get => (ICommand)GetValue(CommandProperty);
             set => SetValue(CommandProperty, value);
         }
+        public string ImageSource
+        {
+            get => (string)GetValue(ImageSourceProperty);
+            set => SetValue(ImageSourceProperty, value);
+        }
+        #endregion
 
-        // Using a DependencyProperty as the backing store for Command.  This enables animation, styling, binding, etc...
+        #region Dependency properties
+        public static readonly DependencyProperty OperationProperty =
+            DependencyProperty.Register("Operation", typeof(string), typeof(OperationButton), new PropertyMetadata(""));
+
+        public static readonly DependencyProperty OperationDescriptionProperty =
+            DependencyProperty.Register("OperationDescription", typeof(string), typeof(OperationButton), new PropertyMetadata(""));
+
         public static readonly DependencyProperty CommandProperty =
             DependencyProperty.Register("Command", typeof(ICommand), typeof(OperationButton), new PropertyMetadata(null));
 
-        public string ImageSource
-        {
-            get { return (string)GetValue(ImageSourceProperty); }
-            set { SetValue(ImageSourceProperty, value); }
-        }
-
-        // Using a DependencyProperty as the backing store for ImageSource.  This enables animation, styling, binding, etc...
         public static readonly DependencyProperty ImageSourceProperty =
             DependencyProperty.Register("ImageSource", typeof(string), typeof(OperationButton), new PropertyMetadata("../Resources/images/refill.png"));
+        #endregion
     }
 }

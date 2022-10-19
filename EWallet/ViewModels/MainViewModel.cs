@@ -3,12 +3,18 @@
 namespace EWallet.ViewModels
 {
     /// <summary>
-    /// ViewModel для MainWindow.xaml.
+    /// Основной класс ViewModel.
     /// </summary>
     class MainViewModel : ViewModelBase
     {
+        #region Fields
+        private readonly NavigationStore navigationStore;
+        private readonly ModalNavigationStore modalNavigationStore;
+        #endregion
+
+        #region Constructors
         /// <summary>
-        /// Основной класс ViewModel.
+        /// Добавить summary
         /// </summary>
         /// <param name="navigationStore">Навигационное хранилище.</param>
         public MainViewModel(NavigationStore navigationStore, ModalNavigationStore modalNavigationStore)
@@ -18,7 +24,21 @@ namespace EWallet.ViewModels
             this.navigationStore.CurrentViewModelChanged += OnCurrentViewModelChanged;
             this.modalNavigationStore.CurrentViewModelChanged += OnCurrentModalViewModelChanged;
         }
+        #endregion
 
+        #region Properties
+        /// <summary>
+        /// Текущая ViewModel.
+        /// </summary>
+        public ViewModelBase CurrentViewModel
+            => navigationStore.CurrentViewModel;
+        public ViewModelBase CurrentModalViewModel
+            => modalNavigationStore.CurrentViewModel;
+        public bool IsModalOpen
+            => modalNavigationStore.IsOpen;
+        #endregion
+
+        #region Methods
         private void OnCurrentModalViewModelChanged()
         {
             OnPropertyChanged(nameof(CurrentModalViewModel));
@@ -28,16 +48,8 @@ namespace EWallet.ViewModels
         /// <summary>
         /// Метод, вызываемый при смене CurrentViewModel.
         /// </summary>
-        private void OnCurrentViewModelChanged() => OnPropertyChanged(nameof(CurrentViewModel));
-
-        /// <summary>
-        /// Текущая ViewModel.
-        /// </summary>
-        public ViewModelBase CurrentViewModel => navigationStore.CurrentViewModel;
-        public ViewModelBase CurrentModalViewModel => modalNavigationStore.CurrentViewModel;
-        public bool IsModalOpen => modalNavigationStore.IsOpen;
-
-        private readonly NavigationStore navigationStore;
-        private readonly ModalNavigationStore modalNavigationStore;
+        private void OnCurrentViewModelChanged() 
+            => OnPropertyChanged(nameof(CurrentViewModel));
+        #endregion
     }
 }

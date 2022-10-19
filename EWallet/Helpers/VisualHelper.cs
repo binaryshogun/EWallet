@@ -1,12 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 using System.Windows.Media;
 using System.Windows;
 
-namespace EWallet.Behaviors
+namespace EWallet.Helpers
 {
     public class VisualHelper
     {
@@ -26,7 +22,6 @@ namespace EWallet.Behaviors
             }
             return children;
         }
-
         public static T FindUpVisualTree<T>(DependencyObject initial) where T : DependencyObject
         {
             DependencyObject current = initial;

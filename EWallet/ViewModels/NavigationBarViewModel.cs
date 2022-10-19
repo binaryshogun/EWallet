@@ -43,8 +43,10 @@ namespace EWallet.ViewModels
         #endregion
 
         #region Properties
-        public bool IsLoggedOut => userStore.IsLoggedOut;
-        public bool IsLoggedIn => userStore.IsLoggedIn;
+        public bool IsLoggedOut 
+            => userStore.IsLoggedOut;
+        public bool IsLoggedIn 
+            => userStore.IsLoggedIn;
         #endregion
 
         #region Commands
@@ -64,9 +66,7 @@ namespace EWallet.ViewModels
         }
 
         public override void Dispose() 
-        {
-            base.Dispose(); 
-        }
+            => base.Dispose();
         #endregion
     }
 }

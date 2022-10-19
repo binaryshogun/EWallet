@@ -1,9 +1,5 @@
 ﻿using EWallet.Models;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace EWallet.Stores
 {
@@ -12,8 +8,15 @@ namespace EWallet.Stores
     /// </summary>
     public class UserStore
     {
+        #region Fields
         private User currentUser;
+        #endregion
 
+        #region Events
+        public event Action CurrentUserChanged;
+        #endregion
+
+        #region Properties
         /// <summary>
         /// Текущий пользователь.
         /// </summary>
@@ -30,11 +33,15 @@ namespace EWallet.Stores
             }
         }
 
-        public bool IsLoggedIn => currentUser != null;
-        public bool IsLoggedOut => currentUser == null;
+        public bool IsLoggedIn 
+            => currentUser != null;
+        public bool IsLoggedOut 
+            => currentUser == null;
+        #endregion
 
-        public event Action CurrentUserChanged;
-
-        public void Logout() => CurrentUser = null;
+        #region Methods
+        public void Logout() 
+            => CurrentUser = null;
+        #endregion
     }
 }

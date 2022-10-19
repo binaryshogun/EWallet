@@ -2,10 +2,6 @@
 using EWallet.Stores;
 using EWallet.ViewModels;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace EWallet.Services
 {
@@ -13,16 +9,22 @@ namespace EWallet.Services
         where TViewModel : ViewModelBase
         where TParameter : User
     {
+        #region Fields
         private readonly NavigationStore navigationStore;
         private readonly Func<TParameter, TViewModel> createViewModel;
+        #endregion
 
+        #region Constructors
         public ParameterNavigationService(NavigationStore navigationStore, Func<TParameter, TViewModel> createViewModel)
         {
             this.navigationStore = navigationStore;
             this.createViewModel = createViewModel;
         }
+        #endregion
 
-        public void Navigate(TParameter parameter) 
+        #region Methods
+        public void Navigate(TParameter parameter)
             => navigationStore.CurrentViewModel = createViewModel?.Invoke(parameter);
+        #endregion
     }
 }

@@ -176,38 +176,32 @@ namespace EWallet.Controls
             get => (string)GetValue(PlaceholderProperty);
             set => SetValue(PlaceholderProperty, value);
         }
-
         public bool OnlyNumbers
         {
-            get { return (bool)GetValue(OnlyNumbersProperty); }
-            set { SetValue(OnlyNumbersProperty, value); }
+            get => (bool)GetValue(OnlyNumbersProperty);
+            set => SetValue(OnlyNumbersProperty, value);
         }
         #endregion
 
         #region DependencyProperties
-        // Using a DependencyProperty as the backing store for MyProperty.  This enables animation, styling, binding, etc...
         public static readonly DependencyProperty PasswordProperty =
             DependencyProperty.Register("Password", typeof(string), typeof(BindablePasswordBox),
                 new FrameworkPropertyMetadata(null, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault,
                     PasswordPropertyChanged, null, false, UpdateSourceTrigger.PropertyChanged));
 
-        // Using a DependencyProperty as the backing store for Background.  This enables animation, styling, binding, etc...
         public static new readonly DependencyProperty BackgroundProperty =
             DependencyProperty.Register("Background", typeof(Brush), typeof(BindablePasswordBox),
                 new FrameworkPropertyMetadata(null, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault,
                     BackgroundPropertyChanged, null, false, UpdateSourceTrigger.PropertyChanged));
 
-        // Using a DependencyProperty as the backing store for MaxLength.  This enables animation, styling, binding, etc...
         public static readonly DependencyProperty MaxLengthProperty =
             DependencyProperty.Register("MaxLength", typeof(int), typeof(BindablePasswordBox), 
                 new FrameworkPropertyMetadata(0, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault,
                     MaxLengthPropertyChanged, null, false, UpdateSourceTrigger.PropertyChanged));
 
-        // Using a DependencyProperty as the backing store for Placeholder.  This enables animation, styling, binding, etc...
         public static readonly DependencyProperty PlaceholderProperty =
             DependencyProperty.Register("Placeholder", typeof(string), typeof(BindablePasswordBox), new PropertyMetadata(""));
 
-        // Using a DependencyProperty as the backing store for OnlyNumbers.  This enables animation, styling, binding, etc...
         public static readonly DependencyProperty OnlyNumbersProperty =
             DependencyProperty.Register("OnlyNumbers", typeof(bool), typeof(BindablePasswordBox), new PropertyMetadata(false));
         #endregion

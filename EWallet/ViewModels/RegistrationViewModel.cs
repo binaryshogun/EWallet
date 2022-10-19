@@ -1,9 +1,7 @@
 ﻿using EWallet.Commands;
 using EWallet.Stores;
 using EWallet.Services;
-using System;
 using System.Windows.Input;
-using System.Windows.Threading;
 
 namespace EWallet.ViewModels
 {
@@ -181,7 +179,8 @@ namespace EWallet.ViewModels
             => login != "" && password != "" &&
                 repeatedPassword != "" && password == repeatedPassword;
 
-        public override void Dispose() => base.Dispose();
+        public override void Dispose() 
+            => base.Dispose();
         #endregion
     }
 }

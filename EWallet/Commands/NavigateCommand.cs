@@ -1,12 +1,10 @@
 ﻿using EWallet.Services;
-using EWallet.ViewModels;
 
 namespace EWallet.Commands
 {
     /// <summary>
     /// Команда навигации.
     /// </summary>
-    /// <typeparam name="TViewModel">ViewModel для навигации.</typeparam>
     public sealed class NavigateCommand : CommandBase
     {
         #region Fields
@@ -15,9 +13,9 @@ namespace EWallet.Commands
 
         #region Constructors
         /// <summary>
-        /// Инициализирует команду навигации.
+        /// Инициализирует новый экземпляр класса <see cref="NavigateCommand"/>.
         /// </summary>
-        /// <param name="navigationService">Сервис навигации, привязанный к TViewModel.</param>
+        /// <param name="navigationService">Сервис навигации, привязанный к ViewModel.</param>
         public NavigateCommand(INavigationService navigationService) 
             => this.navigationService = navigationService;
         #endregion

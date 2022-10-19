@@ -91,10 +91,7 @@ namespace EWallet.ViewModels
 
         public bool IsUserAuthorizing
         {
-            get
-            {
-                return isUserAuthorizing;
-            }
+            get => isUserAuthorizing;
             set
             {
                 isUserAuthorizing = value;
@@ -120,7 +117,8 @@ namespace EWallet.ViewModels
         private bool EnableEnterButton()
             => login != "" && password != "";
 
-        public override void Dispose() => base.Dispose();
+        public override void Dispose() 
+            => base.Dispose();
         #endregion
     }
 }

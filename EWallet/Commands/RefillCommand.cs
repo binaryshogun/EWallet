@@ -4,39 +4,44 @@ using EWallet.Models;
 using EWallet.Stores;
 using EWallet.ViewModels;
 using System;
+using System.Collections.Generic;
+using System.Data.Entity;
 using System.Data.Entity.Migrations;
+using System.Linq;
+using System.Security.Cryptography;
+using System.Text;
 using System.Threading.Tasks;
 
 namespace EWallet.Commands
 {
-    public class TransferCommand : CommandBase
+    internal class RefillCommand : CommandBase
     {
         #region Fields
         private readonly UserStore userStore;
-        private readonly TransferViewModel transferViewModel;
+        private readonly RefillViewModel refillViewModel;
         #endregion
 
         #region Constructors
-        public TransferCommand(UserStore userStore, TransferViewModel transferViewModel)
+        public RefillCommand(UserStore userStore, RefillViewModel refillViewModel)
         {
             this.userStore = userStore;
-            this.transferViewModel = transferViewModel;
+            this.refillViewModel = refillViewModel;
         }
         #endregion
 
         #region Methods
-        public override void Execute(object parameter) 
+        public override void Execute(object parameter)
             => Task.Run(ProvideTransfer);
 
         private async Task ProvideTransfer()
         {
-            transferViewModel.IsOperationBeingProvided = true;
+            refillViewModel.IsOperationBeingProvided = true;
 
             try
             {
                 using (var database = new WalletEntities())
                 {
-                    string cardNumber = HashHelper.GetHash(transferViewModel.CardNumber, 16);
+                    string cardNumber = HashHelper.GetHash(refillViewModel.CardNumber, 16);
                     Card card = await OperationsHelper.FetchCard(database, cardNumber);
                     OperationsHelper.CheckCard(card, this.userStore);
 
@@ -55,14 +60,14 @@ namespace EWallet.Commands
             catch (Exception e) { ErrorMessageBox.Show(e); }
             finally
             {
-                transferViewModel.IsOperationBeingProvided = false;
+                refillViewModel.IsOperationBeingProvided = false;
             }
         }
 
         private double SetSum()
         {
-            double.TryParse(transferViewModel.OperationSum, out double sum);
-            double.TryParse(transferViewModel.Comission, out double comission);
+            double.TryParse(refillViewModel.OperationSum, out double sum);
+            double.TryParse(refillViewModel.Comission, out double comission);
             sum += comission;
 
             return sum;

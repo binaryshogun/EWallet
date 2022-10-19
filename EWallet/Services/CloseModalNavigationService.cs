@@ -4,10 +4,17 @@ namespace EWallet.Services
 {
     public sealed class CloseModalNavigationService : INavigationService
     {
-        private readonly ModalNavigationStore navigationStore;
+        #region Fields
+        private readonly ModalNavigationStore modalNavigationStore;
+        #endregion
 
-        public CloseModalNavigationService(ModalNavigationStore navigationStore) => this.navigationStore = navigationStore;
+        #region Constructors
+        public CloseModalNavigationService(ModalNavigationStore modalNavigationStore) 
+            => this.modalNavigationStore = modalNavigationStore;
+        #endregion
 
-        public void Navigate() => navigationStore.Close();
+        #region Methods
+        public void Navigate() => modalNavigationStore.Close();
+        #endregion
     }
 }

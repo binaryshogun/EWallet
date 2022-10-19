@@ -13,18 +13,18 @@ namespace EWallet.Commands
     {
         #region Fields
         private readonly UserStore userStore;
-        private readonly INavigationService navigationService;
+        private readonly INavigationService homeNavigationService;
         #endregion
 
         #region Constructors
         /// <summary>
         /// Инициализирует команду выхода из аккаунта.
         /// </summary>
-        /// <param name="navigationService">Сервис навигации, привязанный к TViewModel.</param>
-        public ExitAccountCommand(UserStore userStore, INavigationService navigationService)
+        /// <param name="homeNavigationService">Сервис навигации, привязанный к HomeViewModel.</param>
+        public ExitAccountCommand(UserStore userStore, INavigationService homeNavigationService)
         {
             this.userStore = userStore;
-            this.navigationService = navigationService;
+            this.homeNavigationService = homeNavigationService;
         }
         #endregion
 
@@ -36,7 +36,7 @@ namespace EWallet.Commands
                 MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes)
             {
                 userStore.Logout();
-                navigationService.Navigate();
+                homeNavigationService.Navigate();
             }
         }
         #endregion

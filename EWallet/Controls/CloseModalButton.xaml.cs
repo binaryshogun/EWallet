@@ -10,6 +10,7 @@ namespace EWallet.Controls
     /// </summary>
     public partial class CloseModalButton : UserControl
     {
+        #region Constructors
         public CloseModalButton()
         {
             InitializeComponent();
@@ -20,15 +21,20 @@ namespace EWallet.Controls
             bindCommand.Mode = BindingMode.TwoWay;
             button.SetBinding(Button.CommandProperty, bindCommand);
         }
+        #endregion
 
+        #region Properties
         public ICommand Command
         {
-            get { return (ICommand)GetValue(CommandProperty); }
-            set { SetValue(CommandProperty, value); }
+            get => (ICommand)GetValue(CommandProperty);
+            set => SetValue(CommandProperty, value);
         }
+        #endregion
 
+        #region Dependency properties
         // Using a DependencyProperty as the backing store for Command.  This enables animation, styling, binding, etc...
         public static readonly DependencyProperty CommandProperty =
             DependencyProperty.Register("Command", typeof(ICommand), typeof(CloseModalButton), new PropertyMetadata(null));
+        #endregion
     }
 }

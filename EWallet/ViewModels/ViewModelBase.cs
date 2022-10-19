@@ -9,9 +9,12 @@ namespace EWallet.ViewModels
     /// </summary>
     public abstract class ViewModelBase : INotifyPropertyChanged, IDisposable
     {
+        #region Events
         /// <inheritdoc cref="PropertyChangedEventHandler"/>
         public event PropertyChangedEventHandler PropertyChanged;
+        #endregion
 
+        #region Methods
         /// <inheritdoc cref="PropertyChanged"/>
         /// <param name="property">
         /// Имя свойства.
@@ -20,5 +23,6 @@ namespace EWallet.ViewModels
             => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(property));
 
         public virtual void Dispose() { }
+        #endregion
     }
 }

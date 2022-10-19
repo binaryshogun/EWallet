@@ -71,13 +71,13 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Behaviors\ScaleFontBehavior.cs" />
-    <Compile Include="Behaviors\VisualHelper.cs" />
+    <Compile Include="Helpers\VisualHelper.cs" />
     <Compile Include="Commands\AuthorizeUserCommand.cs" />
     <Compile Include="Commands\CommandBase.cs" />
-    <Compile Include="Commands\DoOperationCommand.cs" />
     <Compile Include="Commands\ExitAccountCommand.cs" />
     <Compile Include="Commands\ExitAppCommand.cs" />
     <Compile Include="Commands\NavigateCommand.cs" />
+    <Compile Include="Commands\RefillCommand.cs" />
     <Compile Include="Commands\RegisterUserCommand.cs" />
     <Compile Include="Commands\SavePassportDataCommand.cs" />
     <Compile Include="Commands\TransferCommand.cs" />
@@ -105,6 +105,8 @@
       <DependentUpon>OperationButton.xaml</DependentUpon>
     </Compile>
     <Compile Include="Converters\InversedBooleanToVisibilityConverter.cs" />
+    <Compile Include="Helpers\HashHelper.cs" />
+    <Compile Include="Helpers\OperationsHelper.cs" />
     <Compile Include="Models\BanksData.cs" />
     <Compile Include="Models\Card.cs">
       <DependentUpon>WalletModel.tt</DependentUpon>

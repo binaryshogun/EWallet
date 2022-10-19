@@ -9,7 +9,7 @@ namespace EWallet.Commands
     public sealed class ExitAppCommand : CommandBase
     {
         /// <summary>
-        /// Инициализирует команду выхода из приложения.
+        /// Инициализирует новый экземпляр класса <see cref="ExitAccountCommand"/>.
         /// </summary>
         public ExitAppCommand() { }
 

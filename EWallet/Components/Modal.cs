@@ -9,25 +9,32 @@ namespace EWallet.Components
     /// </summary>
     public sealed class Modal : ContentControl
     {
-        public bool IsOpen
-        {
-            get => (bool)GetValue(IsOpenProperty);
-            set => SetValue(IsOpenProperty, value);
-        }
-
-        // Using a DependencyProperty as the backing store for IsOpen.  This enables animation, styling, binding, etc...
-        public static readonly DependencyProperty IsOpenProperty =
-                DependencyProperty.Register("IsOpen", typeof(bool), typeof(Modal), new PropertyMetadata(false));
-
+        #region Constructors
         static Modal()
         {
             DefaultStyleKeyProperty.OverrideMetadata(typeof(Modal), new FrameworkPropertyMetadata(typeof(Modal)));
             BackgroundProperty.OverrideMetadata(typeof(Modal), new FrameworkPropertyMetadata(CreateDefaultBackground()));
         }
+        #endregion
 
+        #region Properties
+        public bool IsOpen
+        {
+            get => (bool)GetValue(IsOpenProperty);
+            set => SetValue(IsOpenProperty, value);
+        }
+        #endregion
+
+        #region Dependency properties
+        public static readonly DependencyProperty IsOpenProperty =
+                DependencyProperty.Register("IsOpen", typeof(bool), typeof(Modal), new PropertyMetadata(false));
+        #endregion
+
+        #region Methods
         private static object CreateDefaultBackground() => new SolidColorBrush(Colors.Black)
         {
             Opacity = 0.3
         };
+        #endregion
     }
 }

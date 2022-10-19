@@ -5,27 +5,37 @@ namespace EWallet.Components
 {
     public sealed class FlexWrapPanel : WrapPanel
     {
+        #region Properties
         public double RequestItemWidth
         {
-            get { return (double)GetValue(RequestItemWidthProperty); }
-            set { SetValue(RequestItemWidthProperty, value); }
+            get => (double)GetValue(RequestItemWidthProperty);
+            set => SetValue(RequestItemWidthProperty, value);
         }
+        public double RequestItemHeight
+        {
+            get => (double)GetValue(RequestItemHeightProperty);
+            set => SetValue(RequestItemHeightProperty, value);
+        }
+        #endregion
 
-        // Using a DependencyProperty as the backing store for RequestItemWidth.  This enables animation, styling, binding, etc...
+        #region Dependency properties
         public static readonly DependencyProperty RequestItemWidthProperty =
             DependencyProperty.Register("RequestItemWidth", typeof(double), typeof(FlexWrapPanel), new PropertyMetadata(double.NaN));
 
-        public double RequestItemHeight
-        {
-            get { return (double)GetValue(RequestItemHeightProperty); }
-            set { SetValue(RequestItemHeightProperty, value); }
-        }
-
-        // Using a DependencyProperty as the backing store for RequestItemHeight.  This enables animation, styling, binding, etc...
         public static readonly DependencyProperty RequestItemHeightProperty =
             DependencyProperty.Register("RequestItemHeight", typeof(double), typeof(FlexWrapPanel), new PropertyMetadata(double.NaN));
+        #endregion
 
+        #region Methods
         protected override Size MeasureOverride(Size constraint)
+        {
+            ProcessRequestedWidth(constraint);
+            ProcessRequestedHeight(constraint);
+
+            return base.MeasureOverride(constraint);
+        }
+
+        private void ProcessRequestedWidth(Size constraint)
         {
             if (!double.IsNaN(RequestItemWidth))
             {
@@ -43,7 +53,9 @@ namespace EWallet.Components
                     child.SetValue(WidthProperty, width);
                 }
             }
-            
+        }
+        private void ProcessRequestedHeight(Size constraint)
+        {
             if (!double.IsNaN(RequestItemHeight))
             {
                 double requestedHeight = RequestItemHeight;
@@ -57,8 +69,7 @@ namespace EWallet.Components
                     child.SetValue(HeightProperty, requestedHeight);
                 }
             }
-
-            return base.MeasureOverride(constraint);
         }
+        #endregion
     }
 }

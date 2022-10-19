@@ -9,12 +9,13 @@ namespace EWallet.Components
     /// </summary>
     public sealed partial class NavigationBar : UserControl
     {
-        public NavigationBar()
-        {
-            InitializeComponent();
-        }
+        #region Constructors
+        public NavigationBar() => InitializeComponent();
+        #endregion
 
+        #region Methods
         private void UserControl_MouseLeftButtonDown(object sender, MouseButtonEventArgs e) 
             => Application.Current.MainWindow.DragMove();
+        #endregion
     }
 }

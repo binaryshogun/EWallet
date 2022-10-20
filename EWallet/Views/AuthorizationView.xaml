@@ -4,7 +4,6 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    xmlns:local="clr-namespace:EWallet.Views"
     xmlns:controls="clr-namespace:EWallet.Controls"
     xmlns:viewmodels="clr-namespace:EWallet.ViewModels"
     xmlns:components="clr-namespace:EWallet.Components"
@@ -15,14 +14,12 @@
 
     <Grid FocusManager.FocusedElement="{Binding ElementName=LoginBox}">
         <controls:CloseModalButton
-            Grid.Column="1"
             Command="{Binding NavigateHomeCommand}"
             ToolTip="Закрыть окно авторизации"
             Visibility="{Binding IsUserAuthorizing, Converter={StaticResource InversedConverter}}" />
 
         <StackPanel
             Grid.Row="1"
-            Grid.Column="1"
             VerticalAlignment="Center"
             Margin="60 0"
             Visibility="{Binding IsUserAuthorizing, Converter={StaticResource InversedConverter}}">
@@ -106,7 +103,6 @@
 
         <StackPanel
             Grid.RowSpan="2"
-            Grid.ColumnSpan="2"
             VerticalAlignment="Center"
             HorizontalAlignment="Center"
             Visibility="{Binding IsUserAuthorizing, Converter={StaticResource BooleanToVisibilityConverter}}">
@@ -117,15 +113,12 @@
         </StackPanel>
 
         <Grid.RowDefinitions>
-                <RowDefinition Height="auto"/>
-                <RowDefinition Height="*" />
-                <RowDefinition Height="auto"/>
-            </Grid.RowDefinitions>
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="auto"/>
-                <ColumnDefinition
-                    Width="*" />
-                <ColumnDefinition Width="auto"/>
-            </Grid.ColumnDefinitions>
-        </Grid>
+            <RowDefinition
+                Height="auto" />
+            <RowDefinition
+                Height="*" />
+            <RowDefinition
+                Height="auto" />
+        </Grid.RowDefinitions>
+    </Grid>
 </UserControl>

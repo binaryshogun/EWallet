@@ -4,22 +4,21 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    xmlns:local="clr-namespace:EWallet.Views"
     xmlns:controls="clr-namespace:EWallet.Controls"
     xmlns:viewmodels="clr-namespace:EWallet.ViewModels"
     xmlns:components="clr-namespace:EWallet.Components"
-    xmlns:converters="clr-namespace:EWallet.Converters"
     mc:Ignorable="d"
-    d:DataContext="{d:DesignInstance Type=viewmodels:AccountViewModel}"
     d:DesignHeight="600"
-    d:DesignWidth="1024">
-
+    d:DesignWidth="1024"
+    d:DataContext="{d:DesignInstance Type=viewmodels:AccountViewModel}"
+    FocusManager.FocusedElement="{Binding ElementName=TransferOperationButton}">
     <Grid>
         <components:Loader
             IsLoading="{Binding AreServicesLoading}" 
             VerticalAlignment="Center"
             HorizontalAlignment="Center"
             Grid.RowSpan="2"/>
+
         <components:FlexWrapPanel
             Grid.RowSpan="2"
             HorizontalAlignment="Center"
@@ -30,6 +29,7 @@
             Visibility="{Binding AreServicesLoading, Converter={StaticResource InversedConverter}}">
 
             <controls:OperationButton
+                x:Name="TransferOperationButton"
                 Operation="{Binding Transfer, UpdateSourceTrigger=PropertyChanged}"
                 OperationDescription="{Binding TransferDescription, UpdateSourceTrigger=PropertyChanged}"
                 ImageSource="../Resources/images/card.png"
@@ -90,8 +90,8 @@
 
         <Grid Grid.Column="2" Margin="5 10">
             <Border
-                Background="#773997"
-                BorderBrush="#773997"
+                Background="{StaticResource Accents}"
+                BorderBrush="{StaticResource Accents}"
                 CornerRadius="10">
                 <StackPanel>
                     <Grid
@@ -100,22 +100,22 @@
                             Style="{StaticResource SmallButtonStyle}"
                             Content="{Binding Login}"
                             Command="{Binding NavigateUserProfileCommand}"
-                            Foreground="White"
-                            FontWeight="Bold" 
-                            Margin="10 5"
+                            Foreground="{StaticResource BackgroundColor}"
+                            FontWeight="SemiBold" 
                             HorizontalAlignment="Left"
                             VerticalAlignment="Center"
-                            ToolTip="Переход в профиль"/>
+                            ToolTip="Переход в профиль"
+                            IsDefault="True"/>
 
                         <Button
                             x:Name="logOutButton"
                             Style="{StaticResource ImageButtonStyle}"
                             Command="{Binding ExitAccountCommand}"
-                            VerticalAlignment="Top"
                             HorizontalAlignment="Right"
                             Grid.Column="2"
                             Margin="15"
-                            ToolTip="Выход из профиля">
+                            ToolTip="Выход из профиля"
+                            IsCancel="True">
                             <Button.Content>
                                 <Image
                                     Source="../Resources/icons/icon_exitButton_white.png" />
@@ -141,37 +141,31 @@
             Grid.Row="1"
             VerticalAlignment="Top">
             <StackPanel>
-                <Border
-                    Background="White"
-                    BorderBrush="#773997"
-                    BorderThickness="1"
-                    CornerRadius="10"
-                    ToolTip="Отчёт о расходах и доходах за всё время или за определенный период времени">
-                    <Button
-                        Content="Управление картами"
-                        Style="{StaticResource SmallButtonStyle}"
-                        Foreground="#773997"
-                        FontSize="18"
-                        Margin="10"
-                        HorizontalAlignment="Center"
-                        Command="{Binding ReportExpensesCommand}" />
-                </Border>
-                <Border
-                    Background="White"
-                    BorderBrush="#773997"
-                    BorderThickness="1"
-                    CornerRadius="10"
-                    ToolTip="Отчёт о расходах и доходах за всё время или за определенный период времени"
-                    Margin="0 15">
-                    <Button
-                        Content="Отчёт о финансах"
-                        Style="{StaticResource SmallButtonStyle}"
-                        Foreground="#773997"
-                        FontSize="18"
-                        Margin="10"
-                        HorizontalAlignment="Center"
-                        Command="{Binding ReportExpensesCommand}" />
-                </Border>
+                <StackPanel.Resources>
+                    <Style
+                        TargetType="{x:Type Button}"
+                        BasedOn="{StaticResource {x:Type Button}}">
+                        <Setter
+                            Property="Foreground"
+                            Value="{StaticResource Accents}" />
+                        <Setter
+                            Property="FontSize"
+                            Value="18" />
+                        <Setter
+                            Property="Padding"
+                            Value="10" />
+                        <Setter
+                            Property="Margin"
+                            Value="0 3" />
+                    </Style>
+                </StackPanel.Resources>
+                <Button
+                    Content="Управление картами"
+                    Command="{Binding NavigateManagmentCommand}" />
+                <Button
+                    Content="Расходы и доходы"
+                    HorizontalAlignment="Stretch"
+                    Command="{Binding NavigateExpensesAndIncomesCommand}" />
             </StackPanel>
         </Grid>
 

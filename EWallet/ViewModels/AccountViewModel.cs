@@ -142,7 +142,8 @@ namespace EWallet.ViewModels
         public ICommand NavigateTransferCommand { get; }
         public ICommand NavigateWithdrawCommand { get; }
         public ICommand NavigateRefillCommand { get; }
-        public ICommand ReportExpensesCommand { get; }
+        public ICommand NavigateManagmentCommand { get; }
+        public ICommand NavigateExpensesAndIncomesCommand { get; }
         #endregion
 
         #region Methods

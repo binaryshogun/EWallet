@@ -4,16 +4,14 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    xmlns:local="clr-namespace:EWallet.Views"
-    xmlns:components="clr-namespace:EWallet.Components"
     xmlns:viewmodels="clr-namespace:EWallet.ViewModels"
-    xmlns:controls="clr-namespace:EWallet.Controls"
     xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
     xmlns:behaviors="clr-namespace:EWallet.Behaviors"
     mc:Ignorable="d"
     d:DesignHeight="800"
     d:DesignWidth="1024"
-    d:DataContext="{d:DesignInstance Type=viewmodels:HomeViewModel}">
+    d:DataContext="{d:DesignInstance Type=viewmodels:HomeViewModel}"
+    FocusManager.FocusedElement="{Binding ElementName=LoginButton}">
 
     <Grid>
         <Grid.Resources>
@@ -27,7 +25,7 @@
                     Value="SemiBold" />
                 <Setter
                     Property="Foreground"
-                    Value="#773997" />
+                    Value="{StaticResource Accents}" />
                 <Setter
                     Property="FontFamily"
                     Value="Cascadia Mono" />
@@ -117,23 +115,15 @@
             Margin="50"
             HorizontalAlignment="Right">
             <Button
-                
-                Grid.ColumnSpan="2"
                 Content="Создать аккаунт"
-                Style="{DynamicResource WhiteButtonStyle}"
-                VerticalAlignment="Center"
-                Margin="10"
                 Command="{Binding NavigateRegistrationCommand}"
                 ToolTip="Зарегистрировать новый аккаунт в системе" />
 
             <Button
+                x:Name="LoginButton"
                 Grid.Row="3"
-                Grid.Column="6"
-                Grid.ColumnSpan="2"
                 Content="Войти в аккаунт"
-                Style="{DynamicResource PurpleButtonStyle}"
-                VerticalAlignment="Center"
-                Margin="10"
+                Style="{DynamicResource InversedButtonStyle}"
                 Command="{Binding NavigateAuthorizationCommand}"
                 ToolTip="Переход на страницу авторизации" />
         </WrapPanel>

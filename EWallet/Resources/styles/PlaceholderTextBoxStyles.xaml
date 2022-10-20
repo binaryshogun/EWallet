@@ -1,0 +1,87 @@
+﻿<ResourceDictionary
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:components="clr-namespace:EWallet.Components">
+    <!--PlaceholderPasswordBox style-->
+    <Style
+        TargetType="{x:Type components:PlaceholderTextBox}"
+        BasedOn="{StaticResource {x:Type TextBox}}">
+        <Setter
+            Property="Template">
+            <Setter.Value>
+                <ControlTemplate
+                    TargetType="{x:Type components:PlaceholderTextBox}">
+                    <Border
+                        x:Name="border"
+                        Background="{TemplateBinding Background}"
+                        BorderBrush="{TemplateBinding BorderBrush}"
+                        BorderThickness="{TemplateBinding BorderThickness}"
+                        SnapsToDevicePixels="True">
+                        <Grid>
+                            <Label
+                                Padding="5 0"
+                                Margin="0"
+                                FontSize="{TemplateBinding FontSize}"
+                                Visibility="{TemplateBinding IsEmpty, Converter={StaticResource BooleanToVisibilityConverter}}"
+                                IsHitTestVisible="False"
+                                Foreground="{StaticResource PlaceholdersColor}"
+                                Panel.ZIndex="1">
+                                <Label.Content>
+                                    <TextBlock
+                                        Text="{TemplateBinding Placeholder}"
+                                        Margin="0" />
+                                </Label.Content>
+                            </Label>
+                            <ScrollViewer
+                                x:Name="PART_ContentHost"
+                                Focusable="false"
+                                HorizontalScrollBarVisibility="Hidden"
+                                VerticalScrollBarVisibility="Hidden" />
+                        </Grid>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger
+                            Property="IsEnabled"
+                            Value="false">
+                            <Setter
+                                Property="Opacity"
+                                TargetName="border"
+                                Value="0.56" />
+                        </Trigger>
+                        <Trigger
+                            Property="IsMouseOver"
+                            Value="true">
+                            <Setter
+                                Property="BorderBrush"
+                                TargetName="border"
+                                Value="{StaticResource MainColor}" />
+                        </Trigger>
+                        <Trigger
+                            Property="IsKeyboardFocused"
+                            Value="true">
+                            <Setter
+                                Property="BorderBrush"
+                                TargetName="border"
+                                Value="{StaticResource Accents}" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+        <Style.Triggers>
+            <MultiTrigger>
+                <MultiTrigger.Conditions>
+                    <Condition
+                        Property="IsInactiveSelectionHighlightEnabled"
+                        Value="true" />
+                    <Condition
+                        Property="IsSelectionActive"
+                        Value="false" />
+                </MultiTrigger.Conditions>
+                <Setter
+                    Property="SelectionBrush"
+                    Value="{DynamicResource {x:Static SystemColors.InactiveSelectionHighlightBrushKey}}" />
+            </MultiTrigger>
+        </Style.Triggers>
+    </Style>
+</ResourceDictionary>

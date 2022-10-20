@@ -163,9 +163,9 @@
                     Content="Управление картами"
                     Command="{Binding NavigateManagmentCommand}" />
                 <Button
-                    Content="Расходы и доходы"
+                    Content="Отчёт о расходах"
                     HorizontalAlignment="Stretch"
-                    Command="{Binding NavigateExpensesAndIncomesCommand}" />
+                    Command="{Binding NavigateExpenseReportCommand}" />
             </StackPanel>
         </Grid>
 

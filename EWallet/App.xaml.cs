@@ -39,8 +39,9 @@ namespace EWallet
             services.AddTransient(CreateTransferViewModel);
             services.AddTransient(CreateWithdrawViewModel);
             services.AddTransient(CreateRefillViewModel);
-            services.AddTransient(CreateAccountViewModel);
             services.AddTransient(CreateUserProfileViewModel);
+            services.AddTransient(CreateExpenseReportViewModel);
+            services.AddTransient(CreateAccountViewModel);
 
             services.AddSingleton(s => new MainWindow()
             {
@@ -148,7 +149,7 @@ namespace EWallet
             => new AccountViewModel(serviceProvider.GetRequiredService<UserStore>(),
                     CreateHomeNavigationService(serviceProvider), CreateUserProfileNavigationService(serviceProvider),
                     CreateTransferNavigationService(serviceProvider), CreateWithdrawNavigationService(serviceProvider),
-                    CreateRefillNavigationService(serviceProvider));
+                    CreateRefillNavigationService(serviceProvider), CreateExpenseReportNavigationService(serviceProvider));
 
         /// <summary>
         /// Метод, создающий NavigationService, привязанный к AccountViewModel.
@@ -240,6 +241,25 @@ namespace EWallet
             var modalNavigationStore = serviceProvider.GetRequiredService<ModalNavigationStore>();
             return new ModalNavigationService<RefillViewModel>(modalNavigationStore,
                 () => serviceProvider.GetRequiredService<RefillViewModel>());
+        }
+        #endregion
+
+        #region ExpenseReport
+        private ExpenseReportViewModel CreateExpenseReportViewModel(IServiceProvider serviceProvider)
+        {
+            var closeModalNavigationService = serviceProvider.GetService<CloseModalNavigationService>();
+            var navigationService = new CompositeNavigationService(closeModalNavigationService, 
+                CreateAccountNavigationService(serviceProvider));
+
+            return new ExpenseReportViewModel(serviceProvider.GetRequiredService<UserStore>(), 
+                navigationService);
+        }
+
+        public INavigationService CreateExpenseReportNavigationService(IServiceProvider serviceProvider)
+        {
+            var modalNavigationStore = serviceProvider.GetRequiredService<ModalNavigationStore>();
+            return new ModalNavigationService<ExpenseReportViewModel>(modalNavigationStore,
+                () => serviceProvider.GetRequiredService<ExpenseReportViewModel>());
         }
         #endregion
 

@@ -5,7 +5,7 @@
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary 
-                    Source="Resources/styles/AppTheme.xaml"/>
+                    Source="Resources/styles/AppStyle.xaml"/>
                 <ResourceDictionary
                     Source="Resources/styles/BindablePasswordBoxStyles.xaml" />
                 <ResourceDictionary

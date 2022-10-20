@@ -3,7 +3,7 @@
 namespace EWallet.Views
 {
     /// <summary>
-    /// Логика взаимодействия для AccountView1.xaml
+    /// Логика взаимодействия для AccountView.xaml
     /// </summary>
     public partial class AccountView : UserControl
     {

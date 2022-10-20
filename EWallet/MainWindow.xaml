@@ -49,6 +49,10 @@
                 <views:RefillView />
             </DataTemplate>
             <DataTemplate
+                DataType="{x:Type viewmodels:ExpenseReportViewModel}">
+                <views:ExpenseReportView />
+            </DataTemplate>
+            <DataTemplate
                 DataType="{x:Type viewmodels:LayoutViewModel}">
                 <components:Layout />
             </DataTemplate>

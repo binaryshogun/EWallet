@@ -34,7 +34,7 @@ namespace EWallet.Helpers
             Operation operation = new Operation
             {
                 Date = DateTime.Now,
-                Sum = sum,
+                Sum = Math.Round(sum, 2),
                 UserID = user.ID,
                 ToUserID = card.UserID,
                 ServiceID = service.ID
@@ -54,7 +54,7 @@ namespace EWallet.Helpers
             Operation operation = new Operation
             {
                 Date = DateTime.Now,
-                Sum = sum,
+                Sum = Math.Round(sum, 2),
                 UserID = user.ID,
                 ToUserID = user.ID,
                 ServiceID = service.ID

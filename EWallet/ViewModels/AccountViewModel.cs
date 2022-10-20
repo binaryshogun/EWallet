@@ -38,7 +38,8 @@ namespace EWallet.ViewModels
             INavigationService userProfileNavigationService,
             INavigationService transferNavigationService,
             INavigationService withdrawNavigationService,
-            INavigationService refillNavigationService)
+            INavigationService refillNavigationService,
+            INavigationService expenseReportNavigationService)
         {
             this.userStore = userStore;
 
@@ -48,6 +49,7 @@ namespace EWallet.ViewModels
             NavigateWithdrawCommand = new NavigateCommand(withdrawNavigationService);
             NavigateRefillCommand = new NavigateCommand(refillNavigationService);
             NavigateUserProfileCommand = new NavigateCommand(userProfileNavigationService);
+            NavigateExpenseReportCommand = new NavigateCommand(expenseReportNavigationService);
             ExitAccountCommand = new ExitAccountCommand(userStore, homeNavigationService);
         }
         #endregion
@@ -143,7 +145,7 @@ namespace EWallet.ViewModels
         public ICommand NavigateWithdrawCommand { get; }
         public ICommand NavigateRefillCommand { get; }
         public ICommand NavigateManagmentCommand { get; }
-        public ICommand NavigateExpensesAndIncomesCommand { get; }
+        public ICommand NavigateExpenseReportCommand { get; }
         #endregion
 
         #region Methods

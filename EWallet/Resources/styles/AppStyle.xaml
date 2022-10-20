@@ -18,7 +18,7 @@
         Color="White" />
     <SolidColorBrush
         x:Key="PlaceholdersColor"
-        Color="LightGray" />
+        Color="Gray" />
     <SolidColorBrush
         x:Key="LoaderColor"
         Color="Black" />

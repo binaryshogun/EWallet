@@ -28,22 +28,43 @@
             Visibility="{Binding DataFetching, Converter={StaticResource InversedConverter}}">
             <controls:CloseModalButton
                     Grid.ColumnSpan="2"
-                    Command="{Binding NavigateCommand}" />
+                    Command="{Binding NavigateCommand}" 
+                    ToolTip="Закрыть отчёт о расходах"/>
 
             <Grid
                 Margin="25 30">
                 <Grid
                     Grid.Row="1">
-                    <ComboBox
-                        Text="Выберите месяц"
-                        ItemsSource="{Binding Months}"
-                        SelectedItem="{Binding SelectedMonth, StringFormat=MMMMyy}"
-                        DisplayMemberPath="Month" />
-                    <ComboBox
-                        Grid.Column="1"
-                        ItemsSource="{Binding Services}"
-                        SelectedItem="{Binding SelectedService}"
-                        DisplayMemberPath="Name" />
+                    <Grid>
+                        <ComboBox
+                            ItemsSource="{Binding Months}"
+                            SelectedItem="{Binding SelectedMonth, StringFormat=MMMMyy}"
+                            DisplayMemberPath="Month" />
+                        <Label
+                            Content="Выберите месяц" 
+                            Foreground="{StaticResource PlaceholdersColor}"
+                            VerticalAlignment="Center"
+                            FontSize="14"
+                            IsHitTestVisible="False"
+                            Visibility="{Binding IsMonthSelected, 
+                            Converter={StaticResource InversedConverter}}"/>
+                    </Grid>
+
+                    <Grid
+                        Grid.Column="1">
+                        <ComboBox
+                            ItemsSource="{Binding Services}"
+                            SelectedItem="{Binding SelectedService}"
+                            DisplayMemberPath="Name" />
+                        <Label
+                            Content="Выберите тип услуги" 
+                            Foreground="{StaticResource PlaceholdersColor}"
+                            FontSize="14"
+                            VerticalAlignment="Center"
+                            IsHitTestVisible="False"
+                            Visibility="{Binding IsServiceselected, 
+                            Converter={StaticResource InversedConverter}}"/>
+                    </Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition />
                         <ColumnDefinition />
@@ -53,15 +74,18 @@
                     Grid.Row="1"
                     Grid.Column="1"
                     VerticalAlignment="Center">
+                    <WrapPanel>
                     <Label
                         FontWeight="SemiBold"
                         Content="Всего расходов:"
-                        FontSize="16" />
+                        FontSize="14" 
+                        HorizontalAlignment="Left"/>
                     <Label
                         Content="{Binding SumOfExpenses, StringFormat=f2}"
                         HorizontalAlignment="Right"
-                        FontSize="16"
+                        FontSize="14"
                         FontWeight="SemiBold" />
+                    </WrapPanel>
                 </Grid>
 
                 <Grid
@@ -204,7 +228,7 @@
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition />
                     <ColumnDefinition
-                        Width="0.5*" />
+                        Width="0.75*" />
                 </Grid.ColumnDefinitions>
             </Grid>
         </Grid>

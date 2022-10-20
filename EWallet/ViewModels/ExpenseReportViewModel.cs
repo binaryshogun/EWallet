@@ -34,6 +34,9 @@ namespace EWallet.ViewModels
 		private SeriesCollection operationSeries;
         private bool dataFetching;
         private bool isThereOperations;
+
+        private bool isMonthSelected;
+        private bool isServiceSelected;
         #endregion
 
         #region Constructors
@@ -77,6 +80,7 @@ namespace EWallet.ViewModels
             set
             {
                 selectedMonth = value;
+                ChangeIsMonthSelected(value);
 
                 SetUpViewModel();
                 OnPropertyChanged(nameof(SelectedMonth));
@@ -99,6 +103,7 @@ namespace EWallet.ViewModels
             {
                 selectedService = value;
 
+                ChangeIsSelectedService(value);
                 SetUpViewModel();
                 OnPropertyChanged(nameof(SelectedService));
             }
@@ -152,6 +157,25 @@ namespace EWallet.ViewModels
             {
                 isThereOperations = value;
                 OnPropertyChanged(nameof(IsThereOperations));
+            }
+        }
+
+        public bool IsServiceselected
+        {
+            get => isServiceSelected;
+            set
+            {
+                isServiceSelected = value;
+                OnPropertyChanged(nameof(IsServiceselected));
+            }
+        }
+        public bool IsMonthSelected
+        {
+            get => isMonthSelected;
+            set
+            {
+                isMonthSelected = value;
+                OnPropertyChanged(nameof(IsMonthSelected));
             }
         }
         #endregion
@@ -246,6 +270,21 @@ namespace EWallet.ViewModels
                 DataLabels = true
             };
             OperationsSeries.Add(series);
+        }
+
+        private void ChangeIsMonthSelected(DateTime value)
+        {
+            if (value != DateTime.MinValue)
+                IsMonthSelected = true;
+            else
+                IsMonthSelected = false;
+        }
+        private void ChangeIsSelectedService(Service selectedService)
+        {
+            if (selectedService != null)
+                IsServiceselected = true;
+            else
+                IsServiceselected = false;
         }
 
         public override void Dispose()

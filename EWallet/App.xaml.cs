@@ -40,7 +40,9 @@ namespace EWallet
             services.AddTransient(CreateWithdrawViewModel);
             services.AddTransient(CreateRefillViewModel);
             services.AddTransient(CreateUserProfileViewModel);
+            services.AddTransient(CreateCardManagmentViewModel);
             services.AddTransient(CreateExpenseReportViewModel);
+            services.AddTransient(CreateCardViewModel);
             services.AddTransient(CreateAccountViewModel);
 
             services.AddSingleton(s => new MainWindow()
@@ -149,7 +151,8 @@ namespace EWallet
             => new AccountViewModel(serviceProvider.GetRequiredService<UserStore>(),
                     CreateHomeNavigationService(serviceProvider), CreateUserProfileNavigationService(serviceProvider),
                     CreateTransferNavigationService(serviceProvider), CreateWithdrawNavigationService(serviceProvider),
-                    CreateRefillNavigationService(serviceProvider), CreateExpenseReportNavigationService(serviceProvider));
+                    CreateRefillNavigationService(serviceProvider), CreateCardManagmentNavigationService(serviceProvider),
+                    CreateExpenseReportNavigationService(serviceProvider));
 
         /// <summary>
         /// Метод, создающий NavigationService, привязанный к AccountViewModel.
@@ -244,6 +247,25 @@ namespace EWallet
         }
         #endregion
 
+        #region CardManagment
+        private CardManagmentViewModel CreateCardManagmentViewModel(IServiceProvider serviceProvider)
+        {
+            var closeModalNavigationService = serviceProvider.GetRequiredService<CloseModalNavigationService>();
+            var navigationService = new CompositeNavigationService(closeModalNavigationService,
+                CreateAccountNavigationService(serviceProvider));
+
+            return new CardManagmentViewModel(serviceProvider.GetRequiredService<UserStore>(),
+                navigationService, CreateCardNavigationService(serviceProvider));
+        }
+
+        public INavigationService CreateCardManagmentNavigationService(IServiceProvider serviceProvider)
+        {
+            var modalNavigationStore = serviceProvider.GetRequiredService<ModalNavigationStore>();
+            return new ModalNavigationService<CardManagmentViewModel>(modalNavigationStore,
+                () => serviceProvider.GetRequiredService<CardManagmentViewModel>());
+        }
+        #endregion
+
         #region ExpenseReport
         private ExpenseReportViewModel CreateExpenseReportViewModel(IServiceProvider serviceProvider)
         {
@@ -260,6 +282,24 @@ namespace EWallet
             var modalNavigationStore = serviceProvider.GetRequiredService<ModalNavigationStore>();
             return new ModalNavigationService<ExpenseReportViewModel>(modalNavigationStore,
                 () => serviceProvider.GetRequiredService<ExpenseReportViewModel>());
+        }
+        #endregion
+
+        #region Card
+        private CardViewModel CreateCardViewModel(IServiceProvider serviceProvider)
+        {
+            //var closeModalNavigationService = serviceProvider.GetService<CloseModalNavigationService>();
+            //var navigationService = new CompositeNavigationService(closeModalNavigationService,
+            //    CreateAccountNavigationService(serviceProvider));
+
+            return new CardViewModel();
+        }
+
+        public INavigationService CreateCardNavigationService(IServiceProvider serviceProvider)
+        {
+            var modalNavigationStore = serviceProvider.GetRequiredService<ModalNavigationStore>();
+            return new ModalNavigationService<CardViewModel>(modalNavigationStore,
+                () => serviceProvider.GetRequiredService<CardViewModel>());
         }
         #endregion
 

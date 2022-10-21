@@ -51,7 +51,7 @@ namespace EWallet.ViewModels
             {
                 using (var database = new WalletEntities())
                 {
-                    SetExistingCardData(userStore, database);
+                    SetExistingCardData(database);
                     var service = database.Service.AsNoTracking().Where(s => s.ID == 4).First();
                     double.TryParse(service.Comission.ToString(), out percent);
                 }
@@ -60,7 +60,7 @@ namespace EWallet.ViewModels
             finally
             {
                 ProvideOperationCommand = new RefillCommand(userStore, this, accountNavigationService);
-                CloseModalCommand = new NavigateCommand(accountNavigationService);
+                NavigateAccountCommand = new NavigateCommand(accountNavigationService);
             }
         }
         #endregion
@@ -76,13 +76,7 @@ namespace EWallet.ViewModels
 
                 if (cardNumber.Length > 0)
                 {
-                    char firstDigit = cardNumber[0];
-                    if (firstDigit > '0' && firstDigit < '4')
-                        CurrentBank = Banks.Sberbank;
-                    else if (firstDigit >= '4' && firstDigit < '7')
-                        CurrentBank = Banks.AlfaBank;
-                    else if (firstDigit >= '7' && firstDigit <= '9')
-                        CurrentBank = Banks.Tinkoff;
+                    IdentifyBank();
 
                     OnPropertyChanged(nameof(CurrentBank));
                 }
@@ -92,6 +86,7 @@ namespace EWallet.ViewModels
                 OnPropertyChanged(nameof(CardNumber));
             }
         }
+
         public string ValidThruMonth
         {
             get => validThruMonth;
@@ -220,6 +215,7 @@ namespace EWallet.ViewModels
             }
         }
         public bool OperationWithTransfer => false;
+        public bool IsOperation => true;
         public bool IsConfirmButtonEnabled
         {
             get => isConfirmButtonEnabled;
@@ -234,7 +230,7 @@ namespace EWallet.ViewModels
         #endregion
 
         #region Methods
-        private void SetExistingCardData(UserStore userStore, WalletEntities database)
+        private void SetExistingCardData(WalletEntities database)
         {
             var card = database.Card.AsNoTracking().Where(c => c.UserID == userStore.CurrentUser.ID).FirstOrDefault();
             if (card != null)
@@ -247,6 +243,17 @@ namespace EWallet.ViewModels
                 ValidThruYear = card.ValidThru.ToString("yy");
                 SaveCardData = true;
             }
+        }
+
+        private void IdentifyBank()
+        {
+            char firstDigit = cardNumber[0];
+            if (firstDigit > '0' && firstDigit < '4')
+                CurrentBank = Banks.Sberbank;
+            else if (firstDigit >= '4' && firstDigit < '7')
+                CurrentBank = Banks.AlfaBank;
+            else if (firstDigit >= '7' && firstDigit <= '9')
+                CurrentBank = Banks.Tinkoff;
         }
 
         private string GetComission()
@@ -268,7 +275,7 @@ namespace EWallet.ViewModels
 
         #region Commands
         public ICommand ProvideOperationCommand { get; }
-        public ICommand CloseModalCommand { get; }
+        public ICommand NavigateAccountCommand { get; }
         #endregion
     }
 }

@@ -59,7 +59,7 @@ namespace EWallet.ViewModels
                 Comission = "0,00";
 
                 ProvideOperationCommand = new WithdrawCommand(userStore, this, accountNavigationService);
-                CloseModalCommand = new NavigateCommand(accountNavigationService);
+                NavigateAccountCommand = new NavigateCommand(accountNavigationService);
             }
         }
         #endregion
@@ -73,19 +73,8 @@ namespace EWallet.ViewModels
             {
                 cardNumber = value;
 
-                if (cardNumber.Length > 0)
-                {
-                    char firstDigit = cardNumber[0];
-                    if (firstDigit > '0' && firstDigit < '4')
-                        CurrentBank = Banks.Sberbank;
-                    else if (firstDigit >= '4' && firstDigit < '7')
-                        CurrentBank = Banks.AlfaBank;
-                    else if (firstDigit >= '7' && firstDigit <= '9')
-                        CurrentBank = Banks.Tinkoff;
-                }
-
+                IdentifyBank();
                 UpdateConfirmButton();
-
                 OnPropertyChanged(nameof(CardNumber));
             }
         }
@@ -217,6 +206,7 @@ namespace EWallet.ViewModels
             }
         }
         public bool OperationWithTransfer => true;
+        public bool IsOperation => true;
         public bool IsConfirmButtonEnabled
         {
             get => isConfirmButtonEnabled;
@@ -231,6 +221,20 @@ namespace EWallet.ViewModels
         #endregion
 
         #region Methods
+        private void IdentifyBank()
+        {
+            if (cardNumber.Length > 0)
+            {
+                char firstDigit = cardNumber[0];
+                if (firstDigit > '0' && firstDigit < '4')
+                    CurrentBank = Banks.Sberbank;
+                else if (firstDigit >= '4' && firstDigit < '7')
+                    CurrentBank = Banks.AlfaBank;
+                else if (firstDigit >= '7' && firstDigit <= '9')
+                    CurrentBank = Banks.Tinkoff;
+            }
+        }
+
         private string GetComission()
         {
             double.TryParse(OperationSum, out double sum);
@@ -249,7 +253,7 @@ namespace EWallet.ViewModels
 
         #region Commands
         public ICommand ProvideOperationCommand { get; }
-        public ICommand CloseModalCommand { get; }
+        public ICommand NavigateAccountCommand { get; }
         #endregion
     }
 }

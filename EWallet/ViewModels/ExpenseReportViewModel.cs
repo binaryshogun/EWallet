@@ -17,7 +17,6 @@ namespace EWallet.ViewModels
     {
         #region Fields
         private readonly UserStore userStore;
-        private readonly INavigationService accountNavigationService;
 
         private readonly WalletEntities database;
 
@@ -43,7 +42,6 @@ namespace EWallet.ViewModels
         public ExpenseReportViewModel(UserStore userStore, INavigationService accountNavigationService)
         {
             this.userStore = userStore;
-            this.accountNavigationService = accountNavigationService;
 
             try
             {
@@ -55,7 +53,7 @@ namespace EWallet.ViewModels
                 accountNavigationService?.Navigate();
             }
 
-            NavigateCommand = new NavigateCommand(accountNavigationService);
+            NavigateAccountCommand = new NavigateCommand(accountNavigationService);
 
             Months = SetUpMonths();
             Services = SetUpServices();
@@ -181,7 +179,7 @@ namespace EWallet.ViewModels
         #endregion
 
         #region Commands
-        public ICommand NavigateCommand { get; }
+        public ICommand NavigateAccountCommand { get; }
         #endregion
 
         #region Methods
@@ -230,12 +228,12 @@ namespace EWallet.ViewModels
                 if (Operations.Count > 0)
                     SumOfExpenses = Math.Round(operationsList.Sum(o => o.Sum), 2);
 
-                UpdateChart(database);
+                UpdateChart();
             }
             catch (Exception e) 
             { 
                 ErrorMessageBox.Show(e);
-                accountNavigationService?.Navigate();
+                NavigateAccountCommand.Execute(null);
             }
             finally
             {
@@ -243,17 +241,17 @@ namespace EWallet.ViewModels
             }
         }
 
-        private void UpdateChart(WalletEntities database)
+        private void UpdateChart()
         {
             OperationsSeries = new SeriesCollection();
 
             if (SelectedService == null)
                 foreach (Service service in Services)
-                    SetSeries(service, database);
+                    SetSeries(service);
             else
-                SetSeries(SelectedService, database);
+                SetSeries(SelectedService);
         }
-        private void SetSeries(Service service, WalletEntities database)
+        private void SetSeries(Service service)
         {
             ObservableValue observableValue = new ObservableValue(0);
             var operationsList = Operations.Where(o => o.ServiceID == service.ID).ToList();

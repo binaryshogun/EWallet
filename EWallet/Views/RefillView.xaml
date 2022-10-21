@@ -13,7 +13,7 @@
 
     <Grid>
         <controls:CloseModalButton
-            Command="{Binding CloseModalCommand}" />
+            Command="{Binding NavigateAccountCommand}" />
 
         <Grid
             Grid.Row="1"

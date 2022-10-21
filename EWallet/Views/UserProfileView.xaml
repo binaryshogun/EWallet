@@ -15,7 +15,7 @@
 
     <Grid>
         <controls:CloseModalButton
-            Command="{Binding CloseModalCommand}"
+            Command="{Binding NavigateAccountCommand}"
             Grid.Column="2"
             Visibility="{Binding IsDataSaved, Converter={StaticResource BooleanToVisibilityConverter}}"
             ToolTip="Закрыть профиль" />

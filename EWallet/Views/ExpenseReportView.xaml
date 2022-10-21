@@ -28,7 +28,7 @@
             Visibility="{Binding DataFetching, Converter={StaticResource InversedConverter}}">
             <controls:CloseModalButton
                     Grid.ColumnSpan="2"
-                    Command="{Binding NavigateCommand}" 
+                    Command="{Binding NavigateAccountCommand}" 
                     ToolTip="Закрыть отчёт о расходах"/>
 
             <Grid
@@ -97,7 +97,7 @@
                     <Label
                         FontSize="32"
                         FontWeight="Bold"
-                        Content="Нет операций!" />
+                        Content="Нет операций" />
                 </Grid>
 
                 <StackPanel
@@ -116,7 +116,7 @@
                     </Grid>
                     <ScrollViewer
                         MaxHeight="350"
-                        VerticalScrollBarVisibility="Visible">
+                        VerticalScrollBarVisibility="Auto">
                         <ListView
                             ItemsSource="{Binding Operations}">
                             <ListView.ItemTemplate>

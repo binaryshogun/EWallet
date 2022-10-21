@@ -106,7 +106,8 @@
                             Grid.ColumnSpan="2"
                             Grid.Column="0" 
                             Visibility="{Binding OperationWithTransfer, 
-                            Converter={StaticResource InversedConverter}}"/>
+                            Converter={StaticResource InversedConverter},
+                            TargetNullValue=False}"/>
 
                         <Grid
                             Grid.Column="2"
@@ -114,7 +115,8 @@
                             Grid.Row="2"
                             HorizontalAlignment="Left"
                             Visibility="{Binding OperationWithTransfer, 
-                            Converter={StaticResource InversedConverter}}">
+                            Converter={StaticResource InversedConverter},
+                            TargetNullValue=False}">
                             <components:PlaceholderTextBox
                                 Text="{Binding ValidThruMonth, UpdateSourceTrigger=PropertyChanged}"
                                 Placeholder="MM"
@@ -156,7 +158,8 @@
                             Grid.Column="3"
                             Margin="15 0"
                             Visibility="{Binding OperationWithTransfer, 
-                            Converter={StaticResource InversedConverter}}" />
+                            Converter={StaticResource InversedConverter},
+                            TargetNullValue=True}" />
 
                         <local:BindablePasswordBox
                             Placeholder="000"
@@ -170,7 +173,8 @@
                             Margin="0 0 20 0"
                             OnlyNumbers="True"
                             Visibility="{Binding OperationWithTransfer, 
-                            Converter={StaticResource InversedConverter}}" 
+                            Converter={StaticResource InversedConverter},
+                            TargetNullValue=True}" 
                             ToolTip="Секретный код карты (не сохраняется в базе данных)"/>
 
                         <CheckBox
@@ -181,7 +185,8 @@
                             HorizontalAlignment="Right"
                             Margin="15 0"
                             Visibility="{Binding OperationWithTransfer, 
-                            Converter={StaticResource InversedConverter}}"
+                            Converter={StaticResource InversedConverter},
+                            TargetNullValue=True}"
                             ToolTip="Установите флажок чтобы запомнить данные карты (номер и срок действия) в системе"/>
 
                         <Label
@@ -192,13 +197,16 @@
                             VerticalAlignment="Center"
                             Margin="10 0"
                             Visibility="{Binding OperationWithTransfer, 
-                            Converter={StaticResource InversedConverter}}" />
+                            Converter={StaticResource InversedConverter},
+                            TargetNullValue=True}" />
 
                         <Label
                             Content="Сумма"
                             Grid.Row="4"
                             Grid.ColumnSpan="2"
-                            VerticalAlignment="Center" />
+                            VerticalAlignment="Center" 
+                            Visibility="{Binding IsOperation, 
+                            Converter={StaticResource BooleanToVisibilityConverter}}"/>
                         <components:PlaceholderTextBox
                             Placeholder="0,00"
                             Text="{Binding OperationSum, UpdateSourceTrigger=PropertyChanged}"
@@ -209,7 +217,9 @@
                             Margin="20 0"
                             DoubleFormat="True" 
                             MaxLength="7"
-                            ToolTip="Сумма операции"/>
+                            ToolTip="Сумма операции"
+                            Visibility="{Binding IsOperation, 
+                            Converter={StaticResource BooleanToVisibilityConverter}}"/>
 
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition />
@@ -262,7 +272,9 @@
                 Margin="0"
                 Padding="50 15"
                 HorizontalAlignment="Center" 
-                ToolTip="Провести операцию"/>
+                ToolTip="Провести операцию"
+                Visibility="{Binding IsOperation, 
+                Converter={StaticResource BooleanToVisibilityConverter}}"/>
 
         </StackPanel>
     </Grid>

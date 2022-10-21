@@ -5,11 +5,157 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:viewmodels="clr-namespace:EWallet.ViewModels"
+    xmlns:controls="clr-namespace:EWallet.Controls"
+    xmlns:components="clr-namespace:EWallet.Components"
     mc:Ignorable="d"
     d:DesignHeight="450"
     d:DesignWidth="800"
     d:DataContext="{d:DesignInstance Type=viewmodels:CardManagmentViewModel}">
+
     <Grid>
-            
+        <StackPanel
+            VerticalAlignment="Center"
+            HorizontalAlignment="Center"
+            Visibility="{Binding AreCardsLoading, 
+            Converter={StaticResource BooleanToVisibilityConverter}}">
+            <Label
+                Content="Карты загружаются..." />
+            <components:Loader IsLoading="{Binding AreCardsLoading}"/>
+        </StackPanel>
+
+        <Grid
+            Visibility="{Binding AreCardsLoading, 
+            Converter={StaticResource InversedConverter}}">
+            <controls:CloseModalButton
+                Command="{Binding NavigateAccountCommand}"
+                ToolTip="Закрыть окно управления картами" />
+
+            <Grid
+                Grid.Row="1">
+
+                <StackPanel
+                    Grid.Row="2"
+                    VerticalAlignment="Top"
+                    HorizontalAlignment="Center"
+                    Visibility="{Binding IsThereCards, 
+                    Converter={StaticResource InversedConverter}}">
+                    <Label
+                        FontSize="28"
+                        FontWeight="SemiBold"
+                        Content="Нет привязанных карт"/>
+                    <Button
+                        Content="Добавить карту"
+                        Command="{Binding NavigateCardCommand}" 
+                        MaxWidth="300"
+                        ToolTip="Добавить новую карту"/>
+                </StackPanel>
+
+                <StackPanel
+                    Grid.Row="2"
+                    VerticalAlignment="Top"
+                    HorizontalAlignment="Center">
+                    <Label
+                        FontSize="32"
+                        Content="Сохраненные карты" 
+                        FontWeight="Black"
+                        HorizontalContentAlignment="Center"
+                        Margin="0 5 0 15"
+                        Visibility="{Binding IsThereCards, 
+                        Converter={StaticResource BooleanToVisibilityConverter}}"/>
+
+                    <ScrollViewer
+                        VerticalScrollBarVisibility="Auto"
+                        MinWidth="350"
+                        MaxHeight="400"
+                        Visibility="{Binding IsThereCards, 
+                        Converter={StaticResource BooleanToVisibilityConverter}}">
+                        <ListView
+                            ItemsSource="{Binding Cards}">
+                            <ListView.ItemTemplate>
+                                <DataTemplate>
+                                    <Grid ToolTip="Данные карты">
+                                        <Image
+                                            Source="../Resources/images/card_black.png"
+                                            MaxHeight="50" 
+                                            Margin="5"
+                                            VerticalAlignment="Center"/>
+                                        <Grid
+                                            Grid.Column="1">
+
+                                            <Label
+                                                Content="{Binding Number}"
+                                                FontWeight="SemiBold"
+                                                FontSize="18"
+                                                HorizontalAlignment="Stretch"
+                                                VerticalAlignment="Center"
+                                                Margin="2" />
+
+                                            <Label
+                                                Content="{Binding ValidThru}"
+                                                Grid.Row="1"
+                                                FontWeight="Light"
+                                                FontSize="16"
+                                                HorizontalAlignment="Left"
+                                                VerticalAlignment="Center"
+                                                Margin="2" />
+
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition />
+                                                <RowDefinition />
+                                            </Grid.RowDefinitions>
+                                        </Grid>
+                                        <Button
+                                            VerticalAlignment="Center"
+                                            Grid.Column="2"
+                                            Style="{StaticResource ImageButtonStyle}"
+                                            Command="{Binding 
+                                                RelativeSource={RelativeSource AncestorType={x:Type UserControl}}, 
+                                                Path=DataContext.DeleteCardCommand}"
+                                            CommandParameter="{Binding Number}"
+                                            ToolTip="Удалить карту">
+                                            <Image
+                                                Source="../Resources/images/delete.png" 
+                                                MaxHeight="50"/>
+                                        </Button>
+
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition
+                                                Width="auto" />
+                                            <ColumnDefinition />
+                                            <ColumnDefinition 
+                                                Width="auto"/>
+                                        </Grid.ColumnDefinitions>
+                                    </Grid>
+                                </DataTemplate>
+                            </ListView.ItemTemplate>
+                        </ListView>
+                    </ScrollViewer>
+
+                    <Button
+                        FontSize="20"
+                        Style="{StaticResource ImageButtonStyle}"
+                        MinHeight="30"
+                        MaxHeight="50"
+                        HorizontalAlignment="Center"
+                        Command="{Binding NavigateCardCommand}"
+                        ToolTip="Добавить карту"
+                        Visibility="{Binding IsThereCards, 
+                        Converter={StaticResource BooleanToVisibilityConverter}}">
+                        <Image
+                            Source="../Resources/images/plus.png" />
+                    </Button>
+                </StackPanel>
+                <Grid.RowDefinitions>
+                    <RowDefinition
+                        Height="auto" />
+                    <RowDefinition />
+                </Grid.RowDefinitions>
+            </Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition
+                    Height="auto" />
+                <RowDefinition />
+            </Grid.RowDefinitions>
+        </Grid>
     </Grid>
 </UserControl>

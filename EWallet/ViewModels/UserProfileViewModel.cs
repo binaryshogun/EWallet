@@ -47,7 +47,7 @@ namespace EWallet.ViewModels
 
             IsDataSaved = true;
 
-            CloseModalCommand = new NavigateCommand(accountNavigationService);
+            NavigateAccountCommand = new NavigateCommand(accountNavigationService);
             SaveCommand = new SavePassportDataCommand(userStore, this);
         }
         #endregion
@@ -154,7 +154,7 @@ namespace EWallet.ViewModels
         #endregion
 
         #region Commands
-        public ICommand CloseModalCommand { get; }
+        public ICommand NavigateAccountCommand { get; }
         public ICommand SaveCommand { get; }
         #endregion
     }

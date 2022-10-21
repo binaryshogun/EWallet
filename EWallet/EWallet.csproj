@@ -71,6 +71,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Behaviors\ScaleFontBehavior.cs" />
+    <Compile Include="Commands\DeleteCardCommand.cs" />
     <Compile Include="Commands\WithdrawCommand.cs" />
     <Compile Include="Helpers\EncryptionHelper.cs" />
     <Compile Include="Helpers\VisualHelper.cs" />
@@ -159,6 +160,7 @@
     <Compile Include="ViewModels\AccountViewModel.cs" />
     <Compile Include="ViewModels\AuthorizationViewModel.cs" />
     <Compile Include="ViewModels\CardManagmentViewModel.cs" />
+    <Compile Include="ViewModels\CardViewModel.cs" />
     <Compile Include="ViewModels\ExpenseReportViewModel.cs" />
     <Compile Include="ViewModels\MainViewModel.cs" />
     <Compile Include="ViewModels\HomeViewModel.cs" />
@@ -181,6 +183,9 @@
     </Compile>
     <Compile Include="Views\CardManagmentView.xaml.cs">
       <DependentUpon>CardManagmentView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\CardView.xaml.cs">
+      <DependentUpon>CardView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\ExpenseReportView.xaml.cs">
       <DependentUpon>ExpenseReportView.xaml</DependentUpon>
@@ -306,6 +311,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Views\CardView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\ExpenseReportView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -409,6 +418,10 @@
       <DependentUpon>WalletModel.edmx</DependentUpon>
       <LastGenOutput>WalletModel.cs</LastGenOutput>
     </Content>
+    <Resource Include="Resources\images\delete.png" />
+    <Resource Include="Resources\images\edit.png" />
+    <Resource Include="Resources\images\card_black.png" />
+    <Resource Include="Resources\images\plus.png" />
     <Resource Include="Resources\images\refill.png" />
     <Resource Include="Resources\images\withdraw.png" />
     <Resource Include="Resources\images\card.png" />

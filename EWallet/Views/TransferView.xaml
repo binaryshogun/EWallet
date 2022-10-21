@@ -12,8 +12,8 @@
     d:DataContext="{d:DesignInstance Type=viewmodels:TransferViewModel}">
 
     <Grid>
-        <controls:CloseModalButton 
-            Command="{Binding CloseModalCommand}"
+        <controls:CloseModalButton
+            Command="{Binding NavigateAccountCommand}"
             ToolTip="Закрыть окно перевода"/>
 
         <Grid

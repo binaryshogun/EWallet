@@ -49,6 +49,14 @@
                 <views:RefillView />
             </DataTemplate>
             <DataTemplate
+                DataType="{x:Type viewmodels:CardManagmentViewModel}">
+                <views:CardManagmentView />
+            </DataTemplate>
+            <DataTemplate
+                DataType="{x:Type viewmodels:CardViewModel}">
+                <views:CardView />
+            </DataTemplate>
+            <DataTemplate
                 DataType="{x:Type viewmodels:ExpenseReportViewModel}">
                 <views:ExpenseReportView />
             </DataTemplate>

@@ -39,6 +39,7 @@ namespace EWallet.ViewModels
             INavigationService transferNavigationService,
             INavigationService withdrawNavigationService,
             INavigationService refillNavigationService,
+            INavigationService cardManagmentNavigationService,
             INavigationService expenseReportNavigationService)
         {
             this.userStore = userStore;
@@ -49,6 +50,7 @@ namespace EWallet.ViewModels
             NavigateWithdrawCommand = new NavigateCommand(withdrawNavigationService);
             NavigateRefillCommand = new NavigateCommand(refillNavigationService);
             NavigateUserProfileCommand = new NavigateCommand(userProfileNavigationService);
+            NavigateManagmentCommand = new NavigateCommand(cardManagmentNavigationService);
             NavigateExpenseReportCommand = new NavigateCommand(expenseReportNavigationService);
             ExitAccountCommand = new ExitAccountCommand(userStore, homeNavigationService);
         }

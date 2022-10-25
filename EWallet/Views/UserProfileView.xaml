@@ -106,6 +106,7 @@
                         Grid.Column="1"
                         Grid.Row="5"
                         MaxLength="4"
+                        IntFormat="True"
                         ToolTip="Серия паспорта, 4 цифры" />
 
                     <Label
@@ -118,6 +119,7 @@
                         MaxLength="6"
                         Grid.Column="1"
                         Grid.Row="6"
+                        IntFormat="True"
                         ToolTip="Номер паспорта, 6 цифр" />
 
                     <Label
@@ -131,6 +133,7 @@
                         MaxLength="3"
                         Grid.Column="1"
                         Grid.Row="7"
+                        IntFormat="True"
                         ToolTip="Код подразделения, 3 цифры" />
 
                     <Grid.ColumnDefinitions>

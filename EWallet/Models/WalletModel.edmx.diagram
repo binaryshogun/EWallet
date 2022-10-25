@@ -4,10 +4,10 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="39f5186edc9741a886521fa1c49a7939" Name="Diagram1">
+      <Diagram DiagramId="39f5186edc9741a886521fa1c49a7939" Name="Diagram1" DisplayType="true">
         <EntityTypeShape EntityType="EWalletModel.Card" Width="1.5" PointX="5.25" PointY="4.125" IsExpanded="true" />
         <EntityTypeShape EntityType="EWalletModel.Operation" Width="1.5" PointX="8.25" PointY="5.5" IsExpanded="true" />
-        <EntityTypeShape EntityType="EWalletModel.Passport" Width="1.5" PointX="5.25" PointY="10.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="EWalletModel.Passport" Width="3.125" PointX="5.25" PointY="10.75" IsExpanded="true" />
         <EntityTypeShape EntityType="EWalletModel.Role" Width="1.5" PointX="0.75" PointY="6.125" IsExpanded="true" />
         <EntityTypeShape EntityType="EWalletModel.Service" Width="1.5" PointX="6" PointY="0.75" IsExpanded="true" />
         <EntityTypeShape EntityType="EWalletModel.ServiceType" Width="1.5" PointX="3.75" PointY="1.25" IsExpanded="true" />

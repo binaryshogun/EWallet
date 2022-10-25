@@ -72,6 +72,27 @@
     </Compile>
     <Compile Include="Behaviors\ScaleFontBehavior.cs" />
     <Compile Include="Commands\SaveCardDataCommand.cs" />
+    <Compile Include="Models\Card.cs">
+      <DependentUpon>WalletModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Operation.cs">
+      <DependentUpon>WalletModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Passport.cs">
+      <DependentUpon>WalletModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Role.cs">
+      <DependentUpon>WalletModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Service.cs">
+      <DependentUpon>WalletModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\ServiceType.cs">
+      <DependentUpon>WalletModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\User.cs">
+      <DependentUpon>WalletModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="Stores\CardStore.cs" />
     <Compile Include="Commands\DeleteCardCommand.cs" />
     <Compile Include="Commands\NavigateCardCommand.cs" />
@@ -132,27 +153,6 @@
     <Compile Include="Helpers\HashHelper.cs" />
     <Compile Include="Helpers\OperationsHelper.cs" />
     <Compile Include="Models\BanksData.cs" />
-    <Compile Include="Models\Card.cs">
-      <DependentUpon>WalletModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\Operation.cs">
-      <DependentUpon>WalletModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\Passport.cs">
-      <DependentUpon>WalletModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\Role.cs">
-      <DependentUpon>WalletModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\Service.cs">
-      <DependentUpon>WalletModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\ServiceType.cs">
-      <DependentUpon>WalletModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\User.cs">
-      <DependentUpon>WalletModel.tt</DependentUpon>
-    </Compile>
     <Compile Include="Models\WalletModel.Context.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>

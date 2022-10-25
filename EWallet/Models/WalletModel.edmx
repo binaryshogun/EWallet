@@ -34,9 +34,9 @@
           <Property Name="FirstName" Type="nvarchar" MaxLength="20" Nullable="false" />
           <Property Name="LastName" Type="nvarchar" MaxLength="20" Nullable="false" />
           <Property Name="Patronymic" Type="nvarchar" MaxLength="20" />
-          <Property Name="SerialNumber" Type="int" />
-          <Property Name="Number" Type="int" />
-          <Property Name="DivisionCode" Type="int" />
+          <Property Name="SerialNumber" Type="nvarchar" MaxLength="4" />
+          <Property Name="Number" Type="nvarchar" MaxLength="6" />
+          <Property Name="DivisionCode" Type="nvarchar" MaxLength="3" />
           <Property Name="UserID" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="Role">
@@ -227,13 +227,13 @@
           <Key>
             <PropertyRef Name="ID" />
           </Key>
-          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="None" />
           <Property Name="FirstName" Type="String" MaxLength="20" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="LastName" Type="String" MaxLength="20" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="Patronymic" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
-          <Property Name="SerialNumber" Type="Int32" />
-          <Property Name="Number" Type="Int32" />
-          <Property Name="DivisionCode" Type="Int32" />
+          <Property Name="Patronymic" Type="String" MaxLength="20" FixedLength="false" Unicode="true" Nullable="true" ConcurrencyMode="None" />
+          <Property Name="SerialNumber" Type="String" Nullable="true" />
+          <Property Name="Number" Type="String" Nullable="true" />
+          <Property Name="DivisionCode" Type="String" Nullable="true" />
           <Property Name="UserID" Type="Int32" Nullable="false" />
           <NavigationProperty Name="User" Relationship="Self.FK_Passport_User" FromRole="Passport" ToRole="User" />
         </EntityType>

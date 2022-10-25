@@ -6,6 +6,8 @@ using EWallet.Stores;
 using EWallet.ViewModels;
 using System;
 using System.Data.Entity;
+using System.Data.Entity.Migrations;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace EWallet.Commands
@@ -95,11 +97,13 @@ namespace EWallet.Commands
             {
                 FirstName = registrationViewModel.FirstName,
                 LastName = registrationViewModel.LastName,
-                Patronymic = registrationViewModel?.Patronymic,
                 UserID = user.ID
             };
 
-            database.Passport.Add(userPassport);
+            if (!string.IsNullOrEmpty(registrationViewModel.Patronymic))
+                userPassport.Patronymic = registrationViewModel.Patronymic;
+
+            database.Passport.AddOrUpdate(userPassport);
             await database.SaveChangesAsync();
         }
         #endregion

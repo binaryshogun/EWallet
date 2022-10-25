@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace EWallet.Commands
 {
-    internal class RefillCommand : CommandBase
+    public sealed class RefillCommand : CommandBase
     {
         #region Fields
         private readonly UserStore userStore;

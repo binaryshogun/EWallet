@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace EWallet.Commands
 {
-    public class NavigateCardCommand : CommandBase
+    public sealed class NavigateCardCommand : CommandBase
     {
         #region Fields
         private readonly CardStore cardStore;

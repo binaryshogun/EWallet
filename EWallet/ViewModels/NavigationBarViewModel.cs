@@ -8,7 +8,7 @@ namespace EWallet.ViewModels
     /// <summary>
     /// ViewModel навигационной панели.
     /// </summary>
-    public class NavigationBarViewModel : ViewModelBase
+    public sealed class NavigationBarViewModel : ViewModelBase
     {
         #region Fields
         private readonly UserStore userStore;
@@ -65,8 +65,12 @@ namespace EWallet.ViewModels
             OnPropertyChanged(nameof(IsLoggedOut));
         }
 
-        public override void Dispose() 
-            => base.Dispose();
+        public override void Dispose()
+        {
+            userStore.CurrentUserChanged -= OnCurrentUserChanged;
+
+            base.Dispose();
+        }
         #endregion
     }
 }

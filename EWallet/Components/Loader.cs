@@ -3,7 +3,7 @@ using System.Windows.Controls;
 
 namespace EWallet.Components
 {
-    public class Loader : Control
+    public sealed class Loader : Control
     {
         #region Properties
         public bool IsLoading

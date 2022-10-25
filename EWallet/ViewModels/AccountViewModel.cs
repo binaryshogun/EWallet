@@ -14,7 +14,7 @@ namespace EWallet.ViewModels
     /// <summary>
     /// ViewModel аккаунта пользователя.
     /// </summary>
-    public class AccountViewModel : ViewModelBase
+    public sealed class AccountViewModel : ViewModelBase
     {
         #region Fields
         public readonly UserStore userStore;

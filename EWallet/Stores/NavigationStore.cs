@@ -6,7 +6,7 @@ namespace EWallet.Stores
     /// <summary>
     /// Навигационное хранилище для хранения данных о текущей VieModel.
     /// </summary>
-    public class NavigationStore
+    public sealed class NavigationStore
     {
         #region Fields
         private ViewModelBase currentViewModel;

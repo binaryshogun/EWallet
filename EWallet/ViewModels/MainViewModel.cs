@@ -5,7 +5,7 @@ namespace EWallet.ViewModels
     /// <summary>
     /// Основной класс ViewModel.
     /// </summary>
-    class MainViewModel : ViewModelBase
+    public sealed class MainViewModel : ViewModelBase
     {
         #region Fields
         private readonly NavigationStore navigationStore;

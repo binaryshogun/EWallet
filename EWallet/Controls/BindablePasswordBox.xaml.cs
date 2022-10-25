@@ -10,7 +10,7 @@ namespace EWallet.Controls
     /// <summary>
     /// PasswordBox с возможностью привязки данных.
     /// </summary>
-    public partial class BindablePasswordBox : UserControl
+    public sealed partial class BindablePasswordBox : UserControl
     {
         #region Fields
         private bool isPasswordChanging;

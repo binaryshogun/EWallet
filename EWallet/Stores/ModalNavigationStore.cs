@@ -1,13 +1,9 @@
 ﻿using EWallet.ViewModels;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace EWallet.Stores
 {
-    public class ModalNavigationStore
+    public sealed class ModalNavigationStore
     {
         #region Fields
         private ViewModelBase currentViewModel;

@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace EWallet.Commands
 {
-    public class WithdrawCommand : CommandBase
+    public sealed class WithdrawCommand : CommandBase
     {
         #region Fields
         private readonly UserStore userStore;

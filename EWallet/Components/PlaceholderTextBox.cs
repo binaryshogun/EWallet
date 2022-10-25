@@ -6,7 +6,7 @@ using System.Windows.Media;
 
 namespace EWallet.Components
 {
-    public class PlaceholderTextBox : TextBox
+    public sealed class PlaceholderTextBox : TextBox
     {
         #region Enums
         public enum DateFormatParameters { Month, Year };

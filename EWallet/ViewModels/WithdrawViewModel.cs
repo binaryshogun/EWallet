@@ -11,7 +11,7 @@ using System.Windows.Media;
 
 namespace EWallet.ViewModels
 {
-    public class WithdrawViewModel : ViewModelBase
+    public sealed class WithdrawViewModel : ViewModelBase
     {
         #region Fields
         private readonly UserStore userStore;
@@ -79,7 +79,6 @@ namespace EWallet.ViewModels
             set
             {
                 validThruMonth = value;
-                UpdateConfirmButton();
                 OnPropertyChanged(nameof(ValidThruMonth));
             }
         }
@@ -89,7 +88,6 @@ namespace EWallet.ViewModels
             set
             {
                 validThruYear = value;
-                UpdateConfirmButton();
                 OnPropertyChanged(nameof(ValidThruYear));
             }
         }
@@ -99,7 +97,6 @@ namespace EWallet.ViewModels
             set
             {
                 cvv = value;
-                UpdateConfirmButton();
                 OnPropertyChanged(nameof(CVV));
             }
         }
@@ -245,6 +242,8 @@ namespace EWallet.ViewModels
             else
                 IsConfirmButtonEnabled = false;
         }
+
+        public override void Dispose() => base.Dispose();
         #endregion
 
         #region Commands

@@ -7,7 +7,7 @@ namespace EWallet.ViewModels
     /// <summary>
     /// ViewModel домашней страницы.
     /// </summary>
-    public class HomeViewModel : ViewModelBase
+    public sealed class HomeViewModel : ViewModelBase
     {
         #region Constructors
         public HomeViewModel(INavigationService authorizationNavigationService,

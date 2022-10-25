@@ -3,7 +3,7 @@ using System.Windows.Media;
 
 namespace EWallet.Models
 {
-    public class BanksData
+    public static class BanksData
     {
         #region Enums
         public enum Banks

@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace EWallet.Commands
 {
-    public class DeleteCardCommand : CommandBase
+    public sealed class DeleteCardCommand : CommandBase
     {
         #region Fields
         private readonly CardStore cardStore;

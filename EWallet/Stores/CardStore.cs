@@ -2,7 +2,7 @@
 
 namespace EWallet.Commands
 {
-    public class CardStore
+    public sealed class CardStore
     {
         #region Fields
         private Card currentCard;

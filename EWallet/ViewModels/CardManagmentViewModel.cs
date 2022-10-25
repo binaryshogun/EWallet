@@ -11,15 +11,18 @@ using System.Windows.Input;
 
 namespace EWallet.ViewModels
 {
-    public class CardManagmentViewModel : ViewModelBase
+    public sealed class CardManagmentViewModel : ViewModelBase
     {
+        #region Fields
         private readonly UserStore userStore;
         private readonly WalletEntities database;
 
         private ListCollectionView cards;
         private bool isThereCards;
         private bool areCardsLoading;
+        #endregion
 
+        #region Constructors
         public CardManagmentViewModel(UserStore userStore,
             CardStore cardStore,
             INavigationService accountNavigatonService, 
@@ -43,7 +46,9 @@ namespace EWallet.ViewModels
             NavigateCardCommand = new NavigateCardCommand(cardStore, cardNavigationService);
             DeleteCardCommand = new DeleteCardCommand(cardStore, this);
         }
+        #endregion
 
+        #region Properties
         public ListCollectionView Cards
         {
             get => cards;
@@ -72,7 +77,9 @@ namespace EWallet.ViewModels
                 OnPropertyChanged(nameof(AreCardsLoading));
             }
         }
+        #endregion
 
+        #region Methods
         public void FetchCards()
         {
             AreCardsLoading = true;
@@ -118,10 +125,13 @@ namespace EWallet.ViewModels
 
             base.Dispose();
         }
+        #endregion
 
+        #region Commands
         public ICommand NavigateAccountCommand { get; }
         public ICommand NavigateCardCommand { get; }
         public ICommand EditCardCommand { get; }
         public ICommand DeleteCardCommand { get; }
+        #endregion
     }
 }

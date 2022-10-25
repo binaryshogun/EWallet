@@ -11,7 +11,7 @@ using static EWallet.Models.BanksData;
 
 namespace EWallet.ViewModels
 {
-    public class TransferViewModel : ViewModelBase
+    public sealed class TransferViewModel : ViewModelBase
     {
         #region Fields
         private readonly UserStore userStore;
@@ -92,8 +92,6 @@ namespace EWallet.ViewModels
             set
             {
                 validThruYear = value;
-
-                UpdateConfirmButton();
                 OnPropertyChanged(nameof(ValidThruYear));
             }
         }
@@ -103,7 +101,6 @@ namespace EWallet.ViewModels
             set
             {
                 cvv = value;
-                UpdateConfirmButton();
                 OnPropertyChanged(nameof(CVV));
             }
         }
@@ -251,6 +248,8 @@ namespace EWallet.ViewModels
             else
                 IsConfirmButtonEnabled = false;
         }
+
+        public override void Dispose() => base.Dispose();
         #endregion
 
         #region Commands

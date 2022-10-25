@@ -4,7 +4,7 @@ using System.Text;
 
 namespace EWallet.Helpers
 {
-    public class HashHelper
+    public static class HashHelper
     {
         #region Methods
         /// <summary>

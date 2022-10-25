@@ -1,6 +1,6 @@
 ﻿namespace EWallet.ViewModels
 {
-    public class LayoutViewModel : ViewModelBase
+    public sealed class LayoutViewModel : ViewModelBase
     {
         #region Constructors
         public LayoutViewModel(NavigationBarViewModel navigationBarViewModel, ViewModelBase contentViewModel)

@@ -8,7 +8,7 @@ using System.Windows.Media;
 
 namespace EWallet.ViewModels
 {
-    public class CardViewModel : ViewModelBase
+    public sealed class CardViewModel : ViewModelBase
     {
         #region Fields
         private readonly CardStore cardStore;
@@ -213,6 +213,9 @@ namespace EWallet.ViewModels
             else
                 IsSaveButtonEnabled = false;
         }
+
+        public override void Dispose() 
+            => base.Dispose();
         #endregion
 
         #region Commands

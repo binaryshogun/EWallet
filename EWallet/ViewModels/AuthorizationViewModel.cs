@@ -1,17 +1,14 @@
 ﻿using EWallet.Commands;
-using EWallet.Models;
 using EWallet.Services;
 using EWallet.Stores;
-using System;
 using System.Windows.Input;
-using System.Windows.Threading;
 
 namespace EWallet.ViewModels
 {
     /// <summary>
     /// ViewModel страницы авторизации.
     /// </summary>
-    public class AuthorizationViewModel : ViewModelBase
+    public sealed class AuthorizationViewModel : ViewModelBase
     {
         #region Fields
         private string login = "";

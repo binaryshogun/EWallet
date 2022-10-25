@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace EWallet.Commands
 {
-    public class TransferCommand : CommandBase
+    public sealed class TransferCommand : CommandBase
     {
         #region Fields
         private readonly UserStore userStore;

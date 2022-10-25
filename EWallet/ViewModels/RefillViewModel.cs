@@ -13,7 +13,7 @@ using System.Threading.Tasks;
 
 namespace EWallet.ViewModels
 {
-    public class RefillViewModel : ViewModelBase
+    public sealed class RefillViewModel : ViewModelBase
     {
         #region Fields
         private readonly UserStore userStore;
@@ -286,6 +286,9 @@ namespace EWallet.ViewModels
             else
                 IsConfirmButtonEnabled = false;
         }
+
+        public override void Dispose() 
+            => base.Dispose();
         #endregion
 
         #region Commands

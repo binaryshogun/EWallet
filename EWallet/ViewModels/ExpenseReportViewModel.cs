@@ -13,7 +13,7 @@ using System.Windows.Input;
 
 namespace EWallet.ViewModels
 {
-    public class ExpenseReportViewModel : ViewModelBase
+    public sealed class ExpenseReportViewModel : ViewModelBase
     {
         #region Fields
         private readonly UserStore userStore;

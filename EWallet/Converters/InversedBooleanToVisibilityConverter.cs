@@ -5,7 +5,7 @@ using System.Windows.Data;
 
 namespace EWallet.Converters
 {
-    internal class InversedBooleanToVisibilityConverter : IValueConverter
+    public sealed class InversedBooleanToVisibilityConverter : IValueConverter
     {
         #region Methods
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)

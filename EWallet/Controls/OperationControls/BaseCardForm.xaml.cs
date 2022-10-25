@@ -5,7 +5,7 @@ namespace EWallet.Controls.OperationControls
     /// <summary>
     /// Логика взаимодействия для BaseCardForm.xaml
     /// </summary>
-    public partial class BaseCardForm : UserControl
+    public sealed partial class BaseCardForm : UserControl
     {
         public BaseCardForm() => InitializeComponent();
     }

@@ -6,7 +6,7 @@ namespace EWallet.Stores
     /// <summary>
     /// Хранилище пользователей.
     /// </summary>
-    public class UserStore
+    public sealed class UserStore
     {
         #region Fields
         private User currentUser;

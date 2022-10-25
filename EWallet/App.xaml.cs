@@ -33,8 +33,8 @@ namespace EWallet
             services.AddSingleton(CreateHomeNavigationService);
             services.AddSingleton<CloseModalNavigationService>();
 
-            services.AddSingleton(CreateNavigationBarViewModel);
             services.AddSingleton<MainViewModel>();
+            services.AddTransient(CreateNavigationBarViewModel);
             services.AddTransient(CreateHomeViewModel);
             services.AddTransient(CreateAuthorizationViewModel);
             services.AddTransient(CreateRegistrationViewModel);

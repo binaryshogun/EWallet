@@ -4,7 +4,7 @@ using System.Windows;
 
 namespace EWallet.Helpers
 {
-    public class VisualHelper
+    public static class VisualHelper
     {
         #region Methods
         public static List<T> FindVisualChildren<T>(DependencyObject obj) where T : DependencyObject

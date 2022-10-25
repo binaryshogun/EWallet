@@ -8,7 +8,7 @@ namespace EWallet.ViewModels
     /// <summary>
     /// ViewModel страницы регистрации пользователей.
     /// </summary>
-    public class RegistrationViewModel : ViewModelBase
+    public sealed class RegistrationViewModel : ViewModelBase
     {
         #region Fields
         private string login = "";

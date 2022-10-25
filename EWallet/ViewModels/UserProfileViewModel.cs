@@ -9,7 +9,7 @@ using System;
 
 namespace EWallet.ViewModels
 {
-    public class UserProfileViewModel : ViewModelBase
+    public sealed class UserProfileViewModel : ViewModelBase
     {
         #region Fields
         private readonly Passport passport;
@@ -157,6 +157,10 @@ namespace EWallet.ViewModels
                 OnPropertyChanged(nameof(IsDataSaved));
             }
         }
+        #endregion
+
+        #region Methods
+        public override void Dispose() => base.Dispose();
         #endregion
 
         #region Commands

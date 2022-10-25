@@ -9,7 +9,7 @@ using System.Windows.Media;
 
 namespace EWallet.Behaviors
 {
-    public class ScaleFontBehavior : Behavior<Grid>
+    public sealed class ScaleFontBehavior : Behavior<Grid>
     {
         #region Properties
         public double MaxFontSize

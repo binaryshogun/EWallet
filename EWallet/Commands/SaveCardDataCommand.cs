@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace EWallet.Commands
 {
-    public class SaveCardDataCommand : CommandBase
+    public sealed class SaveCardDataCommand : CommandBase
     {
         private readonly UserStore userStore;
         private readonly CardViewModel cardViewModel;

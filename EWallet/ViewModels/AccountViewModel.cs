@@ -1,7 +1,9 @@
 ﻿using EWallet.Commands;
+using EWallet.Components;
 using EWallet.Models;
 using EWallet.Services;
 using EWallet.Stores;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -154,17 +156,24 @@ namespace EWallet.ViewModels
         public void FetchServices()
         {
             AreServicesLoading = true;
-            using (var dataBase = new WalletEntities())
+            try
             {
-                List<Service> ListServices = dataBase.Service.AsNoTracking().Select(s => s).ToList();
-                Transfer = ListServices[0]?.Name;
-                TransferDescription = ListServices[0]?.Caption;
-                Withdraw = ListServices[1]?.Name;
-                WithdrawDescription = ListServices[1]?.Caption;
-                Refill = ListServices[2]?.Name;
-                RefillDescription = ListServices[2]?.Caption;
+                using (var dataBase = new WalletEntities())
+                {
+                    List<Service> ListServices = dataBase.Service.AsNoTracking().Select(s => s).ToList();
+                    Transfer = ListServices[0]?.Name;
+                    TransferDescription = ListServices[0]?.Caption;
+                    Withdraw = ListServices[1]?.Name;
+                    WithdrawDescription = ListServices[1]?.Caption;
+                    Refill = ListServices[2]?.Name;
+                    RefillDescription = ListServices[2]?.Caption;
+                }
             }
-            AreServicesLoading = false;
+            catch (Exception e) { ErrorMessageBox.Show(e); }
+            finally
+            {
+                AreServicesLoading = false;
+            }
         }
         
         public override void Dispose() 

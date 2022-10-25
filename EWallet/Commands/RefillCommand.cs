@@ -40,15 +40,13 @@ namespace EWallet.Commands
                 using (var database = new WalletEntities())
                 {
                     if (refillViewModel.SaveCardData)
-                    {
                         await SaveCardData(database);
-                    }
 
-                    User user = await OperationsHelper.FetchUser(database, this.userStore);
+                    User user = await OperationsHelper.FetchUser(database, userStore);
                     double sum = SetSum();
-                    OperationsHelper.TryUpdateBalance(user, this.userStore, sum);
+                    OperationsHelper.TryUpdateBalance(user, userStore, sum);
 
-                    Service service = await OperationsHelper.FetchService(database, 4);
+                    Service service = await OperationsHelper.FetchService(database, "Пополнение баланса");
                     Operation operation = OperationsHelper.GenerateSingleUserOperation(database, user, sum, service);
 
                     database.User.AddOrUpdate(user);

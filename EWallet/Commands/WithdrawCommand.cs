@@ -29,9 +29,9 @@ namespace EWallet.Commands
 
         #region Methods
         public override void Execute(object parameter)
-            => Task.Run(ProvideTransfer);
+            => Task.Run(ProvideWithdraw);
 
-        private async Task ProvideTransfer()
+        private async Task ProvideWithdraw()
         {
             withdrawViewModel.IsOperationBeingProvided = true;
 
@@ -39,11 +39,11 @@ namespace EWallet.Commands
             {
                 using (var database = new WalletEntities())
                 {
-                    User user = await OperationsHelper.FetchUser(database, this.userStore);
+                    User user = await OperationsHelper.FetchUser(database, userStore);
                     double sum = SetSum();
-                    OperationsHelper.TryUpdateBalance(user, this.userStore, -sum);
+                    OperationsHelper.TryUpdateBalance(user, userStore, -sum);
 
-                    Service service = await OperationsHelper.FetchService(database, 2);
+                    Service service = await OperationsHelper.FetchService(database, "Вывод средств");
                     Operation operation = OperationsHelper.GenerateSingleUserOperation(database, user, sum, service);
 
                     database.User.AddOrUpdate(user);

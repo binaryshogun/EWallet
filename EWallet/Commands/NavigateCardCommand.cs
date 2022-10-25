@@ -3,33 +3,31 @@ using EWallet.Helpers;
 using EWallet.Models;
 using EWallet.Services;
 using System;
-using System.Collections.Generic;
 using System.Data.Entity;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace EWallet.Commands
 {
     public class NavigateCardCommand : CommandBase
     {
+        #region Fields
         private readonly CardStore cardStore;
         private readonly INavigationService cardNavigationService;
+        #endregion
 
+        #region Constructors
         public NavigateCardCommand(CardStore cardStore, INavigationService cardNavigationService)
         {
             this.cardStore = cardStore;
             this.cardNavigationService = cardNavigationService;
         }
+        #endregion
 
+        #region Methods
         public override void Execute(object parameter)
         {
             if (parameter is string cardNumber)
-            {
-                Task fetchCard = new Task(async () => await FetchCardFromDatabase(cardNumber));
-                fetchCard.Start();
-                fetchCard.Wait();
-            }
+                Task.Run(async () => await FetchCardFromDatabase(cardNumber));
 
             cardNavigationService?.Navigate();
         }
@@ -57,5 +55,6 @@ namespace EWallet.Commands
                 cardNavigationService?.Navigate();
             }
         }
+        #endregion
     }
 }

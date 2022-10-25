@@ -43,18 +43,18 @@ namespace EWallet.Commands
                 {
                     string cardNumber = EncryptionHelper.Encrypt(transferViewModel.CardNumber);
                     Card card = await OperationsHelper.FetchCard(database, cardNumber);
-                    OperationsHelper.CheckCard(card, this.userStore);
+                    OperationsHelper.CheckCard(card, userStore);
                     
                     User otherUser = GetOtherUser(database, card);
-                    User user = await OperationsHelper.FetchUser(database, this.userStore);
+                    User user = await OperationsHelper.FetchUser(database, userStore);
 
                     double.TryParse(transferViewModel.OperationSum, out double sum);
                     otherUser.Balance += sum;
 
                     sum = SetSum();
-                    OperationsHelper.TryUpdateBalance(user, this.userStore, -sum);
+                    OperationsHelper.TryUpdateBalance(user, userStore, -sum);
 
-                    Service service = await OperationsHelper.FetchService(database, 1);
+                    Service service = await OperationsHelper.FetchService(database, "Перевод");
                     Operation operation = OperationsHelper.GenerateMultiUserOperation(database, card, user, sum, service);
 
                     database.User.AddOrUpdate(user);
@@ -81,7 +81,7 @@ namespace EWallet.Commands
         }
 
         private User GetOtherUser(WalletEntities database, Card card)
-            => database.User.First(u => u.Login == card.User.Login);
+            => database.User.FirstOrDefault(u => u.Login == card.User.Login);
         #endregion
     }
 }

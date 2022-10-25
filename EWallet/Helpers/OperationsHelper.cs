@@ -12,13 +12,12 @@ namespace EWallet.Helpers
     {
         #region Methods
         #region Async methods
-        public static async Task<Service> FetchService(WalletEntities database, int serviceId)
-            => await database.Service.AsNoTracking().Where(o => o.ID == serviceId).FirstAsync();
+        public static async Task<Service> FetchService(WalletEntities database, string serviceName)
+            => await database.Service.AsNoTracking().FirstOrDefaultAsync(s => s.Name == serviceName);
         public static async Task<User> FetchUser(WalletEntities database, UserStore userStore)
-            => await database.User.AsNoTracking()
-                .Where(u => u.ID == userStore.CurrentUser.ID).FirstAsync();
+            => await database.User.AsNoTracking().FirstOrDefaultAsync(u => u.ID == userStore.CurrentUser.ID);
         public static async Task<Card> FetchCard(WalletEntities database, string cardNumber)
-            => await database.Card.AsNoTracking().Where(c => c.Number == cardNumber).FirstOrDefaultAsync();
+            => await database.Card.AsNoTracking().FirstOrDefaultAsync(c => c.Number == cardNumber);
         #endregion
 
         public static void TryUpdateBalance(User user, UserStore userStore, double sum)

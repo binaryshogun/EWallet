@@ -51,7 +51,7 @@ namespace EWallet.ViewModels
 
             try
             {
-                SetExistingCardData();
+                Task.Run(SetExistingCardData);
                 
                 using (var database = new WalletEntities())
                 {
@@ -232,25 +232,26 @@ namespace EWallet.ViewModels
         #endregion
 
         #region Methods
-        private void SetExistingCardData() =>
-            Task.Run(FetchCardData);
-
-        private void FetchCardData()
+        private void SetExistingCardData()
         {
-            using (var database = new WalletEntities())
+            try
             {
-                var card = database.Card.AsNoTracking().Where(c => c.UserID == userStore.CurrentUser.ID).FirstOrDefault();
-                if (card != null)
+                using (var database = new WalletEntities())
                 {
-                    CardNumber = EncryptionHelper.Decrypt(card.Number);
-                    if (card.ValidThru.ToString("MM")[0] == '0')
-                        ValidThruMonth += card.ValidThru.ToString("MM")[1];
-                    else
-                        ValidThruMonth = card.ValidThru.ToString("MM");
-                    ValidThruYear = card.ValidThru.ToString("yy");
-                    SaveCardData = true;
+                    var card = database.Card.AsNoTracking().Where(c => c.UserID == userStore.CurrentUser.ID).FirstOrDefault();
+                    if (card != null)
+                    {
+                        CardNumber = EncryptionHelper.Decrypt(card.Number);
+                        if (card.ValidThru.ToString("MM")[0] == '0')
+                            ValidThruMonth += card.ValidThru.ToString("MM")[1];
+                        else
+                            ValidThruMonth = card.ValidThru.ToString("MM");
+                        ValidThruYear = card.ValidThru.ToString("yy");
+                        SaveCardData = true;
+                    }
                 }
             }
+            catch (Exception e) { ErrorMessageBox.Show(e); }
         }
 
         private void IdentifyBank()

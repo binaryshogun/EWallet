@@ -4,22 +4,26 @@ using EWallet.Models;
 using EWallet.ViewModels;
 using System;
 using System.Data.Entity;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace EWallet.Commands
 {
     public class DeleteCardCommand : CommandBase
     {
+        #region Fields
         private readonly CardStore cardStore;
         private readonly CardManagmentViewModel cardManagmentViewModel;
+        #endregion
 
+        #region Constructors
         public DeleteCardCommand(CardStore cardStore, CardManagmentViewModel cardManagmentViewModel)
         {
             this.cardStore = cardStore;
             this.cardManagmentViewModel = cardManagmentViewModel;
         }
+        #endregion
 
+        #region Methods
         public override void Execute(object parameter)
         {
             if (parameter is string cardNumber)
@@ -35,13 +39,12 @@ namespace EWallet.Commands
                 using (var database = new WalletEntities())
                 {
                     string encryptedCardNumber = EncryptionHelper.Encrypt(cardNumber);
-                    var card = database
+                    var card = await database
                         .Card
-                        .AsNoTracking()
-                        .FirstOrDefault(c =>
+                        .FirstOrDefaultAsync(c =>
                         c.Number == encryptedCardNumber);
                     if (card != null)
-                        database.Entry(card).State = EntityState.Deleted;
+                        database.Card.Remove(card);
 
                     await database.SaveChangesAsync();
 
@@ -54,5 +57,6 @@ namespace EWallet.Commands
                 cardManagmentViewModel.AreCardsLoading = false;
             }
         }
+        #endregion
     }
 }

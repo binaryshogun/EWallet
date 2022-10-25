@@ -4,6 +4,8 @@ using EWallet.Services;
 using EWallet.Stores;
 using System.Windows.Input;
 using System.Linq;
+using EWallet.Components;
+using System;
 
 namespace EWallet.ViewModels
 {
@@ -29,11 +31,15 @@ namespace EWallet.ViewModels
             INavigationService accountNavigationService)
         {
 
-            using (var dataBase = new WalletEntities())
+            try
             {
-                passport = dataBase.Passport.AsNoTracking().
-                    Where(p => p.UserID == userStore.CurrentUser.ID).FirstOrDefault();
+                using (var dataBase = new WalletEntities())
+                {
+                    passport = dataBase.Passport.AsNoTracking().
+                        Where(p => p.UserID == userStore.CurrentUser.ID).FirstOrDefault();
+                }
             }
+            catch (Exception e) { ErrorMessageBox.Show(e); }
 
             if (passport != null)
             {

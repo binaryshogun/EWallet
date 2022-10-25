@@ -1,0 +1,152 @@
+﻿<UserControl
+    x:Class="EWallet.Controls.OperationControls.BaseCardForm"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:components="clr-namespace:EWallet.Components"
+    xmlns:viewmodels="clr-namespace:EWallet.ViewModels"
+    xmlns:controls="clr-namespace:EWallet.Controls"
+    mc:Ignorable="d"
+    d:DataContext="{d:DesignInstance Type=viewmodels:RefillViewModel}">
+    <Border
+        CornerRadius="25"
+        BorderThickness="2"
+        BorderBrush="{StaticResource ForegroundColor}"
+        Background="{Binding BankBackground, UpdateSourceTrigger=PropertyChanged}"
+        Padding="10"
+        Height="250"
+        Width="450">
+        <Border.Resources>
+            <Style
+                TargetType="{x:Type Label}"
+                BasedOn="{StaticResource {x:Type Label}}">
+                <Setter
+                    Property="Foreground"
+                    Value="{Binding BankForeground, UpdateSourceTrigger=PropertyChanged}" />
+                <Setter
+                    Property="FontSize"
+                    Value="16" />
+                <Setter
+                    Property="Margin"
+                    Value="10" />
+            </Style>
+        </Border.Resources>
+        <Grid
+            VerticalAlignment="Stretch">
+            <Image
+                Source="{Binding BankLogoPath, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+                VerticalAlignment="Top"
+                HorizontalAlignment="Left"
+                Margin="10 0"
+                MaxHeight="75" />
+
+            <Grid
+                Grid.Row="1"
+                VerticalAlignment="Center">
+
+                <Label
+                    Content="Номер карты"
+                    VerticalAlignment="Center"
+                    Grid.Column="0" />
+
+                <components:PlaceholderTextBox
+                    x:Name="CardNumberTextBox"
+                    Placeholder="0000 0000 0000 0000"
+                    Text="{Binding CardNumber, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+                    MaxLength="16"
+                    FontSize="16"
+                    Grid.Column="1"
+                    Grid.ColumnSpan="3"
+                    VerticalAlignment="Center"
+                    Margin="0 5 20 0"
+                    ToolTip="Номер карты, 16 цифр"
+                    IntFormat="True" />
+
+                <Label
+                    Content="Срок действия"
+                    VerticalAlignment="Center"
+                    Grid.Row="1"
+                    Grid.Column="0" />
+
+                <Grid
+                    Grid.Column="1"
+                    Grid.Row="1"
+                    HorizontalAlignment="Left">
+                    <components:PlaceholderTextBox
+                        Text="{Binding ValidThruMonth, UpdateSourceTrigger=PropertyChanged}"
+                        Placeholder="MM"
+                        MaxLength="2"
+                        FontSize="16"
+                        Margin="0"
+                        DateFormat="True"
+                        ToolTip="Месяц в формате MM"
+                        IsEnabled="{Binding AreExtraInputsAvailable}" />
+                    <Label
+                        Content="/"
+                        Grid.Column="1"
+                        Padding="0"
+                        Margin="0"
+                        VerticalAlignment="Center" />
+
+                    <components:PlaceholderTextBox
+                        Text="{Binding ValidThruYear, UpdateSourceTrigger=PropertyChanged}"
+                        Placeholder="YY"
+                        MaxLength="2"
+                        FontSize="16"
+                        Margin="0"
+                        Grid.Column="2"
+                        DateFormat="True"
+                        DateFormatParameter="Year"
+                        ToolTip="Год в формате yy"
+                        IsEnabled="{Binding AreExtraInputsAvailable}" />
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition />
+                        <ColumnDefinition
+                            Width="auto" />
+                        <ColumnDefinition />
+                    </Grid.ColumnDefinitions>
+                </Grid>
+
+                <Label
+                    Content="СVC/CVV"
+                    VerticalAlignment="Center"
+                    Grid.Row="1"
+                    Grid.Column="2"
+                    Margin="15 0 0 0" />
+
+                <controls:BindablePasswordBox
+                    Placeholder="000"
+                    Password="{Binding CVV, UpdateSourceTrigger=PropertyChanged}"
+                    MaxLength="3"
+                    FontSize="16"
+                    Grid.Column="3"
+                    Grid.Row="1"
+                    VerticalAlignment="Center"
+                    Margin="0 0 20 0"
+                    OnlyNumbers="True"
+                    ToolTip="Секретный код карты (не сохраняется в базе данных)" 
+                    IsEnabled="{Binding AreExtraInputsAvailable}"/>
+
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition
+                        Width="auto" />
+                    <ColumnDefinition/>
+                    <ColumnDefinition
+                        Width="auto" />
+                    <ColumnDefinition />
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition />
+                    <RowDefinition />
+                </Grid.RowDefinitions>
+            </Grid>
+
+            <Grid.RowDefinitions>
+                <RowDefinition
+                    Height="auto" />
+                <RowDefinition />
+            </Grid.RowDefinitions>
+        </Grid>
+    </Border>
+</UserControl>

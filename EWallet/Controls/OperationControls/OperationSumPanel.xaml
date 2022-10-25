@@ -1,0 +1,29 @@
+﻿<Grid
+    x:Class="EWallet.Controls.OperationControls.OperationSumPanel"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:components="clr-namespace:EWallet.Components"
+    mc:Ignorable="d"
+    Margin="30 0">
+    <Label
+        Content="Сумма"
+        FontSize="16"
+        VerticalAlignment="Center" 
+        Margin="0"
+        MinWidth="100"/>
+    <components:PlaceholderTextBox
+        Placeholder="0,00"
+        Text="{Binding OperationSum, UpdateSourceTrigger=PropertyChanged}"
+        MaxLength="7"
+        FontSize="16"
+        DoubleFormat="True"
+        Grid.Column="1"
+        ToolTip="Сумма операции" />
+
+    <Grid.ColumnDefinitions>
+        <ColumnDefinition Width="auto"/>
+        <ColumnDefinition />
+    </Grid.ColumnDefinitions>
+</Grid>

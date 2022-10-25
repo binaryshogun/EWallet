@@ -21,7 +21,7 @@ namespace EWallet.ViewModels
         private Brush bankBorderBrush;
         private Brush bankBackground;
         private Brush bankForeground;
-        private string bankName;
+        private string bankLogoPath;
 
         private string cardNumber;
         private string validThruMonth;
@@ -41,25 +41,24 @@ namespace EWallet.ViewModels
         {
             this.userStore = userStore;
 
+            CurrentBank = Banks.Default;
+            Comission = "0,00";
+
+            ProvideOperationCommand = new TransferCommand(userStore, this, accountNavigationService);
+            NavigateAccountCommand = new NavigateCommand(accountNavigationService);
+
             try
             {
                 using (var database = new WalletEntities())
                 {
-                    Service service = database.Service.First(s => s.ID == 1);
+                    Service service = database.Service.First(s => s.Name == "Перевод");
                     double.TryParse(service.Comission.ToString(), out percent);
                 }
             }
-            catch (Exception e) { ErrorMessageBox.Show(e); }
-            finally
-            {
-                BankBorderBrush = new SolidColorBrush(Color.FromRgb(77, 39, 97));
-                BankBackground = new SolidColorBrush(Color.FromRgb(255, 255, 255));
-                BankForeground = new SolidColorBrush(Color.FromRgb(0, 0, 0));
-                BankName = "БАНК";
-                Comission = "0,00";
-
-                ProvideOperationCommand = new TransferCommand(userStore, this, accountNavigationService);
-                NavigateAccountCommand = new NavigateCommand(accountNavigationService);
+            catch (Exception e) 
+            { 
+                ErrorMessageBox.Show(e);
+                accountNavigationService?.Navigate();
             }
         }
         #endregion
@@ -93,6 +92,8 @@ namespace EWallet.ViewModels
             set
             {
                 validThruYear = value;
+
+                UpdateConfirmButton();
                 OnPropertyChanged(nameof(ValidThruYear));
             }
         }
@@ -102,6 +103,7 @@ namespace EWallet.ViewModels
             set
             {
                 cvv = value;
+                UpdateConfirmButton();
                 OnPropertyChanged(nameof(CVV));
             }
         }
@@ -148,10 +150,10 @@ namespace EWallet.ViewModels
             {
                 currentBank = value;
 
-                BankBorderBrush = BankBorderColors[currentBank];
-                BankBackground = BankBorderColors[currentBank];
+                BankBorderBrush = BankColors[currentBank];
+                BankBackground = BankColors[currentBank];
                 BankForeground = BankForegrounds[currentBank];
-                BankName = BankNames[currentBank];
+                BankLogoPath = BankLogos[currentBank];
             }
         }
         public Brush BankBorderBrush
@@ -181,32 +183,18 @@ namespace EWallet.ViewModels
                 OnPropertyChanged(nameof(BankForeground));
             }
         }
-        public string BankName
+        public string BankLogoPath
         {
-            get => bankName;
+            get => bankLogoPath;
             set
             {
-                bankName = value;
-                OnPropertyChanged(nameof(BankName));
+                bankLogoPath = value;
+                OnPropertyChanged(nameof(BankLogoPath));
             }
         }
         #endregion
 
         #region VisualProperties
-        public string UserBalance 
-            => userStore.CurrentUser.Balance.ToString();
-        public string ButtonContent => "Перевести";
-        public bool IsOperationBeingProvided
-        {
-            get => isOperationBeingProvided;
-            set
-            {
-                isOperationBeingProvided = value;
-                OnPropertyChanged(nameof(IsOperationBeingProvided));
-            }
-        }
-        public bool OperationWithTransfer => true;
-        public bool IsOperation => true;
         public bool IsConfirmButtonEnabled
         {
             get => isConfirmButtonEnabled;
@@ -216,6 +204,18 @@ namespace EWallet.ViewModels
                 OnPropertyChanged(nameof(IsConfirmButtonEnabled));
             }
         }
+        public bool IsOperationBeingProvided
+        {
+            get => isOperationBeingProvided;
+            set
+            {
+                isOperationBeingProvided = value;
+                OnPropertyChanged(nameof(IsOperationBeingProvided));
+            }
+        }
+        public string UserBalance => userStore.CurrentUser.Balance.ToString();
+        public string ButtonContent => "Перевести";
+        public bool AreExtraInputsAvailable => false;
         #endregion
 
         #endregion
@@ -233,6 +233,8 @@ namespace EWallet.ViewModels
                 else if (firstDigit >= '7' && firstDigit <= '9')
                     CurrentBank = Banks.Tinkoff;
             }
+            else
+                CurrentBank = Banks.Default;
         }
 
         private string GetComission()

@@ -13,224 +13,210 @@
     d:DesignWidth="1024"
     d:DataContext="{d:DesignInstance Type=viewmodels:ExpenseReportViewModel}">
     <Grid>
-
-        <StackPanel
-            VerticalAlignment="Center"
-            HorizontalAlignment="Center"
-            Visibility="{Binding DataFetching, 
-            Converter={StaticResource BooleanToVisibilityConverter}}">
-            <Label
-                Content="Данные загружаются..." />
-            <components:Loader IsLoading="{Binding DataFetching}"/>
-        </StackPanel>
+        <controls:CloseModalButton
+            Grid.ColumnSpan="2"
+            Command="{Binding NavigateAccountCommand}"
+            ToolTip="Закрыть отчёт о расходах" />
 
         <Grid
-            Visibility="{Binding DataFetching, Converter={StaticResource InversedConverter}}">
-            <controls:CloseModalButton
-                    Grid.ColumnSpan="2"
-                    Command="{Binding NavigateAccountCommand}" 
-                    ToolTip="Закрыть отчёт о расходах"/>
-
+            Margin="25 30">
             <Grid
-                Margin="25 30">
-                <Grid
-                    Grid.Row="1">
-                    <Grid>
-                        <ComboBox
-                            ItemsSource="{Binding Months}"
-                            SelectedItem="{Binding SelectedMonth, StringFormat=MMMMyy}"
-                            DisplayMemberPath="Month" />
-                        <Label
-                            Content="Выберите месяц" 
-                            Foreground="{StaticResource PlaceholdersColor}"
-                            VerticalAlignment="Center"
-                            FontSize="14"
-                            IsHitTestVisible="False"
-                            Visibility="{Binding IsMonthSelected, 
-                            Converter={StaticResource InversedConverter}}"/>
-                    </Grid>
-
-                    <Grid
-                        Grid.Column="1">
-                        <ComboBox
-                            ItemsSource="{Binding Services}"
-                            SelectedItem="{Binding SelectedService}"
-                            DisplayMemberPath="Name" />
-                        <Label
-                            Content="Выберите тип услуги" 
-                            Foreground="{StaticResource PlaceholdersColor}"
-                            FontSize="14"
-                            VerticalAlignment="Center"
-                            IsHitTestVisible="False"
-                            Visibility="{Binding IsServiceselected, 
-                            Converter={StaticResource InversedConverter}}"/>
-                    </Grid>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition />
-                        <ColumnDefinition />
-                    </Grid.ColumnDefinitions>
+                Grid.Row="1">
+                <Grid>
+                    <ComboBox
+                        ItemsSource="{Binding Months}"
+                        SelectedItem="{Binding SelectedMonth, StringFormat=MMMMyy}"
+                        DisplayMemberPath="Month" />
+                    <Label
+                        Content="Выберите месяц"
+                        Foreground="{StaticResource PlaceholdersColor}"
+                        VerticalAlignment="Center"
+                        FontSize="14"
+                        IsHitTestVisible="False"
+                        Visibility="{Binding IsMonthSelected, 
+                            Converter={StaticResource InversedConverter}}" />
                 </Grid>
+
                 <Grid
-                    Grid.Row="1"
-                    Grid.Column="1"
-                    VerticalAlignment="Center">
-                    <WrapPanel>
+                    Grid.Column="1">
+                    <ComboBox
+                        ItemsSource="{Binding Services}"
+                        SelectedItem="{Binding SelectedService}"
+                        DisplayMemberPath="Name" />
+                    <Label
+                        Content="Выберите тип услуги"
+                        Foreground="{StaticResource PlaceholdersColor}"
+                        FontSize="14"
+                        VerticalAlignment="Center"
+                        IsHitTestVisible="False"
+                        Visibility="{Binding IsServiceselected, 
+                            Converter={StaticResource InversedConverter}}" />
+                </Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition />
+                    <ColumnDefinition />
+                </Grid.ColumnDefinitions>
+            </Grid>
+            <Grid
+                Grid.Row="1"
+                Grid.Column="1"
+                VerticalAlignment="Center">
+                <WrapPanel>
                     <Label
                         FontWeight="SemiBold"
                         Content="Всего расходов:"
-                        FontSize="14" 
-                        HorizontalAlignment="Left"/>
+                        FontSize="14"
+                        HorizontalAlignment="Left" />
                     <Label
                         Content="{Binding SumOfExpenses, StringFormat=f2}"
                         HorizontalAlignment="Right"
                         FontSize="14"
                         FontWeight="SemiBold" />
-                    </WrapPanel>
-                </Grid>
-
-                <Grid
-                    Grid.Row="2"
-                    VerticalAlignment="Center"
-                    HorizontalAlignment="Center"
-                    Visibility="{Binding IsThereOperations, 
-                    Converter={StaticResource InversedConverter}}">
-                    <Label
-                        FontSize="32"
-                        FontWeight="Bold"
-                        Content="Нет операций" />
-                </Grid>
-
-                <StackPanel
-                    Grid.Row="2"
-                    VerticalAlignment="Center"
-                    HorizontalAlignment="Center"
-                    Margin="50 30"
-                    Visibility="{Binding IsThereOperations, 
-                    Converter={StaticResource BooleanToVisibilityConverter}}">
-                    <Grid>
-                        <Label
-                            FontSize="24"
-                            FontWeight="Bold"
-                            Content="Список расходов"
-                            HorizontalAlignment="Center" />
-                    </Grid>
-                    <ScrollViewer
-                        MaxHeight="350"
-                        VerticalScrollBarVisibility="Auto">
-                        <ListView
-                            ItemsSource="{Binding Operations}">
-                            <ListView.ItemTemplate>
-                                <DataTemplate>
-                                    <Border
-                                        BorderBrush="{StaticResource Accents}"
-                                        BorderThickness="0 0 0 1"
-                                        HorizontalAlignment="Stretch">
-                                        <Grid
-                                            HorizontalAlignment="Stretch">
-                                            <Grid.Resources>
-                                                <Style
-                                                    TargetType="{x:Type Label}">
-                                                    <Setter
-                                                        Property="FontSize"
-                                                        Value="16" />
-                                                    <Setter
-                                                        Property="Margin"
-                                                        Value="2 5" />
-                                                    <Setter
-                                                        Property="VerticalAlignment"
-                                                        Value="Stretch" />
-                                                </Style>
-                                            </Grid.Resources>
-                                            <Label
-                                                Content="Номер: "
-                                                FontWeight="SemiBold" />
-                                            <Label
-                                                Content="{Binding Number}"
-                                                Grid.Column="1" />
-
-                                            <Label
-                                                Content="Дата: "
-                                                Grid.Row="1"
-                                                FontWeight="SemiBold" />
-                                            <Label
-                                                Content="{Binding Date, StringFormat=f}"
-                                                Grid.Row="1"
-                                                Grid.Column="1" />
-
-                                            <Label
-                                                Content="Сумма: "
-                                                Grid.Row="2"
-                                                FontWeight="SemiBold" />
-                                            <Label
-                                                Content="{Binding Sum, StringFormat=f2}"
-                                                Grid.Row="2"
-                                                Grid.Column="1" />
-
-                                            <Label
-                                                Content="Услуга: "
-                                                Grid.Row="3"
-                                                FontWeight="SemiBold" />
-                                            <Label
-                                                Content="{Binding Service.Name}"
-                                                Grid.Row="3"
-                                                Grid.Column="1" />
-
-                                            <Label
-                                                Content="Получатель: "
-                                                Grid.Row="4"
-                                                FontWeight="SemiBold" />
-                                            <Label
-                                                Content="{Binding User1.Login}"
-                                                Grid.Row="4"
-                                                Grid.Column="1" />
-
-                                            <Grid.RowDefinitions>
-                                                <RowDefinition />
-                                                <RowDefinition />
-                                                <RowDefinition />
-                                                <RowDefinition />
-                                                <RowDefinition />
-                                            </Grid.RowDefinitions>
-                                            <Grid.ColumnDefinitions>
-                                                <ColumnDefinition
-                                                    Width="auto" />
-                                                <ColumnDefinition />
-                                            </Grid.ColumnDefinitions>
-                                        </Grid>
-                                    </Border>
-                                </DataTemplate>
-                            </ListView.ItemTemplate>
-                        </ListView>
-                    </ScrollViewer>
-                </StackPanel>
-
-                <Grid
-                    Grid.Row="2"
-                    Grid.Column="1"
-                    VerticalAlignment="Center"
-                    HorizontalAlignment="Center"
-                    Visibility="{Binding IsThereOperations, 
-                    Converter={StaticResource BooleanToVisibilityConverter}}">
-                    <livecharts:PieChart
-                        Width="250"
-                        Height="350"
-                        LegendLocation="Bottom"
-                        Hoverable="False"
-                        Series="{Binding OperationsSeries}" />
-                </Grid>
-                <Grid.RowDefinitions>
-                    <RowDefinition
-                        Height="auto" />
-                    <RowDefinition
-                        Height="auto" />
-                    <RowDefinition />
-                </Grid.RowDefinitions>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition />
-                    <ColumnDefinition
-                        Width="0.75*" />
-                </Grid.ColumnDefinitions>
+                </WrapPanel>
             </Grid>
+
+            <Grid
+                Grid.Row="2"
+                VerticalAlignment="Center"
+                HorizontalAlignment="Center"
+                Visibility="{Binding IsThereOperations, 
+                    Converter={StaticResource InversedConverter}}">
+                <Label
+                    FontSize="32"
+                    FontWeight="Bold"
+                    Content="Нет операций" />
+            </Grid>
+
+            <StackPanel
+                Grid.Row="2"
+                VerticalAlignment="Center"
+                HorizontalAlignment="Center"
+                Margin="50 30"
+                Visibility="{Binding IsThereOperations, 
+                    Converter={StaticResource BooleanToVisibilityConverter}}">
+                <Grid>
+                    <Label
+                        FontSize="24"
+                        FontWeight="Bold"
+                        Content="Список расходов"
+                        HorizontalAlignment="Center" />
+                </Grid>
+                <ScrollViewer
+                    MaxHeight="350"
+                    VerticalScrollBarVisibility="Auto">
+                    <ListView
+                        ItemsSource="{Binding Operations}">
+                        <ListView.ItemTemplate>
+                            <DataTemplate>
+                                <Border
+                                    BorderBrush="{StaticResource Accents}"
+                                    BorderThickness="0 0 0 1"
+                                    HorizontalAlignment="Stretch">
+                                    <Grid
+                                        HorizontalAlignment="Stretch">
+                                        <Grid.Resources>
+                                            <Style
+                                                TargetType="{x:Type Label}">
+                                                <Setter
+                                                    Property="FontSize"
+                                                    Value="16" />
+                                                <Setter
+                                                    Property="Margin"
+                                                    Value="2 5" />
+                                                <Setter
+                                                    Property="VerticalAlignment"
+                                                    Value="Stretch" />
+                                            </Style>
+                                        </Grid.Resources>
+                                        <Label
+                                            Content="Номер: "
+                                            FontWeight="SemiBold" />
+                                        <Label
+                                            Content="{Binding Number}"
+                                            Grid.Column="1" />
+
+                                        <Label
+                                            Content="Дата: "
+                                            Grid.Row="1"
+                                            FontWeight="SemiBold" />
+                                        <Label
+                                            Content="{Binding Date, StringFormat=f}"
+                                            Grid.Row="1"
+                                            Grid.Column="1" />
+
+                                        <Label
+                                            Content="Сумма: "
+                                            Grid.Row="2"
+                                            FontWeight="SemiBold" />
+                                        <Label
+                                            Content="{Binding Sum, StringFormat=f2}"
+                                            Grid.Row="2"
+                                            Grid.Column="1" />
+
+                                        <Label
+                                            Content="Услуга: "
+                                            Grid.Row="3"
+                                            FontWeight="SemiBold" />
+                                        <Label
+                                            Content="{Binding Service.Name}"
+                                            Grid.Row="3"
+                                            Grid.Column="1" />
+
+                                        <Label
+                                            Content="Получатель: "
+                                            Grid.Row="4"
+                                            FontWeight="SemiBold" />
+                                        <Label
+                                            Content="{Binding User1.Login}"
+                                            Grid.Row="4"
+                                            Grid.Column="1" />
+
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition />
+                                            <RowDefinition />
+                                            <RowDefinition />
+                                            <RowDefinition />
+                                            <RowDefinition />
+                                        </Grid.RowDefinitions>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition
+                                                Width="auto" />
+                                            <ColumnDefinition />
+                                        </Grid.ColumnDefinitions>
+                                    </Grid>
+                                </Border>
+                            </DataTemplate>
+                        </ListView.ItemTemplate>
+                    </ListView>
+                </ScrollViewer>
+            </StackPanel>
+
+            <Grid
+                Grid.Row="2"
+                Grid.Column="1"
+                VerticalAlignment="Center"
+                HorizontalAlignment="Center"
+                Visibility="{Binding IsThereOperations, 
+                    Converter={StaticResource BooleanToVisibilityConverter}}">
+                <livecharts:PieChart
+                    Width="250"
+                    Height="350"
+                    LegendLocation="Bottom"
+                    Hoverable="False"
+                    Series="{Binding OperationsSeries}" />
+            </Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition
+                    Height="auto" />
+                <RowDefinition
+                    Height="auto" />
+                <RowDefinition />
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition />
+                <ColumnDefinition
+                    Width="0.75*" />
+            </Grid.ColumnDefinitions>
         </Grid>
     </Grid>
 </UserControl>

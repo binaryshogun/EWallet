@@ -30,7 +30,7 @@ namespace EWallet.Tests
         
         public async void PassAuthorizationTest()
         {
-            await Task.Run(authorizeUserCommand.FetchUserFromDataBase);
+            await Task.Run(authorizeUserCommand.FetchUserFromDatabase);
             Assert.AreEqual(userStore.CurrentUser != null, true);
         }
 

@@ -5,7 +5,6 @@ using EWallet.Models;
 using EWallet.Services;
 using EWallet.Stores;
 using System;
-using System.ComponentModel;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Data;
@@ -18,11 +17,14 @@ namespace EWallet.ViewModels
         private readonly UserStore userStore;
         private readonly WalletEntities database;
 
-        private ICollectionView cards;
+        private ListCollectionView cards;
         private bool isThereCards;
         private bool areCardsLoading;
 
-        public CardManagmentViewModel(UserStore userStore, INavigationService accountNavigatonService, INavigationService cardNavigationService)
+        public CardManagmentViewModel(UserStore userStore,
+            CardStore cardStore,
+            INavigationService accountNavigatonService, 
+            INavigationService cardNavigationService)
         {
             this.userStore = userStore;
 
@@ -36,14 +38,14 @@ namespace EWallet.ViewModels
                 accountNavigatonService?.Navigate();
             }
 
-            SetCards();
+            Task.Run(SetCards);
 
             NavigateAccountCommand = new NavigateCommand(accountNavigatonService);
-            NavigateCardCommand = new NavigateCommand(cardNavigationService);
-            DeleteCardCommand = new DeleteCardCommand(this);
+            NavigateCardCommand = new NavigateCardCommand(cardStore, cardNavigationService);
+            DeleteCardCommand = new DeleteCardCommand(cardStore, this);
         }
 
-        public ICollectionView Cards
+        public ListCollectionView Cards
         {
             get => cards;
             set
@@ -91,14 +93,12 @@ namespace EWallet.ViewModels
                             ValidThru = c.ValidThru.ToString("D")
                         })
                     .ToList();
-                Cards = new CollectionView(cardsList);
-                Cards.Refresh();
+                Cards = new ListCollectionView(cardsList);
             }
             catch (Exception e) { ErrorMessageBox.Show(e); }
             finally
             {
                 CheckCardsCount();
-
                 AreCardsLoading = false;
             }
         }
@@ -107,7 +107,7 @@ namespace EWallet.ViewModels
         {
             try
             {
-                if (((CollectionView)Cards).Count > 0)
+                if (((ListCollectionView)Cards).Count > 0)
                     IsThereCards = true;
                 else
                     IsThereCards = false;

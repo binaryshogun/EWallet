@@ -25,10 +25,11 @@ namespace EWallet.Controls
         {
             InitializeComponent();
 
-            Binding placeholderBinding = new Binding();
-            placeholderBinding.Source = this;
-            placeholderBinding.Mode = BindingMode.TwoWay;
-            placeholderBinding.Path = new PropertyPath("Placeholder");
+            Binding placeholderBinding = new Binding("Placeholder")
+            {
+                Source = this,
+                Mode = BindingMode.TwoWay
+            };
             passwordHint.SetBinding(Label.ContentProperty, placeholderBinding);
         }
         #endregion

@@ -31,7 +31,6 @@ namespace EWallet.ViewModels
 		private double? sumOfExpenses;
 
 		private SeriesCollection operationSeries;
-        private bool dataFetching;
         private bool isThereOperations;
 
         private bool isMonthSelected;
@@ -46,6 +45,11 @@ namespace EWallet.ViewModels
             try
             {
                 database = new WalletEntities();
+
+                Months = SetUpMonths();
+                Services = SetUpServices();
+
+                SetUpViewModel();
             }
             catch (Exception e)
             {
@@ -54,11 +58,6 @@ namespace EWallet.ViewModels
             }
 
             NavigateAccountCommand = new NavigateCommand(accountNavigationService);
-
-            Months = SetUpMonths();
-            Services = SetUpServices();
-
-            SetUpViewModel();
         }
         #endregion
 
@@ -138,16 +137,6 @@ namespace EWallet.ViewModels
                 OnPropertyChanged(nameof(OperationsSeries));
             }
         }
-
-        public bool DataFetching
-        {
-            get => dataFetching;
-            set
-            {
-                dataFetching = value;
-                OnPropertyChanged(nameof(DataFetching));
-            }
-        }
         public bool IsThereOperations
         {
             get => isThereOperations;
@@ -192,53 +181,32 @@ namespace EWallet.ViewModels
         }
         private List<Service> SetUpServices()
         {
-            try
-            {
-                using (var database = new WalletEntities())
-                {
-                    List<Service> servicesList = database.Service.Where(s => s.ID == 1 || s.ID == 2).ToList();
-                    return servicesList;
-                }
-            }
-            catch (Exception e) { ErrorMessageBox.Show(e); }
-            return null;
+            List<Service> servicesList = database.Service.Where(s => s.Name == "Перевод" || s.Name == "Вывод средств").ToList();
+            return servicesList.Count != 0 ? servicesList : null;
         }
         private void SetUpViewModel()
         {
-            DataFetching = true;
-            try
-            {
-                List<Operation> operationsList = database.Operation.Where(
-                        o => (o.ServiceID == 1 || o.ServiceID == 2)
-                        && o.UserID == userStore.CurrentUser.ID).ToList();
+            List<Operation> operationsList = database.Operation.Where(
+                    o => (o.Service.Name == "Вывод средств" || o.Service.Name == "Перевод")
+                    && o.UserID == userStore.CurrentUser.ID).ToList();
 
-                Operations = operationsList;
+            Operations = operationsList;
 
-                if (SelectedMonth != DateTime.MinValue)
-                    Operations = Operations
-                        .Where(o => o.Date.Month == SelectedMonth.Month)
-                        .ToList();
+            if (SelectedMonth != DateTime.MinValue)
+                Operations = Operations
+                    .Where(o => o.Date.Month == SelectedMonth.Month)
+                    .ToList();
 
-                if (SelectedService != null)
-                    Operations = Operations
-                        .Where(o => o.ServiceID == SelectedService.ID)
-                        .ToList();
+            if (SelectedService != null)
+                Operations = Operations
+                    .Where(o => o.ServiceID == SelectedService.ID)
+                    .ToList();
 
-                SumOfExpenses = 0;
-                if (Operations.Count > 0)
-                    SumOfExpenses = Math.Round(operationsList.Sum(o => o.Sum), 2);
+            SumOfExpenses = 0;
+            if (Operations.Count > 0)
+                SumOfExpenses = Math.Round(operationsList.Sum(o => o.Sum), 2);
 
-                UpdateChart();
-            }
-            catch (Exception e) 
-            { 
-                ErrorMessageBox.Show(e);
-                NavigateAccountCommand.Execute(null);
-            }
-            finally
-            {
-                DataFetching = false;
-            }
+            UpdateChart();
         }
 
         private void UpdateChart()

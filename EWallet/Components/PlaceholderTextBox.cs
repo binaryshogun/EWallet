@@ -182,7 +182,7 @@ namespace EWallet.Components
                 if (DateFormatParameter == DateFormatParameters.Month)
                     pattern = @"^(([1-9]|1[012]))$";
                 else
-                    pattern = @"^([0-9][0-9]?)$";
+                    pattern = @"^((2?[3-9]?)|(3?0?))$";
             }
 
             return Regex.IsMatch(text, pattern);

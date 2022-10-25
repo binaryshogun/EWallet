@@ -71,8 +71,29 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Behaviors\ScaleFontBehavior.cs" />
+    <Compile Include="Commands\SaveCardDataCommand.cs" />
+    <Compile Include="Stores\CardStore.cs" />
     <Compile Include="Commands\DeleteCardCommand.cs" />
+    <Compile Include="Commands\NavigateCardCommand.cs" />
     <Compile Include="Commands\WithdrawCommand.cs" />
+    <Compile Include="Controls\OperationControls\ComissionPanel.xaml.cs">
+      <DependentUpon>ComissionPanel.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\OperationControls\OperationLoader.xaml.cs">
+      <DependentUpon>OperationLoader.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\OperationControls\OperationSumPanel.xaml.cs">
+      <DependentUpon>OperationSumPanel.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\OperationControls\ProvideOperationButton.xaml.cs">
+      <DependentUpon>ProvideOperationButton.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\OperationControls\SaveCardDataPanel.xaml.cs">
+      <DependentUpon>SaveCardDataPanel.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\OperationControls\UserBalancePanel.xaml.cs">
+      <DependentUpon>UserBalancePanel.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Helpers\EncryptionHelper.cs" />
     <Compile Include="Helpers\VisualHelper.cs" />
     <Compile Include="Commands\AuthorizeUserCommand.cs" />
@@ -91,8 +112,8 @@
       <DependentUpon>BindablePasswordBox.xaml</DependentUpon>
     </Compile>
     <Compile Include="Components\FlexWrapPanel.cs" />
-    <Compile Include="Controls\CardForm.xaml.cs">
-      <DependentUpon>CardForm.xaml</DependentUpon>
+    <Compile Include="Controls\OperationControls\BaseCardForm.xaml.cs">
+      <DependentUpon>BaseCardForm.xaml</DependentUpon>
     </Compile>
     <Compile Include="Controls\CloseModalButton.xaml.cs">
       <DependentUpon>CloseModalButton.xaml</DependentUpon>
@@ -153,7 +174,6 @@
     <Compile Include="Services\LayoutNavigationService.cs" />
     <Compile Include="Services\ModalNavigationService.cs" />
     <Compile Include="Services\NavigationService.cs" />
-    <Compile Include="Services\ParameterNavigationService.cs" />
     <Compile Include="Stores\ModalNavigationStore.cs" />
     <Compile Include="Stores\NavigationStore.cs" />
     <Compile Include="Stores\UserStore.cs" />
@@ -251,11 +271,15 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Controls\CardForm.xaml">
+    <Page Include="Controls\OperationControls\BaseCardForm.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Controls\CloseModalButton.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\OperationControls\ComissionPanel.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -268,6 +292,26 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Controls\OperationButton.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\OperationControls\OperationLoader.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\OperationControls\OperationSumPanel.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\OperationControls\ProvideOperationButton.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\OperationControls\SaveCardDataPanel.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\OperationControls\UserBalancePanel.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -418,6 +462,10 @@
       <DependentUpon>WalletModel.edmx</DependentUpon>
       <LastGenOutput>WalletModel.cs</LastGenOutput>
     </Content>
+    <Resource Include="Resources\icons\logo_defaultbank.png" />
+    <Resource Include="Resources\icons\logo_alfabank.png" />
+    <Resource Include="Resources\icons\logo_sberbank.png" />
+    <Resource Include="Resources\icons\logo_tinkoff.png" />
     <Resource Include="Resources\images\delete.png" />
     <Resource Include="Resources\images\edit.png" />
     <Resource Include="Resources\images\card_black.png" />

@@ -46,6 +46,7 @@
                     <Button
                         Content="Добавить карту"
                         Command="{Binding NavigateCardCommand}" 
+                        CommandParameter="{x:Null}"
                         MaxWidth="300"
                         ToolTip="Добавить новую карту"/>
                 </StackPanel>
@@ -65,7 +66,7 @@
 
                     <ScrollViewer
                         VerticalScrollBarVisibility="Auto"
-                        MinWidth="350"
+                        MinWidth="400"
                         MaxHeight="400"
                         Visibility="{Binding IsThereCards, 
                         Converter={StaticResource BooleanToVisibilityConverter}}">
@@ -73,7 +74,10 @@
                             ItemsSource="{Binding Cards}">
                             <ListView.ItemTemplate>
                                 <DataTemplate>
-                                    <Grid ToolTip="Данные карты">
+                                    <Grid
+                                        ToolTip="Данные карты"
+                                        HorizontalAlignment="Center"
+                                        VerticalAlignment="Center">
                                         <Image
                                             Source="../Resources/images/card_black.png"
                                             MaxHeight="50" 
@@ -99,24 +103,56 @@
                                                 VerticalAlignment="Center"
                                                 Margin="2" />
 
+                                            <Grid 
+                                                Grid.Column="1"
+                                                Grid.RowSpan="2"
+                                                VerticalAlignment="Center"
+                                                HorizontalAlignment="Right">
+                                                <Button
+                                                    VerticalAlignment="Center"
+                                                    Margin="15 0"
+                                                    Style="{StaticResource ImageButtonStyle}"
+                                                    Command="{Binding 
+                                                    RelativeSource={RelativeSource AncestorType={x:Type UserControl}}, 
+                                                    Path=DataContext.NavigateCardCommand}"
+                                                    CommandParameter="{Binding Number}"
+                                                    ToolTip="Редактировать данные карты">
+                                                    <Image
+                                                        Source="../Resources/images/edit.png"
+                                                        MaxHeight="50" 
+                                                        VerticalAlignment="Center"/>
+                                                </Button>
+                                                <Button
+                                                    VerticalAlignment="Center"
+                                                    Grid.Column="1"
+                                                    Margin="15 0"
+                                                    Style="{StaticResource ImageButtonStyle}"
+                                                    Command="{Binding 
+                                                    RelativeSource={RelativeSource AncestorType={x:Type UserControl}}, 
+                                                    Path=DataContext.DeleteCardCommand}"
+                                                    CommandParameter="{Binding Number}"
+                                                    ToolTip="Удалить карту">
+                                                    <Image
+                                                        Source="../Resources/images/delete.png"
+                                                        MaxHeight="50" 
+                                                        VerticalAlignment="Center"/>
+                                                </Button>
+
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition />
+                                                    <ColumnDefinition />
+                                                </Grid.ColumnDefinitions>
+                                            </Grid>
+
                                             <Grid.RowDefinitions>
                                                 <RowDefinition />
                                                 <RowDefinition />
                                             </Grid.RowDefinitions>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition />
+                                                <ColumnDefinition />
+                                            </Grid.ColumnDefinitions>
                                         </Grid>
-                                        <Button
-                                            VerticalAlignment="Center"
-                                            Grid.Column="2"
-                                            Style="{StaticResource ImageButtonStyle}"
-                                            Command="{Binding 
-                                                RelativeSource={RelativeSource AncestorType={x:Type UserControl}}, 
-                                                Path=DataContext.DeleteCardCommand}"
-                                            CommandParameter="{Binding Number}"
-                                            ToolTip="Удалить карту">
-                                            <Image
-                                                Source="../Resources/images/delete.png" 
-                                                MaxHeight="50"/>
-                                        </Button>
 
                                         <Grid.ColumnDefinitions>
                                             <ColumnDefinition
@@ -138,6 +174,7 @@
                         MaxHeight="50"
                         HorizontalAlignment="Center"
                         Command="{Binding NavigateCardCommand}"
+                        CommandParameter="{x:Null}"
                         ToolTip="Добавить карту"
                         Visibility="{Binding IsThereCards, 
                         Converter={StaticResource BooleanToVisibilityConverter}}">

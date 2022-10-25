@@ -31,13 +31,13 @@ namespace EWallet.Tests
         }
         public async void PassRegistrationTest()
         {
-            await Task.Run(registerUserCommand.RegisterUserInDataBase);
+            await Task.Run(registerUserCommand.RegisterUserInDatabase);
             Assert.AreEqual(userStore.CurrentUser != null, true);
         }
 
         public async void AlreadyRegistredTest()
         {
-            await Task.Run(registerUserCommand.RegisterUserInDataBase);
+            await Task.Run(registerUserCommand.RegisterUserInDatabase);
             Assert.AreEqual(userStore.CurrentUser == null, true);
         }
 

@@ -11,15 +11,20 @@ namespace EWallet.Commands
 {
     public class DeleteCardCommand : CommandBase
     {
+        private readonly CardStore cardStore;
         private readonly CardManagmentViewModel cardManagmentViewModel;
 
-        public DeleteCardCommand(CardManagmentViewModel cardManagmentViewModel) 
-            => this.cardManagmentViewModel = cardManagmentViewModel;
+        public DeleteCardCommand(CardStore cardStore, CardManagmentViewModel cardManagmentViewModel)
+        {
+            this.cardStore = cardStore;
+            this.cardManagmentViewModel = cardManagmentViewModel;
+        }
 
         public override void Execute(object parameter)
         {
             if (parameter is string cardNumber)
                 Task.Run(() => RemoveCardFromDatabase(cardNumber));
+            cardStore.CurrentCard = null;
         }
 
         private async Task RemoveCardFromDatabase(string cardNumber)

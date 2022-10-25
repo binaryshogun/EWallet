@@ -40,9 +40,9 @@ namespace EWallet.Commands
         #region Methods
         ///<inheritdoc cref="CommandBase.Execute(object)"/>
         public override void Execute(object parameter) 
-            => Task.Run(RegisterUserInDataBase);
+            => Task.Run(RegisterUserInDatabase);
 
-        public async Task RegisterUserInDataBase()
+        public async Task RegisterUserInDatabase()
         {
             registrationViewModel.IsUserAuthorizing = true;
 
@@ -58,8 +58,8 @@ namespace EWallet.Commands
                         if (registrationViewModel.Password.Length < 16)
                             length = registrationViewModel.Password.Length;
 
-                        await AddUserToDataBase(database, length);
-                        await AddPassportToDataBase(database);
+                        await AddUserToDatabase(database, length);
+                        await AddPassportToDatabase(database);
                     }
                     else
                         throw new Exception("Пользователь уже зарегистрирован в системе!");
@@ -76,7 +76,7 @@ namespace EWallet.Commands
         private async Task<User> FetchUser(WalletEntities database)
             => await database.User.AsNoTracking().FirstOrDefaultAsync(
                 u => u.Login == registrationViewModel.Login);
-        private async Task AddUserToDataBase(WalletEntities database, int length)
+        private async Task AddUserToDatabase(WalletEntities database, int length)
         {
             var user = new User()
             {
@@ -88,7 +88,7 @@ namespace EWallet.Commands
             database.User.Add(user);
             await database.SaveChangesAsync();
         }
-        private async Task AddPassportToDataBase(WalletEntities database)
+        private async Task AddPassportToDatabase(WalletEntities database)
         {
             var user = await FetchUser(database);
             Passport userPassport = new Passport()

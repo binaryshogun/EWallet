@@ -9,6 +9,7 @@ using static EWallet.Models.BanksData;
 using System.Windows.Input;
 using System.Windows.Media;
 using EWallet.Helpers;
+using System.Threading.Tasks;
 
 namespace EWallet.ViewModels
 {
@@ -22,7 +23,7 @@ namespace EWallet.ViewModels
         private Brush bankBorderBrush;
         private Brush bankBackground;
         private Brush bankForeground;
-        private string bankName;
+        private string bankLogoPath;
 
         private string cardNumber;
         private string validThruMonth;
@@ -41,26 +42,27 @@ namespace EWallet.ViewModels
         public RefillViewModel(UserStore userStore, INavigationService accountNavigationService)
         {
             this.userStore = userStore;
-            BankBorderBrush = new SolidColorBrush(Color.FromRgb(77, 39, 97));
-            BankBackground = new SolidColorBrush(Color.FromRgb(255, 255, 255));
-            BankForeground = new SolidColorBrush(Color.FromRgb(0, 0, 0));
-            BankName = "БАНК";
+
+            CurrentBank = Banks.Default;
             Comission = "0,00";
+
+            ProvideOperationCommand = new RefillCommand(userStore, this, accountNavigationService);
+            NavigateAccountCommand = new NavigateCommand(accountNavigationService);
 
             try
             {
+                SetExistingCardData();
+                
                 using (var database = new WalletEntities())
                 {
-                    SetExistingCardData(database);
-                    var service = database.Service.AsNoTracking().Where(s => s.ID == 4).First();
+                    var service = database.Service.First(s => s.Name == "Пополнение баланса");
                     double.TryParse(service.Comission.ToString(), out percent);
                 }
             }
-            catch (Exception e) { ErrorMessageBox.Show(e); }
-            finally
-            {
-                ProvideOperationCommand = new RefillCommand(userStore, this, accountNavigationService);
-                NavigateAccountCommand = new NavigateCommand(accountNavigationService);
+            catch (Exception e) 
+            { 
+                ErrorMessageBox.Show(e);
+                accountNavigationService?.Navigate();
             }
         }
         #endregion
@@ -74,25 +76,20 @@ namespace EWallet.ViewModels
             {
                 cardNumber = value;
 
-                if (cardNumber.Length > 0)
-                {
-                    IdentifyBank();
-
-                    OnPropertyChanged(nameof(CurrentBank));
-                }
-
+                IdentifyBank();
                 UpdateConfirmButton();
 
                 OnPropertyChanged(nameof(CardNumber));
             }
         }
-
         public string ValidThruMonth
         {
             get => validThruMonth;
             set
             {
                 validThruMonth = value;
+
+                UpdateConfirmButton();
                 OnPropertyChanged(nameof(ValidThruMonth));
             }
         }
@@ -102,6 +99,8 @@ namespace EWallet.ViewModels
             set
             {
                 validThruYear = value;
+
+                UpdateConfirmButton();
                 OnPropertyChanged(nameof(ValidThruYear));
             }
         }
@@ -111,6 +110,8 @@ namespace EWallet.ViewModels
             set
             {
                 cvv = value;
+
+                UpdateConfirmButton();
                 OnPropertyChanged(nameof(CVV));
             }
         }
@@ -157,10 +158,12 @@ namespace EWallet.ViewModels
             {
                 currentBank = value;
 
-                BankBorderBrush = BankBorderColors[currentBank];
-                BankBackground = BankBorderColors[currentBank];
+                BankBorderBrush = BankColors[currentBank];
+                BankBackground = BankColors[currentBank];
                 BankForeground = BankForegrounds[currentBank];
-                BankName = BankNames[currentBank];
+                BankLogoPath = BankLogos[currentBank];
+
+                OnPropertyChanged(nameof(CurrentBank));
             }
         }
         public Brush BankBorderBrush
@@ -190,21 +193,18 @@ namespace EWallet.ViewModels
                 OnPropertyChanged(nameof(BankForeground));
             }
         }
-        public string BankName
+        public string BankLogoPath
         {
-            get => bankName;
+            get => bankLogoPath;
             set
             {
-                bankName = value;
-                OnPropertyChanged(nameof(BankName));
+                bankLogoPath = value;
+                OnPropertyChanged(nameof(BankLogoPath));
             }
         }
         #endregion
 
         #region VisualProperties
-        public string UserBalance
-            => userStore.CurrentUser.Balance.ToString();
-        public string ButtonContent => "Пополнить";
         public bool IsOperationBeingProvided
         {
             get => isOperationBeingProvided;
@@ -214,8 +214,6 @@ namespace EWallet.ViewModels
                 OnPropertyChanged(nameof(IsOperationBeingProvided));
             }
         }
-        public bool OperationWithTransfer => false;
-        public bool IsOperation => true;
         public bool IsConfirmButtonEnabled
         {
             get => isConfirmButtonEnabled;
@@ -225,35 +223,51 @@ namespace EWallet.ViewModels
                 OnPropertyChanged(nameof(IsConfirmButtonEnabled));
             }
         }
+        public string UserBalance => userStore.CurrentUser.Balance.ToString();
+        public string ButtonContent => "Пополнить";
+        public bool AreExtraInputsAvailable => true;
+        
         #endregion
 
         #endregion
 
         #region Methods
-        private void SetExistingCardData(WalletEntities database)
+        private void SetExistingCardData() =>
+            Task.Run(FetchCardData);
+
+        private void FetchCardData()
         {
-            var card = database.Card.AsNoTracking().Where(c => c.UserID == userStore.CurrentUser.ID).FirstOrDefault();
-            if (card != null)
+            using (var database = new WalletEntities())
             {
-                CardNumber = EncryptionHelper.Decrypt(card.Number);
-                if (card.ValidThru.ToString("MM")[0] == '0')
-                    ValidThruMonth += card.ValidThru.ToString("MM")[1];
-                else
-                    ValidThruMonth = card.ValidThru.ToString("MM");
-                ValidThruYear = card.ValidThru.ToString("yy");
-                SaveCardData = true;
+                var card = database.Card.AsNoTracking().Where(c => c.UserID == userStore.CurrentUser.ID).FirstOrDefault();
+                if (card != null)
+                {
+                    CardNumber = EncryptionHelper.Decrypt(card.Number);
+                    if (card.ValidThru.ToString("MM")[0] == '0')
+                        ValidThruMonth += card.ValidThru.ToString("MM")[1];
+                    else
+                        ValidThruMonth = card.ValidThru.ToString("MM");
+                    ValidThruYear = card.ValidThru.ToString("yy");
+                    SaveCardData = true;
+                }
             }
         }
 
         private void IdentifyBank()
         {
-            char firstDigit = cardNumber[0];
-            if (firstDigit > '0' && firstDigit < '4')
-                CurrentBank = Banks.Sberbank;
-            else if (firstDigit >= '4' && firstDigit < '7')
-                CurrentBank = Banks.AlfaBank;
-            else if (firstDigit >= '7' && firstDigit <= '9')
-                CurrentBank = Banks.Tinkoff;
+            if (CardNumber.Length > 0)
+            {
+
+                char firstDigit = CardNumber[0];
+                if (firstDigit > '0' && firstDigit < '4')
+                    CurrentBank = Banks.Sberbank;
+                else if (firstDigit >= '4' && firstDigit < '7')
+                    CurrentBank = Banks.AlfaBank;
+                else if (firstDigit >= '7' && firstDigit <= '9')
+                    CurrentBank = Banks.Tinkoff;
+            }
+            else
+                CurrentBank = Banks.Default;
         }
 
         private string GetComission()

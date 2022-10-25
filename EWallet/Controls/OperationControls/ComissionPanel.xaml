@@ -1,0 +1,47 @@
+﻿<Grid
+    x:Class="EWallet.Controls.OperationControls.ComissionPanel"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="clr-namespace:EWallet.Controls.OperationControls"
+    xmlns:viewmodels="clr-namespace:EWallet.ViewModels"
+    d:DataContext="{d:DesignInstance Type=viewmodels:TransferViewModel}"
+    mc:Ignorable="d"
+    d:DesignHeight="100"
+    d:DesignWidth="500">
+    <Grid.Resources>
+        <Style
+            TargetType="{x:Type Label}">
+            <Setter
+                Property="FontSize"
+                Value="16" />
+            <Setter
+                Property="VerticalAlignment"
+                Value="Center" />
+            <Setter
+                Property="Margin"
+                Value="0" />
+        </Style>
+    </Grid.Resources>
+
+    <Label
+        Content="Комиссия за операцию составит:" />
+
+    <WrapPanel
+        HorizontalAlignment="Right"
+        VerticalAlignment="Center"
+        Grid.Column="1">
+        <Label
+            Content="{Binding Comission}"
+            FontSize="16" />
+        <Label
+            Content="рублей"
+            FontSize="16" />
+    </WrapPanel>
+    <Grid.ColumnDefinitions>
+        <ColumnDefinition
+            Width="auto" />
+        <ColumnDefinition />
+    </Grid.ColumnDefinitions>
+</Grid>

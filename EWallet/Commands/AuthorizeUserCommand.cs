@@ -40,9 +40,9 @@ namespace EWallet.Commands
         #region Methods
         /// <inheritdoc cref="CommandBase.Execute(object)"/>
         public override void Execute(object parameter) 
-            => Task.Run(FetchUserFromDataBase);
+            => Task.Run(FetchUserFromDatabase);
 
-        public async Task FetchUserFromDataBase()
+        public async Task FetchUserFromDatabase()
         {
             viewModel.IsUserAuthorizing = true;
 

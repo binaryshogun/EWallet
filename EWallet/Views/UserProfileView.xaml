@@ -14,162 +14,162 @@
     d:DataContext="{d:DesignInstance Type=viewmodels:UserProfileViewModel}">
 
     <Grid>
-        <controls:CloseModalButton
-            Command="{Binding NavigateAccountCommand}"
-            Grid.Column="2"
-            Visibility="{Binding IsDataSaved, Converter={StaticResource BooleanToVisibilityConverter}}"
-            ToolTip="Закрыть профиль" />
-
-        <StackPanel
-            Grid.Row="1">
-            <Grid
-                Margin="20"
-                FocusManager.FocusedElement="{Binding ElementName=inputLastName}"
-                Visibility="{Binding IsDataSaved, Converter={StaticResource BooleanToVisibilityConverter}}">
-                <Label
-                    Content="ФИО"
-                    FontWeight="Bold"
-                    FontSize="32"
-                    Margin="10 2"
-                    Grid.ColumnSpan="3" />
-
-                <Label
-                    Content="Фамилия"
-                    Grid.Row="1" />
-
-                <components:PlaceholderTextBox
-                    x:Name="inputLastName"
-                    Placeholder="Иванов"
-                    Text="{Binding LastName}"
-                    Grid.Column="1"
-                    Grid.Row="1"
-                    ToolTip="Ваша фамилия" />
-
-                <Label
-                    Content="Имя"
-                    Grid.Row="2" />
-
-                <components:PlaceholderTextBox
-                    Placeholder="Иван"
-                    Text="{Binding FirstName}"
-                    Grid.Column="1"
-                    Grid.Row="2"
-                    ToolTip="Ваше имя" />
-
-                <Label
-                    Content="Отчество"
-                    Grid.Row="3" />
-
-                <components:PlaceholderTextBox
-                    Placeholder="Иванович"
-                    Text="{Binding Patronymic}"
-                    IsEnabled="{Binding DoesUserHavePatronymic}"
-                    Grid.Column="1"
-                    Grid.Row="3"
-                    ToolTip="Ваше отчество при наличии" />
-
-                <CheckBox
-                    IsChecked="{Binding DoesUserHavePatronymic}"
-                    Grid.Column="2"
-                    Grid.Row="3"
-                    VerticalAlignment="Center"
-                    Margin="5"
-                    ToolTip="Снимите или установите флажок при отсутствии или наличии отчества соответственно" />
-
-                <Label
-                    Content="Паспортные данные"
-                    FontWeight="ExtraBold"
-                    FontSize="32"
-                    Grid.ColumnSpan="3"
-                    Grid.Row="4" />
-
-                <Label
-                    Content="Серия"
-                    Grid.Row="5" />
-
-                <components:PlaceholderTextBox
-                    Placeholder="0000"
-                    Text="{Binding SerialNumber, UpdateSourceTrigger=PropertyChanged}"
-                    Grid.Column="1"
-                    Grid.Row="5"
-                    MaxLength="4"
-                    ToolTip="Серия паспорта, 4 цифры" />
-
-                <Label
-                    Content="Номер"
-                    Grid.Row="6" />
-
-                <components:PlaceholderTextBox
-                    Placeholder="000000"
-                    Text="{Binding Number, UpdateSourceTrigger=PropertyChanged}"
-                    MaxLength="6"
-                    Grid.Column="1"
-                    Grid.Row="6"
-                    ToolTip="Номер паспорта, 6 цифр" />
-
-                <Label
-                    Content="Код подразделения"
-                    Grid.Row="7"
-                    Margin="10 10 0 10" />
-
-                <components:PlaceholderTextBox
-                    Placeholder="000"
-                    Text="{Binding DivisionCode, UpdateSourceTrigger=PropertyChanged}"
-                    MaxLength="3"
-                    Grid.Column="1"
-                    Grid.Row="7"
-                    ToolTip="Код подразделения, 3 цифры" />
-
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition
-                        Width="auto" />
-                    <ColumnDefinition
-                        Width="*" />
-                    <ColumnDefinition
-                        Width="auto" />
-                </Grid.ColumnDefinitions>
-
-                <Grid.RowDefinitions>
-                    <RowDefinition />
-                    <RowDefinition />
-                    <RowDefinition />
-                    <RowDefinition />
-                    <RowDefinition />
-                    <RowDefinition />
-                    <RowDefinition />
-                    <RowDefinition />
-                    <RowDefinition />
-                </Grid.RowDefinitions>
-            </Grid>
-
-            <Button
-                Content="Сохранить"
-                Command="{Binding SaveCommand}"
-                ToolTip="Сохранить изменения"
-                VerticalAlignment="Center"
-                HorizontalAlignment="Center"
-                Padding="60 15" />
-        </StackPanel>
-        
-
         <StackPanel
             Visibility="{Binding IsDataSaved, 
-                Converter={StaticResource InversedConverter}}"
-            Grid.Column="1"
-            Grid.Row="1"
+        Converter={StaticResource InversedConverter}}"
             VerticalAlignment="Center"
             HorizontalAlignment="Center">
             <Label
                 Content="{Binding SaveDataMessage}" />
             <components:Loader
-                IsLoading="{Binding IsDataSave}"/>
+                IsLoading="{Binding IsDataSave}" />
         </StackPanel>
 
-        <Grid.RowDefinitions>
-            <RowDefinition
-                Height="auto" />
-            <RowDefinition
-                Height="auto" />
-        </Grid.RowDefinitions>
+        <Grid
+            Visibility="{Binding IsDataSaved, 
+        Converter={StaticResource BooleanToVisibilityConverter}}">
+            <controls:CloseModalButton
+                Command="{Binding NavigateAccountCommand}"
+                Grid.Column="2"
+                Visibility="{Binding IsDataSaved, Converter={StaticResource BooleanToVisibilityConverter}}"
+                ToolTip="Закрыть профиль" />
+
+            <StackPanel
+                Grid.Row="1">
+                <Grid
+                    Margin="20"
+                    FocusManager.FocusedElement="{Binding ElementName=inputLastName}">
+                    <Label
+                        Content="ФИО"
+                        FontWeight="Bold"
+                        FontSize="32"
+                        Margin="10 2"
+                        Grid.ColumnSpan="3" />
+
+                    <Label
+                        Content="Фамилия"
+                        Grid.Row="1" />
+
+                    <components:PlaceholderTextBox
+                        x:Name="inputLastName"
+                        Placeholder="Иванов"
+                        Text="{Binding LastName}"
+                        Grid.Column="1"
+                        Grid.Row="1"
+                        ToolTip="Ваша фамилия" />
+
+                    <Label
+                        Content="Имя"
+                        Grid.Row="2" />
+
+                    <components:PlaceholderTextBox
+                        Placeholder="Иван"
+                        Text="{Binding FirstName}"
+                        Grid.Column="1"
+                        Grid.Row="2"
+                        ToolTip="Ваше имя" />
+
+                    <Label
+                        Content="Отчество"
+                        Grid.Row="3" />
+
+                    <components:PlaceholderTextBox
+                        Placeholder="Иванович"
+                        Text="{Binding Patronymic}"
+                        IsEnabled="{Binding DoesUserHavePatronymic}"
+                        Grid.Column="1"
+                        Grid.Row="3"
+                        ToolTip="Ваше отчество при наличии" />
+
+                    <CheckBox
+                        IsChecked="{Binding DoesUserHavePatronymic}"
+                        Grid.Column="2"
+                        Grid.Row="3"
+                        VerticalAlignment="Center"
+                        Margin="5"
+                        ToolTip="Снимите или установите флажок при отсутствии или наличии отчества соответственно" />
+
+                    <Label
+                        Content="Паспортные данные"
+                        FontWeight="ExtraBold"
+                        FontSize="32"
+                        Grid.ColumnSpan="3"
+                        Grid.Row="4" />
+
+                    <Label
+                        Content="Серия"
+                        Grid.Row="5" />
+
+                    <components:PlaceholderTextBox
+                        Placeholder="0000"
+                        Text="{Binding SerialNumber, UpdateSourceTrigger=PropertyChanged}"
+                        Grid.Column="1"
+                        Grid.Row="5"
+                        MaxLength="4"
+                        ToolTip="Серия паспорта, 4 цифры" />
+
+                    <Label
+                        Content="Номер"
+                        Grid.Row="6" />
+
+                    <components:PlaceholderTextBox
+                        Placeholder="000000"
+                        Text="{Binding Number, UpdateSourceTrigger=PropertyChanged}"
+                        MaxLength="6"
+                        Grid.Column="1"
+                        Grid.Row="6"
+                        ToolTip="Номер паспорта, 6 цифр" />
+
+                    <Label
+                        Content="Код подразделения"
+                        Grid.Row="7"
+                        Margin="10 10 0 10" />
+
+                    <components:PlaceholderTextBox
+                        Placeholder="000"
+                        Text="{Binding DivisionCode, UpdateSourceTrigger=PropertyChanged}"
+                        MaxLength="3"
+                        Grid.Column="1"
+                        Grid.Row="7"
+                        ToolTip="Код подразделения, 3 цифры" />
+
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition
+                            Width="auto" />
+                        <ColumnDefinition
+                            Width="*" />
+                        <ColumnDefinition
+                            Width="auto" />
+                    </Grid.ColumnDefinitions>
+
+                    <Grid.RowDefinitions>
+                        <RowDefinition />
+                        <RowDefinition />
+                        <RowDefinition />
+                        <RowDefinition />
+                        <RowDefinition />
+                        <RowDefinition />
+                        <RowDefinition />
+                        <RowDefinition />
+                        <RowDefinition />
+                    </Grid.RowDefinitions>
+                </Grid>
+
+                <Button
+                    Content="Сохранить"
+                    Command="{Binding SaveCommand}"
+                    ToolTip="Сохранить изменения"
+                    VerticalAlignment="Center"
+                    HorizontalAlignment="Center"
+                    Padding="60 15" />
+            </StackPanel>
+
+            <Grid.RowDefinitions>
+                <RowDefinition
+                    Height="auto" />
+                <RowDefinition
+                    Height="auto" />
+            </Grid.RowDefinitions>
+        </Grid>
     </Grid>
 </UserControl>

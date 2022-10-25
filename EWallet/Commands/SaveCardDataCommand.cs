@@ -4,13 +4,9 @@ using EWallet.Models;
 using EWallet.Stores;
 using EWallet.ViewModels;
 using System;
-using System.Collections.Generic;
 using System.Data.Entity;
 using System.Data.Entity.Migrations;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
-using System.Windows.Input;
 
 namespace EWallet.Commands
 {
@@ -35,7 +31,7 @@ namespace EWallet.Commands
             {
                 using (var database = new WalletEntities())
                 {
-                    var encryptedCardNumber = EncryptionHelper.Encrypt(cardViewModel.CardNumber);
+                    string encryptedCardNumber = EncryptionHelper.Encrypt(cardViewModel.CardNumber);
                     int.TryParse(cardViewModel.ValidThruMonth, out int month);
                     int.TryParse(cardViewModel.ValidThruYear, out int year);
 

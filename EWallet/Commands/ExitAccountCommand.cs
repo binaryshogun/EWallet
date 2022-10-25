@@ -1,6 +1,5 @@
 ﻿using EWallet.Services;
 using EWallet.Stores;
-using EWallet.ViewModels;
 using System.Windows;
 
 namespace EWallet.Commands

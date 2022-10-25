@@ -6,16 +6,13 @@ using EWallet.Services;
 using EWallet.Stores;
 using System;
 using System.Linq;
-using System.Threading.Tasks;
 using System.Windows.Data;
 using System.Windows.Input;
-using System.Windows.Threading;
 
 namespace EWallet.ViewModels
 {
     public class CardManagmentViewModel : ViewModelBase
     {
-        private readonly object locker = new object();
         private readonly UserStore userStore;
         private readonly WalletEntities database;
 

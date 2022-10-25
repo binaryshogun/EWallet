@@ -70,6 +70,7 @@ namespace EWallet.Commands
             passport.Number = userProfileViewModel.Number;
             passport.SerialNumber = userProfileViewModel.SerialNumber;
             passport.DivisionCode = userProfileViewModel.DivisionCode;
+
             dataBase.Passport.AddOrUpdate(passport);
         }
         private void CreatePassport(WalletEntities dataBase)
@@ -85,6 +86,7 @@ namespace EWallet.Commands
                 DivisionCode = userProfileViewModel.DivisionCode,
                 UserID = userStore.CurrentUser.ID
             };
+
             dataBase.Passport.Add(passport);
         }
         #endregion

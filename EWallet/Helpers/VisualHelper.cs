@@ -6,6 +6,7 @@ namespace EWallet.Helpers
 {
     public class VisualHelper
     {
+        #region Methods
         public static List<T> FindVisualChildren<T>(DependencyObject obj) where T : DependencyObject
         {
             List<T> children = new List<T>();
@@ -14,8 +15,8 @@ namespace EWallet.Helpers
                 var o = VisualTreeHelper.GetChild(obj, i);
                 if (o != null)
                 {
-                    if (o is T)
-                        children.Add((T)o);
+                    if (o is T typeObject)
+                        children.Add(typeObject);
 
                     children.AddRange(FindVisualChildren<T>(o)); // recursive
                 }
@@ -32,5 +33,6 @@ namespace EWallet.Helpers
             }
             return current as T;
         }
+        #endregion
     }
 }

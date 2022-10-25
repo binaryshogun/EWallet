@@ -8,11 +8,14 @@ namespace EWallet.Commands
     /// </summary>
     public sealed class ExitAppCommand : CommandBase
     {
+        #region Constructors
         /// <summary>
         /// Инициализирует новый экземпляр класса <see cref="ExitAccountCommand"/>.
         /// </summary>
         public ExitAppCommand() { }
+        #endregion
 
+        #region Methods
         /// <inheritdoc cref="CommandBase.Execute(object)"/>
         public override void Execute(object parameter)
         {
@@ -22,5 +25,6 @@ namespace EWallet.Commands
                             MessageBoxImage.Question) == MessageBoxResult.Yes)
                 Process.GetCurrentProcess().Kill();
         }
+        #endregion
     }
 }

@@ -1,14 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace EWallet.Helpers
 {
     public class HashHelper
     {
+        #region Methods
         /// <summary>
         /// Хэширует строку, используя криптографический алгоритм SHA-1.
         /// </summary>
@@ -22,5 +20,6 @@ namespace EWallet.Helpers
                 return string.Concat(hash.ComputeHash(Encoding.UTF8.GetBytes(stringToHash)).Select(x => x.ToString("X2"))).Substring(0, length);
             }
         }
+        #endregion
     }
 }

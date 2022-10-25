@@ -9,6 +9,7 @@ namespace EWallet.ViewModels
     /// </summary>
     public class HomeViewModel : ViewModelBase
     {
+        #region Constructors
         public HomeViewModel(INavigationService authorizationNavigationService,
             INavigationService registrationNavigationService)
         {
@@ -17,10 +18,15 @@ namespace EWallet.ViewModels
             NavigateRegistrationCommand = new NavigateCommand(
                 registrationNavigationService);
         }
+        #endregion
 
+        #region Commands
         public ICommand NavigateRegistrationCommand { get; }
         public ICommand NavigateAuthorizationCommand { get; }
+        #endregion
 
+        #region Methods
         public override void Dispose() => base.Dispose();
+        #endregion
     }
 }

@@ -1,24 +1,16 @@
 ﻿using EWallet.Commands;
-using EWallet.Components;
 using EWallet.Helpers;
-using EWallet.Models;
 using EWallet.Services;
 using EWallet.Stores;
 using static EWallet.Models.BanksData;
-using System.Threading.Tasks;
 using System.Windows.Input;
 using System.Windows.Media;
-using System;
-using System.Linq;
-using System.Data.Entity;
-using System.Runtime.InteropServices;
 
 namespace EWallet.ViewModels
 {
-	public class CardViewModel : ViewModelBase
+    public class CardViewModel : ViewModelBase
     {
         #region Fields
-        private readonly UserStore userStore;
         private readonly CardStore cardStore;
 
         private Banks currentBank;
@@ -42,7 +34,6 @@ namespace EWallet.ViewModels
 			INavigationService cardManagmentNavigationService, 
 			INavigationService accountNavigationService)
 		{
-			this.userStore = userStore;
             this.cardStore = cardStore;
 
             CurrentBank = Banks.Default;

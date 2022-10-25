@@ -7,6 +7,7 @@ namespace EWallet.Helpers
 {
     public static class EncryptionHelper
     {
+        #region Methods
         public static string Encrypt(string clearText)
         {
             string EncryptionKey = "wpf-pet";
@@ -62,5 +63,6 @@ namespace EWallet.Helpers
             }
             return cipherText.Substring(0, 16);
         }
+        #endregion
     }
 }

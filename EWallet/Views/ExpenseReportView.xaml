@@ -26,7 +26,8 @@
                     <ComboBox
                         ItemsSource="{Binding Months}"
                         SelectedItem="{Binding SelectedMonth, StringFormat=MMMMyy}"
-                        DisplayMemberPath="Month" />
+                        DisplayMemberPath="Month" 
+                        ToolTip="Выбор месяца расходов"/>
                     <Label
                         Content="Выберите месяц"
                         Foreground="{StaticResource PlaceholdersColor}"
@@ -42,7 +43,8 @@
                     <ComboBox
                         ItemsSource="{Binding Services}"
                         SelectedItem="{Binding SelectedService}"
-                        DisplayMemberPath="Name" />
+                        DisplayMemberPath="Name" 
+                        ToolTip="Выбор типа услуги из доступных типов"/>
                     <Label
                         Content="Выберите тип услуги"
                         Foreground="{StaticResource PlaceholdersColor}"
@@ -71,7 +73,8 @@
                         Content="{Binding SumOfExpenses, StringFormat=f2}"
                         HorizontalAlignment="Right"
                         FontSize="14"
-                        FontWeight="SemiBold" />
+                        FontWeight="SemiBold" 
+                        ToolTip="Общая сумма расходов"/>
                 </WrapPanel>
             </Grid>
 
@@ -133,7 +136,8 @@
                                             FontWeight="SemiBold" />
                                         <Label
                                             Content="{Binding Number}"
-                                            Grid.Column="1" />
+                                            Grid.Column="1" 
+                                            ToolTip="Номер операции"/>
 
                                         <Label
                                             Content="Дата: "
@@ -142,7 +146,8 @@
                                         <Label
                                             Content="{Binding Date, StringFormat=f}"
                                             Grid.Row="1"
-                                            Grid.Column="1" />
+                                            Grid.Column="1" 
+                                            ToolTip="Дата проведения операции"/>
 
                                         <Label
                                             Content="Сумма: "
@@ -151,7 +156,8 @@
                                         <Label
                                             Content="{Binding Sum, StringFormat=f2}"
                                             Grid.Row="2"
-                                            Grid.Column="1" />
+                                            Grid.Column="1" 
+                                            ToolTip="Сумма операции"/>
 
                                         <Label
                                             Content="Услуга: "
@@ -160,7 +166,8 @@
                                         <Label
                                             Content="{Binding Service.Name}"
                                             Grid.Row="3"
-                                            Grid.Column="1" />
+                                            Grid.Column="1" 
+                                            ToolTip="Тип услуги"/>
 
                                         <Label
                                             Content="Получатель: "
@@ -203,7 +210,8 @@
                     Height="350"
                     LegendLocation="Bottom"
                     Hoverable="False"
-                    Series="{Binding OperationsSeries}" />
+                    Series="{Binding OperationsSeries}" 
+                    ToolTip="Диаграмма расходов"/>
             </Grid>
             <Grid.RowDefinitions>
                 <RowDefinition

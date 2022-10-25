@@ -17,7 +17,8 @@
             Visibility="{Binding IsOperationBeingProvided, 
             Converter={StaticResource InversedConverter}}">
             <controls:CloseModalButton
-                Command="{Binding NavigateAccountCommand}" />
+                Command="{Binding NavigateAccountCommand}" 
+                ToolTip="Закрыть окно"/>
 
             <Grid
                 Grid.Row="1"

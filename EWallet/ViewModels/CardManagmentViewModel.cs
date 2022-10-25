@@ -9,11 +9,13 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Data;
 using System.Windows.Input;
+using System.Windows.Threading;
 
 namespace EWallet.ViewModels
 {
     public class CardManagmentViewModel : ViewModelBase
     {
+        private readonly object locker = new object();
         private readonly UserStore userStore;
         private readonly WalletEntities database;
 
@@ -38,7 +40,7 @@ namespace EWallet.ViewModels
                 accountNavigatonService?.Navigate();
             }
 
-            Task.Run(SetCards);
+            FetchCards();
 
             NavigateAccountCommand = new NavigateCommand(accountNavigatonService);
             NavigateCardCommand = new NavigateCardCommand(cardStore, cardNavigationService);
@@ -74,10 +76,7 @@ namespace EWallet.ViewModels
             }
         }
 
-        public void SetCards()
-            => Task.Run(FetchCards);
-
-        private void FetchCards()
+        public void FetchCards()
         {
             AreCardsLoading = true;
             try
@@ -94,12 +93,13 @@ namespace EWallet.ViewModels
                         })
                     .ToList();
                 Cards = new ListCollectionView(cardsList);
+                Cards.Refresh();
             }
             catch (Exception e) { ErrorMessageBox.Show(e); }
-            finally
+            finally 
             {
                 CheckCardsCount();
-                AreCardsLoading = false;
+                AreCardsLoading = false; 
             }
         }
 
@@ -107,7 +107,7 @@ namespace EWallet.ViewModels
         {
             try
             {
-                if (((ListCollectionView)Cards).Count > 0)
+                if (Cards.Count > 0)
                     IsThereCards = true;
                 else
                     IsThereCards = false;

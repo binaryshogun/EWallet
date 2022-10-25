@@ -16,7 +16,7 @@
     <Grid>
         <StackPanel
             Visibility="{Binding IsDataSaved, 
-        Converter={StaticResource InversedConverter}}"
+            Converter={StaticResource InversedConverter}}"
             VerticalAlignment="Center"
             HorizontalAlignment="Center">
             <Label
@@ -27,7 +27,7 @@
 
         <Grid
             Visibility="{Binding IsDataSaved, 
-        Converter={StaticResource BooleanToVisibilityConverter}}">
+            Converter={StaticResource BooleanToVisibilityConverter}}">
             <controls:CloseModalButton
                 Command="{Binding NavigateAccountCommand}"
                 Grid.Column="2"

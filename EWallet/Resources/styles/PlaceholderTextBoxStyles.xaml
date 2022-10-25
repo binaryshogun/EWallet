@@ -46,7 +46,7 @@
                             <Setter
                                 Property="Opacity"
                                 TargetName="border"
-                                Value="0.56" />
+                                Value="1" />
                         </Trigger>
                         <Trigger
                             Property="IsMouseOver"

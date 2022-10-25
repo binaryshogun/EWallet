@@ -45,7 +45,7 @@ namespace EWallet.Commands
 
                     await database.SaveChangesAsync();
 
-                    cardManagmentViewModel.SetCards();
+                    cardManagmentViewModel.FetchCards();
                 }
             }
             catch (Exception e) { ErrorMessageBox.Show(e); }

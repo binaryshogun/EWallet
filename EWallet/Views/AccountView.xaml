@@ -124,7 +124,8 @@
                     </Grid>
 
                     <Label
-                        Foreground="White">
+                        Foreground="White"
+                        ToolTip="Текущий остаток средств на счёте">
                         <Label.Content>
                             <TextBlock
                                 Text="{Binding StringBalance}"
@@ -161,11 +162,13 @@
                 </StackPanel.Resources>
                 <Button
                     Content="Управление картами"
-                    Command="{Binding NavigateManagmentCommand}" />
+                    Command="{Binding NavigateManagmentCommand}" 
+                    ToolTip="Переход на страницу управления картами"/>
                 <Button
                     Content="Отчёт о расходах"
                     HorizontalAlignment="Stretch"
-                    Command="{Binding NavigateExpenseReportCommand}" />
+                    Command="{Binding NavigateExpenseReportCommand}" 
+                    ToolTip="Открыть отчёт по расходам"/>
             </StackPanel>
         </Grid>
 

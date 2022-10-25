@@ -48,7 +48,7 @@
                         Command="{Binding NavigateCardCommand}" 
                         CommandParameter="{x:Null}"
                         MaxWidth="300"
-                        ToolTip="Добавить новую карту"/>
+                        ToolTip="Перейти на страницу добавления карты"/>
                 </StackPanel>
 
                 <StackPanel

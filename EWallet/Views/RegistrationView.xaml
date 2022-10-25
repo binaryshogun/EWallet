@@ -46,7 +46,7 @@
                     Placeholder="Иванов"
                     Grid.Column="1"
                     Text="{Binding LastName, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
-                    ToolTip="Ваша фамилия, пожалуйста, указывайте настоящие данные!"
+                    ToolTip="Ваша фамилия"
                     MaxLength="16" />
 
                 <Label
@@ -72,7 +72,7 @@
                     Grid.Column="1"
                     Grid.Row="2"
                     Text="{Binding Patronymic, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
-                    ToolTip="Ваше отчество при наличии"
+                    ToolTip="Ваше отчеств, при наличии"
                     Background="{x:Null}"
                     MaxLength="16" 
                     IsEnabled="{Binding DoesUserHavePatronymic}"/>

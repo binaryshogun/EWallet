@@ -1,5 +1,6 @@
 ﻿using EWallet.Services;
 using EWallet.Stores;
+using EWallet.ViewModels;
 using System.Windows;
 
 namespace EWallet.Commands
@@ -7,7 +8,6 @@ namespace EWallet.Commands
     /// <summary>
     /// Команда выхода из учётной записи.
     /// </summary>
-    /// <typeparam name="TViewModel">ViewModel для перехода при выходе из системы.</typeparam>
     public sealed class ExitAccountCommand : CommandBase
     {
         #region Fields
@@ -17,9 +17,12 @@ namespace EWallet.Commands
 
         #region Constructors
         /// <summary>
-        /// Инициализирует команду выхода из аккаунта.
+        /// Инициализирует новый экземпляр класса <see cref="ExitAccountCommand"/>.
         /// </summary>
-        /// <param name="homeNavigationService">Сервис навигации, привязанный к HomeViewModel.</param>
+        /// <param name="userStore"><see cref="UserStore"/>,
+        /// содержащий информацию о текущем пользователе.</param>
+        /// <param name="homeNavigationService"><see cref="INavigationService"/>, 
+        /// совершающий переход на <see cref="HomeViewModel"/>.</param>
         public ExitAccountCommand(UserStore userStore, INavigationService homeNavigationService)
         {
             this.userStore = userStore;

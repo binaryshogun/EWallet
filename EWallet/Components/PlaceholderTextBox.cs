@@ -3,41 +3,70 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
+using System.Windows.Controls.Primitives;
+using System;
 
 namespace EWallet.Components
 {
+    /// <summary>
+    /// TextBox с возможностью установки плейсхолдера.
+    /// </summary>
     public sealed class PlaceholderTextBox : TextBox
     {
         #region Enums
+        /// <summary>
+        /// Содержит параметры для задания свойства <see cref="DateFormat"/>.
+        /// </summary>
         public enum DateFormatParameters { Month, Year };
+        /// <summary>
+        /// Содержит параметры для задания свойства <see cref="Language"/>.
+        /// </summary>
         public enum Languages { Ru, En };
         #endregion
 
         #region Constructors
+        /// <summary>
+        /// Инициализирует новый экземпляр класса <see cref="PlaceholderTextBox"/>.
+        /// </summary>
         public PlaceholderTextBox() : base() 
             => Background = new SolidColorBrush(Colors.White);
 
+        /// <summary>
+        /// Задает статические свойства элемента <see cref="PlaceholderTextBox"/>.
+        /// </summary>
         static PlaceholderTextBox() 
             => DefaultStyleKeyProperty.OverrideMetadata(typeof(PlaceholderTextBox), 
                 new FrameworkPropertyMetadata(typeof(TextBox)));
         #endregion
 
         #region Properties
+        /// <summary>
+        /// Плейсхолдер для отображения.
+        /// </summary>
         public string Placeholder
         {
             get => (string)GetValue(PlaceholderProperty);
             set => SetValue(PlaceholderProperty, value);
         }
+        /// <summary>
+        /// Указывает, пустое ли свойство <see cref="TextBox.Text"/>.
+        /// </summary>
         public bool IsEmpty
         {
             get => (bool)GetValue(IsEmptyProperty);
             private set => SetValue(IsEmptyPropertyKey, value);
         }
+        /// <summary>
+        /// Язык ввода в <see cref="PlaceholderTextBox"/>.
+        /// </summary>
         public new Languages Language
         {
             get => (Languages)GetValue(LanguageProperty);
             set => SetValue(LanguageProperty, value);
         }
+        /// <summary>
+        /// Указывает, доступны ли только цифры при вводе.
+        /// </summary>
         public bool IntFormat
         {
             get => (bool)GetValue(IntFormatProperty);
@@ -52,6 +81,9 @@ namespace EWallet.Components
                 SetValue(IntFormatProperty, value);
             }
         }
+        /// <summary>
+        /// Указывает, задан ли формат ввода для <see cref="double"/> чисел.
+        /// </summary>
         public bool DoubleFormat
         {
             get => (bool)GetValue(DoubleFormatProperty);
@@ -66,6 +98,9 @@ namespace EWallet.Components
                 SetValue(DoubleFormatProperty, value);
             }
         }
+        /// <summary>
+        /// Указывает, задан ли формат ввода для <see cref="DateTime"/> данных.
+        /// </summary>
         public bool DateFormat
         {
             get => (bool)GetValue(DateFormatProperty);
@@ -80,6 +115,9 @@ namespace EWallet.Components
                 SetValue(DateFormatProperty, value);
             }
         }
+        /// <summary>
+        /// Параметр для определения формата ввода при активном формате <see cref="DateFormat"/>.
+        /// </summary>
         public DateFormatParameters DateFormatParameter
         {
             get => (DateFormatParameters)GetValue(DateFormatParameterProperty);
@@ -113,6 +151,7 @@ namespace EWallet.Components
         #endregion
 
         #region Methods
+        /// <inheritdoc cref="TextBoxBase.OnTextChanged(TextChangedEventArgs)"/>
         protected override void OnTextChanged(TextChangedEventArgs e)
         {
             IsEmpty = string.IsNullOrEmpty(Text);
@@ -126,6 +165,7 @@ namespace EWallet.Components
 
             base.OnTextChanged(e);
         }
+        /// <inheritdoc cref="UIElement.OnPreviewTextInput(TextCompositionEventArgs)"/>
         protected override void OnPreviewTextInput(TextCompositionEventArgs e)
         {
             if (DoubleFormat)
@@ -139,6 +179,7 @@ namespace EWallet.Components
 
             base.OnPreviewTextInput(e);
         }
+        /// <inheritdoc cref="TextBoxBase.OnPreviewKeyDown(KeyEventArgs)"/>
         protected override void OnPreviewKeyDown(KeyEventArgs e)
         {
             e.Handled = e.Key == Key.Space;
@@ -154,6 +195,11 @@ namespace EWallet.Components
 
             base.OnPreviewKeyDown(e);
         }
+        /// <summary>
+        /// Вызывается при вставке текста в <see cref="PlaceholderTextBox"/>.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e">Аргументы события <see cref="DataObject.Pasting"/></param>
         private void OnPaste(object sender, DataObjectPastingEventArgs e)
         {
             if (e.SourceDataObject.GetData(typeof(string)) is string text)
@@ -164,7 +210,11 @@ namespace EWallet.Components
             else
             { e.CancelCommand(); }
         }
-
+        /// <summary>
+        /// Проверяет валидность текста элемента <see cref="PlaceholderTextBox"/> в соответствии со всеми форматами.
+        /// </summary>
+        /// <param name="text">Текст, проверямый на валидность.</param>
+        /// <returns><see langword="true"/> в случае валидности текста, <see langword="false"/> - в обратном случае.</returns>
         private bool IsValidText(string text)
         {
             string pattern = "";
@@ -187,7 +237,10 @@ namespace EWallet.Components
 
             return Regex.IsMatch(text, pattern);
         }
-
+        /// <summary>
+        /// Извлекает целое число и помещает в свойство <see cref="TextBox.Text"/>.
+        /// </summary>
+        /// <param name="text">Текст, содержащий целое число.</param>
         private void ExtractInt(string text)
         {
             text = Regex.Replace(text, @"[^0-9]", string.Empty);
@@ -195,6 +248,10 @@ namespace EWallet.Components
 
             Text = text;
         }
+        /// <summary>
+        /// Извлекает число формата <see cref="double"/> и помещает в свойство <see cref="TextBox.Text"/>.
+        /// </summary>
+        /// <param name="text">Текст, содержащий число с плавающей точкой.</param>
         private void ExtractDouble(string text)
         {
             text = Regex.Replace(text, @"[^0-9,]", string.Empty);
@@ -213,6 +270,10 @@ namespace EWallet.Components
             Text = string.Format("{0:f2}", result);
             CaretIndex = index;
         }
+        /// <summary>
+        /// Извлекает дату из текста и помещает в свойство <see cref="TextBox.Text"/>.
+        /// </summary>
+        /// <param name="text">Текст, содержащий дату.</param>
         private void ExtractDate(string text)
         {
             text = Regex.Replace(text, @"[^0-9]", string.Empty);

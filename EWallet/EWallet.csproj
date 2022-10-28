@@ -72,6 +72,10 @@
     </Compile>
     <Compile Include="Behaviors\ScaleFontBehavior.cs" />
     <Compile Include="Commands\SaveCardDataCommand.cs" />
+    <Compile Include="Exceptions\UserAlreadyRegistredException.cs" />
+    <Compile Include="Exceptions\UserNotFoundException.cs" />
+    <Compile Include="Exceptions\InsufficientFundsException.cs" />
+    <Compile Include="Exceptions\TransferToYourselfException.cs" />
     <Compile Include="Models\Card.cs">
       <DependentUpon>WalletModel.tt</DependentUpon>
     </Compile>

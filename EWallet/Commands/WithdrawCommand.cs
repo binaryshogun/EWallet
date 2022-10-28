@@ -10,6 +10,9 @@ using System.Threading.Tasks;
 
 namespace EWallet.Commands
 {
+    /// <summary>
+    /// Команда, обеспечивающая проведение операции вывода средств.
+    /// </summary>
     public sealed class WithdrawCommand : CommandBase
     {
         #region Fields
@@ -19,6 +22,15 @@ namespace EWallet.Commands
         #endregion
 
         #region Constructors
+        /// <summary>
+        /// Инициализирует новый экземпляр класса <see cref="WithdrawCommand"/>.
+        /// </summary>
+        /// <param name="userStore"><see cref="UserStore"/>,
+        /// содержащий данные о текущем пользователе.</param>
+        /// <param name="withdrawViewModel"><see cref="WithdrawViewModel"/>,
+        /// содержащий данные для проведения операции вывода.</param>
+        /// <param name="accountNavigationService"><see cref="INavigationService"/>,
+        /// совершающий переход на <see cref="AccountViewModel"/>.</param>
         public WithdrawCommand(UserStore userStore, WithdrawViewModel withdrawViewModel, INavigationService accountNavigationService)
         {
             this.userStore = userStore;
@@ -28,9 +40,13 @@ namespace EWallet.Commands
         #endregion
 
         #region Methods
+        /// <inheritdoc cref="CommandBase.Execute(object)"/>
         public override void Execute(object parameter)
             => Task.Run(ProvideWithdraw);
-
+        /// <summary>
+        /// Проводит операцию вывода средств.
+        /// </summary>
+        /// <returns>Задача <see cref="Task"/>, представляющая асинхронную операцию.</returns>
         private async Task ProvideWithdraw()
         {
             withdrawViewModel.IsOperationBeingProvided = true;
@@ -43,7 +59,7 @@ namespace EWallet.Commands
                     double sum = SetSum();
                     OperationsHelper.TryUpdateBalance(user, userStore, -sum);
 
-                    Service service = await OperationsHelper.FetchService(database, "Вывод средств");
+                    Service service = await OperationsHelper.FetchServiceByName(database, "Вывод средств");
                     Operation operation = OperationsHelper.GenerateSingleUserOperation(database, user, sum, service);
 
                     database.User.AddOrUpdate(user);
@@ -58,7 +74,10 @@ namespace EWallet.Commands
                 accountNavigationService.Navigate();
             }
         }
-
+        /// <summary>
+        /// Устанавливает сумму операции с учётом комиссии.
+        /// </summary>
+        /// <returns>Сумма операции с прибавленным комиссионным взносом.</returns>
         private double SetSum()
         {
             double.TryParse(withdrawViewModel.OperationSum, out double sum);

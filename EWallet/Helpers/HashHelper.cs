@@ -4,6 +4,10 @@ using System.Text;
 
 namespace EWallet.Helpers
 {
+    /// <summary>
+    /// Статический класс, содержащий 
+    /// методы для получения хэша.
+    /// </summary>
     public static class HashHelper
     {
         #region Methods
@@ -12,7 +16,7 @@ namespace EWallet.Helpers
         /// </summary>
         /// <param name="stringToHash">Строка для хэширования.</param>
         /// <param name="length">Длина возвращаемой строки.</param>
-        /// <returns>Зашифрованная строка <see cref="string"/></returns>
+        /// <returns>Хэш строки <paramref name="stringToHash"/></returns>
         public static string GetHash(string stringToHash, int length)
         {
             using (var hash = SHA1.Create())

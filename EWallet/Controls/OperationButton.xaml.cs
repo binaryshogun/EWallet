@@ -10,6 +10,9 @@ namespace EWallet.Controls
     public sealed partial class OperationButton : Button
     {
         #region Constructors
+        /// <summary>
+        /// Инициализирует новый экземпляр класса <see cref="OperationButton"/>.
+        /// </summary>
         public OperationButton()
         {
             InitializeComponent();
@@ -38,16 +41,25 @@ namespace EWallet.Controls
         #endregion
 
         #region Properties
+        /// <summary>
+        /// Название операции для отображения.
+        /// </summary>
         public string Operation
         {
             get => (string)GetValue(OperationProperty);
             set => SetValue(OperationProperty, value);
         }
+        /// <summary>
+        /// Описание операции для отображения.
+        /// </summary>
         public string OperationDescription
         {
             get => (string)GetValue(OperationDescriptionProperty);
             set => SetValue(OperationDescriptionProperty, value);
         }
+        /// <summary>
+        /// Логотип операции для отображения.
+        /// </summary>
         public string ImageSource
         {
             get => (string)GetValue(ImageSourceProperty);

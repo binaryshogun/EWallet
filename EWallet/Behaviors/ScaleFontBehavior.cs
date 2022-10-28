@@ -9,9 +9,17 @@ using System.Windows.Media;
 
 namespace EWallet.Behaviors
 {
-    public sealed class ScaleFontBehavior : Behavior<Grid>
+    /// <summary>
+    /// Поведение, позволяющее динамически изменять размер шрифта 
+    /// в дочерних для <see cref="Grid"/> <see cref="TextBlock"/> элементах.
+    /// </summary>
+    public class ScaleFontBehavior : Behavior<Grid>
     {
         #region Properties
+        /// <summary>
+        /// Свойство, хранящее максимальный размер 
+        /// шрифта для <see cref="TextBlock"/> элемента.
+        /// </summary>
         public double MaxFontSize
         {
             get => (double)GetValue(MaxFontSizeProperty);
@@ -26,46 +34,56 @@ namespace EWallet.Behaviors
         #endregion
 
         #region Methods
+        /// <summary>
+        /// Метод, вызываемый при присоединении 
+        /// поведения к элементу <see cref="Grid"/>.
+        /// </summary>
         protected override void OnAttached()
         {
             CalculateFontSize();
             AssociatedObject.SizeChanged += (s, e) => CalculateFontSize();
         }
+        /// <summary>
+        /// Метод, вызываемый при отсоединени 
+        /// поведения от <see cref="Grid"/>.
+        /// </summary>
         protected override void OnDetaching()
         {
             AssociatedObject.SizeChanged -= (s, e) => CalculateFontSize();
             base.OnDetaching();
         }
 
+        /// <summary>
+        /// Рассчитывает максимальный размер шрифта 
+        /// для <see cref="TextBlock"/> элементов в 
+        /// присоединенном <see cref="Grid"/>.
+        /// </summary>
         private void CalculateFontSize()
         {
             double fontSize = MaxFontSize;
 
-            List<TextBlock> tbs = VisualHelper.FindVisualChildren<TextBlock>(AssociatedObject);
+            List<TextBlock> textBlocks = VisualHelper.FindVisualChildren<TextBlock>(AssociatedObject);
 
-            foreach (var tb in tbs)
+            foreach (var textBlock in textBlocks)
             {
-                double rowHeight = GetRowHeight(tb);
-                // get column width (if limited)
-                ColumnDefinition col = AssociatedObject.ColumnDefinitions[Grid.GetColumn(tb)];
+                double rowHeight = GetRowHeight(textBlock);
+                ColumnDefinition col = AssociatedObject.ColumnDefinitions[Grid.GetColumn(textBlock)];
                 
                 double colWidth = col.Width.IsAuto ? double.MaxValue : col.ActualWidth ;
-                double colActualWidth = col.ActualWidth == double.MaxValue ? col.ActualWidth : col.ActualWidth * Grid.GetColumnSpan(tb);
+                double colActualWidth = col.ActualWidth == double.MaxValue ? col.ActualWidth : col.ActualWidth * Grid.GetColumnSpan(textBlock);
 
-                // get desired size with fontsize = MaxFontSize
-                GetMarginSize(tb, out var desiredSize, out double widthMargins, out double heightMargins);
+                Size desiredSize = MeasureText(textBlock);
+                GetMarginSize(textBlock, out double widthMargins, out double heightMargins);
 
                 double desiredHeight = desiredSize.Height + heightMargins;
                 double desiredWidth = desiredSize.Width + widthMargins;
 
-                // adjust fontsize if text would be clipped horizontally
                 if (colWidth < desiredWidth)
                 {
                     double factor = (desiredWidth - widthMargins) / (colActualWidth - widthMargins);
                     fontSize = Math.Min(fontSize, MaxFontSize / factor);
                 }
 
-                // adjust fontsize if text would be clipped vertically
                 if (rowHeight < desiredHeight)
                 {
                     double factor = (desiredHeight - heightMargins) / (AssociatedObject.ActualHeight - heightMargins);
@@ -73,33 +91,48 @@ namespace EWallet.Behaviors
                 }
             }
 
-            // apply fontsize (always equal fontsizes)
-            foreach (var tb in tbs)
+            foreach (var textBlock in textBlocks)
             {
-                tb.FontSize = fontSize;
+                textBlock.FontSize = fontSize;
             }
         }
-
-        private void GetMarginSize(TextBlock tb, out Size desiredSize, out double widthMargins, out double heightMargins)
+        /// <summary>
+        /// Рассчитывает размеры свойства 
+        /// Margin элемента <see cref="TextBlock"/>.
+        /// </summary>
+        /// <param name="textBlock"><see cref="TextBlock"/> элемент.</param>
+        /// <param name="widthMargins">Общая ширина Margin.</param>
+        /// <param name="heightMargins">Общая высота Margin.</param>
+        private void GetMarginSize(TextBlock textBlock, out double widthMargins, out double heightMargins)
         {
-            desiredSize = MeasureText(tb);
-            widthMargins = tb.Margin.Left + tb.Margin.Right;
-            heightMargins = tb.Margin.Top + tb.Margin.Bottom;
+            widthMargins = textBlock.Margin.Left + textBlock.Margin.Right;
+            heightMargins = textBlock.Margin.Top + textBlock.Margin.Bottom;
         }
-        private double GetRowHeight(TextBlock tb)
+        /// <summary>
+        /// Возвращает высоту строки Row элемента 
+        /// <see cref="Grid"/> в которой находится 
+        /// элемент <see cref="TextBlock"/>.
+        /// </summary>
+        /// <param name="textBlock"><see cref="TextBlock"/> элемент.</param>
+        /// <returns>Высота строки Row элемента <see cref="Grid"/>.</returns>
+        private double GetRowHeight(TextBlock textBlock)
         {
-            RowDefinition row = AssociatedObject.RowDefinitions[Grid.GetRow(tb)];
+            RowDefinition row = AssociatedObject.RowDefinitions[Grid.GetRow(textBlock)];
             double rowHeight = row.Height.IsAuto ? double.MaxValue : AssociatedObject.ActualHeight;
             return rowHeight;
         }
-
-        // Measures text size of textblock
-        private Size MeasureText(TextBlock tb)
+        /// <summary>
+        /// Возвращает размер 
+        /// текста элемента <see cref="TextBlock"/>.
+        /// </summary>
+        /// <param name="textBlock"><see cref="TextBlock"/> элемент.</param>
+        /// <returns>Размер текста элемента <see cref="TextBlock"/>.</returns>
+        private Size MeasureText(TextBlock textBlock)
         {
-            var formattedText = new FormattedText(tb.Text, CultureInfo.CurrentUICulture,
+            var formattedText = new FormattedText(textBlock.Text, CultureInfo.CurrentUICulture,
                 FlowDirection.LeftToRight,
-                new Typeface(tb.FontFamily, tb.FontStyle, tb.FontWeight, tb.FontStretch),
-                MaxFontSize, Brushes.Black); // always uses MaxFontSize for desiredSize
+                new Typeface(textBlock.FontFamily, textBlock.FontStyle, textBlock.FontWeight, textBlock.FontStretch),
+                MaxFontSize, Brushes.Black);
 
             return new Size(formattedText.Width, formattedText.Height);
         }

@@ -14,6 +14,9 @@ namespace EWallet.Commands
         /// <inheritdoc cref="ICommand.Execute(object)"/>
         public abstract void Execute(object parameter);
 
+        /// <summary>
+        /// Вызывает <see cref="CanExecuteChanged"/> событие.
+        /// </summary>
         protected void OnCanExecuteChanged() => CanExecuteChanged?.Invoke(this, new EventArgs());
         
         /// <inheritdoc cref="ICommand.CanExecuteChanged"/>

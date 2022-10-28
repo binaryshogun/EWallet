@@ -7,6 +7,7 @@ using System;
 using System.Data.Entity;
 using System.Threading.Tasks;
 using EWallet.Helpers;
+using EWallet.Exceptions;
 
 namespace EWallet.Commands
 {
@@ -16,7 +17,7 @@ namespace EWallet.Commands
     public sealed class AuthorizeUserCommand : CommandBase
     {
         #region Fields
-        private readonly AuthorizationViewModel viewModel;
+        private readonly AuthorizationViewModel authorizationViewModel;
         private readonly INavigationService accountNavigationService;
         private readonly UserStore userStore;
         #endregion
@@ -25,13 +26,16 @@ namespace EWallet.Commands
         /// <summary>
         /// Инициализирует новый экземпляр класса <see cref="AuthorizeUserCommand"/>.
         /// </summary>
-        /// <param name="viewModel"><see cref="AuthorizationViewModel"/>, содержащая данные для входа.</param>
-        /// <param name="navigationStore">Хранилище данных.</param>
-        public AuthorizeUserCommand(AuthorizationViewModel viewModel, 
+        /// <param name="authorizationViewModel"><see cref="AuthorizationViewModel"/>, 
+        /// содержащая данные для входа.</param>
+        /// <param name="accountNavigationService"><see cref="INavigationService"/>, 
+        /// совершающий переход на <see cref="AccountViewModel"/>.</param>
+        /// <param name="userStore"><see cref="UserStore"/>, содержащий данные о текущем пользователе.</param>
+        public AuthorizeUserCommand(AuthorizationViewModel authorizationViewModel, 
             INavigationService accountNavigationService, 
             UserStore userStore)
         {
-            this.viewModel = viewModel;
+            this.authorizationViewModel = authorizationViewModel;
             this.accountNavigationService = accountNavigationService;
             this.userStore = userStore;
         }
@@ -42,34 +46,50 @@ namespace EWallet.Commands
         public override void Execute(object parameter) 
             => Task.Run(FetchUserFromDatabase);
 
-        public async Task FetchUserFromDatabase()
+        /// <summary>
+        /// Получает пользователя из базы данных и проводит попытку авторизации.
+        /// </summary>
+        /// <exception cref="UserNotFoundException">
+        /// Возникает, когда пользователь не проходит авторизацию.</exception>
+        /// <returns>Задача <see cref="Task"/>, представляющая асинхронную операцию.</returns>
+        private async Task FetchUserFromDatabase()
         {
-            viewModel.IsUserAuthorizing = true;
+            authorizationViewModel.IsUserAuthorizing = true;
 
             try
             {
                 using (var database = new WalletEntities())
                 {
                     int length = 16;
-                    if (viewModel.Password.Length < 16)
-                        length = viewModel.Password.Length;
+                    if (authorizationViewModel.Password.Length < 16)
+                        length = authorizationViewModel.Password.Length;
 
-                    string tempPassword = HashHelper.GetHash(viewModel.Password, length);
+                    string tempPassword = HashHelper.GetHash(authorizationViewModel.Password, length);
                     var user = await FetchUser(database, tempPassword);
-                    userStore.CurrentUser = user ?? throw new Exception("Пользователь не найден!");
+                    userStore.CurrentUser = user ?? throw new UserNotFoundException("Пользователь не найден!");
                 }
 
                 accountNavigationService?.Navigate();
             }
-            catch (Exception e) { ErrorMessageBox.Show(e); }
+            catch (Exception e) 
+            { 
+                ErrorMessageBox.Show(e); 
+            }
             finally
             {
-                viewModel.IsUserAuthorizing = false;
+                authorizationViewModel.IsUserAuthorizing = false;
             }
         }
+        /// <summary>
+        /// Проводит попытку получения пользователя из базы данных по логину и паролю.
+        /// </summary>
+        /// <param name="database">Экземпляр базы данных <see cref="WalletEntities"/>.</param>
+        /// <param name="tempPassword">Хэшированный с помощью 
+        /// <see cref="HashHelper"/> пароль.</param>
+        /// <returns>Объект <see cref="User"/> при наличии в базе данных или значение <see langword="null"/> при отсутствии в базе данных.</returns>
         private async Task<User> FetchUser(WalletEntities database, string tempPassword) 
             => await database.User.AsNoTracking().FirstOrDefaultAsync(
-                u => u.Login == viewModel.Login && u.Password == tempPassword);
+                u => u.Login == authorizationViewModel.Login && u.Password == tempPassword);
         #endregion
     }
 }

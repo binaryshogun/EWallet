@@ -9,6 +9,9 @@ using System.Threading.Tasks;
 
 namespace EWallet.Commands
 {
+    /// <summary>
+    /// Команда сохранения паспортных данных.
+    /// </summary>
     public sealed class SavePassportDataCommand : CommandBase
     {
         #region Fields
@@ -17,6 +20,13 @@ namespace EWallet.Commands
         #endregion
 
         #region Constructors
+        /// <summary>
+        /// Инициализирует новый экземпляр класса <see cref="SavePassportDataCommand"/>.
+        /// </summary>
+        /// <param name="userStore"><see cref="UserStore"/>,
+        /// содержащий данные о текущем пользователе.</param>
+        /// <param name="userProfileViewModel"><see cref="UserProfileViewModel"/>,
+        /// содержащая паспортные данные для сохранения.</param>
         public SavePassportDataCommand(UserStore userStore, UserProfileViewModel userProfileViewModel)
         {
             this.userStore = userStore;
@@ -25,10 +35,15 @@ namespace EWallet.Commands
         #endregion
 
         #region Methods
+        /// <inheritdoc cref="CommandBase.Execute(object)"/>
         public override void Execute(object parameter) 
-            => Task.Run(SavePassportData);
+            => Task.Run(SavePassportDataInDatabase);
 
-        public async Task SavePassportData()
+        /// <summary>
+        /// Сохраняет паспортные данные в базе данных.
+        /// </summary>
+        /// <returns>Задача <see cref="Task"/>, представляющая асинхронную операцию.</returns>
+        public async Task SavePassportDataInDatabase()
         {
             userProfileViewModel.IsDataSaved = false;
             userProfileViewModel.IsDataSave = true;
@@ -49,7 +64,10 @@ namespace EWallet.Commands
                 }
                 userProfileViewModel.SaveDataMessage = "Данные сохранены!";
             }
-            catch (Exception e) { ErrorMessageBox.Show(e); }
+            catch (Exception e) 
+            { 
+                ErrorMessageBox.Show(e); 
+            }
             finally
             {
                 userProfileViewModel.IsDataSave = false;
@@ -57,10 +75,20 @@ namespace EWallet.Commands
                 userProfileViewModel.IsDataSaved = true;
             }
         }
+        /// <summary>
+        /// Получает экземпляр <see cref="Passport"/> для конкретного пользователя.
+        /// </summary>
+        /// <param name="dataBase">Экземпляр базы данных <see cref="WalletEntities"/>.</param>
+        /// <returns>Конкретный экземпляр <see cref="Passport"/> пользователя <see cref="User"/> при наличии в базе данных 
+        /// или значение <see langword="null"/> при отсутствии в базе данных.</returns>
         private async Task<Passport> FetchPassport(WalletEntities dataBase)
             => await dataBase.Passport.AsNoTracking().FirstOrDefaultAsync(
                 p => p.UserID == userStore.CurrentUser.ID);
-
+        /// <summary>
+        /// Обновляет паспортные данные конкретного экземпляра <see cref="Passport"/>.
+        /// </summary>
+        /// <param name="dataBase">Экземпляр базы данных <see cref="WalletEntities"/>.</param>
+        /// <param name="passport">Экземпляр <see cref="Passport"/>, принадлежащий пользователю.</param>
         private void EditPassport(WalletEntities dataBase, Passport passport)
         {
             passport.FirstName = userProfileViewModel.FirstName;
@@ -73,6 +101,10 @@ namespace EWallet.Commands
 
             dataBase.Passport.AddOrUpdate(passport);
         }
+        /// <summary>
+        /// Создает новый экземпляр <see cref="Passport"/> из данных <see cref="UserProfileViewModel"/>.
+        /// </summary>
+        /// <param name="dataBase">Экземпляр базы данных <see cref="WalletEntities"/>.</param>
         private void CreatePassport(WalletEntities dataBase)
         {
             var passport = new Passport()

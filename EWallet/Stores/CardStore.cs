@@ -12,9 +12,6 @@ namespace EWallet.Commands
         /// <summary>
         /// Текущая карта.
         /// </summary>
-        /// <value>
-        /// Хранит текущую карту, установленную в команде NavigateCardCommand.
-        /// </value>
         public Card CurrentCard
         {
             get => currentCard;

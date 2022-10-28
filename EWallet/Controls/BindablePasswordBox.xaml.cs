@@ -19,7 +19,7 @@ namespace EWallet.Controls
 
         #region Constructors
         /// <summary>
-        /// Инициализирует PasswordBox с возможностью привязки.
+        /// Инициализирует новый экземпляр класса <see cref="BindablePasswordBox"/>.
         /// </summary>
         public BindablePasswordBox()
         {
@@ -55,7 +55,11 @@ namespace EWallet.Controls
         /// </summary>
         private void UpdateMaxLength() 
             => passwordBox.MaxLength = MaxLength;
-
+        /// <summary>
+        /// Проверяет валидность <see cref="Password"/>.
+        /// </summary>
+        /// <param name="text">Пароль, проверяемый на валидность.</param>
+        /// <returns><see langword="true"/> если пароль валиден, <see langword="false"/> - в обратном случае.</returns>
         private bool IsValidPassword(string text)
         {
             string pattern = @"\w*";
@@ -65,7 +69,10 @@ namespace EWallet.Controls
 
             return Regex.IsMatch(text, pattern);
         }
-
+        /// <summary>
+        /// Извлекает целое число из текста.
+        /// </summary>
+        /// <param name="text">Текст, содержащий целое число.</param>
         private void ExtractInt(string text)
         {
             text = Regex.Replace(text, @"[^0-9]", string.Empty);
@@ -171,12 +178,17 @@ namespace EWallet.Controls
             get => (int)GetValue(MaxLengthProperty);
             set => SetValue(MaxLengthProperty, value);
         }
-
+        /// <summary>
+        /// Плейсхолдер для отображения.
+        /// </summary>
         public string Placeholder
         {
             get => (string)GetValue(PlaceholderProperty);
             set => SetValue(PlaceholderProperty, value);
         }
+        /// <summary>
+        /// Указывает, активен ли формат данных только для ввода цифр.
+        /// </summary>
         public bool OnlyNumbers
         {
             get => (bool)GetValue(OnlyNumbersProperty);

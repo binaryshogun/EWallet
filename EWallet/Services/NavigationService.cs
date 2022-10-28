@@ -5,9 +5,11 @@ using System;
 namespace EWallet.Services
 {
     /// <summary>
-    /// Сервис навигации в системе.
+    /// Стандартная реализация сервиса 
+    /// навигации для совершения переходов.
     /// </summary>
-    /// <typeparam name="TViewModel">ViewModel для создания в качестве отображаемой страницы.</typeparam>
+    /// <typeparam name="TViewModel">ViewModel, 
+    /// используемый в качестве отображаемой страницы.</typeparam>
     public sealed class NavigationService<TViewModel> : INavigationService 
         where TViewModel : ViewModelBase
     {
@@ -18,10 +20,13 @@ namespace EWallet.Services
 
         #region Constructors
         /// <summary>
-        /// Инициализирует объект NavigationService.
+        /// Инициализирует новый экземпляр класса <see cref="NavigationService{TViewModel}"/>.
         /// </summary>
-        /// <param name="navigationStore">Навигационное хранилище для изменения CurrentViewModel на createViewModel.</param>
-        /// <param name="createViewModel">Делегат Func для создания TViewModel отображения.</param>
+        /// <param name="navigationStore">Навигационное хранилище 
+        /// для изменения свойства <see cref="NavigationStore.CurrentViewModel"/> 
+        /// результатом действия метода, вызываемого <paramref name="createViewModel"/>.</param>
+        /// <param name="createViewModel">Делегат <see cref="Func{TResult}"/> 
+        /// для создания <typeparamref name="TViewModel"/> отображения.</param>
         public NavigationService(NavigationStore navigationStore, Func<TViewModel> createViewModel)
         {
             this.createViewModel = createViewModel;
@@ -31,8 +36,7 @@ namespace EWallet.Services
 
         #region Methods
         /// <summary>
-        /// Метод, осуществляющий смену CurrentViewModel для
-        /// navigationStore и меняющий вид отображаемой страницы.
+        /// Совершает переход на <typeparamref name="TViewModel"/>.
         /// </summary>
         public void Navigate() => navigationStore.CurrentViewModel = createViewModel();
         #endregion

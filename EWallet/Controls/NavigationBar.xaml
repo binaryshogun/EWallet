@@ -42,7 +42,7 @@
     </UserControl.Resources>
     
     <Grid
-        MouseLeftButtonDown="UserControl_MouseLeftButtonDown">
+        MouseLeftButtonDown="NavigationBar_MouseLeftButtonDown">
         <Label
             Grid.Column="0"
             Content="EWallet"

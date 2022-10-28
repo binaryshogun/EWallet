@@ -3,14 +3,23 @@ using System.Windows.Controls;
 
 namespace EWallet.Components
 {
+    /// <summary>
+    /// Гибкий элемент WrapPanel, содержащий динамически изменяющиеся свойства.
+    /// </summary>
     public sealed class FlexWrapPanel : WrapPanel
     {
         #region Properties
+        /// <summary>
+        /// Запрашиваемая ширина дочерних элементов.
+        /// </summary>
         public double RequestItemWidth
         {
             get => (double)GetValue(RequestItemWidthProperty);
             set => SetValue(RequestItemWidthProperty, value);
         }
+        /// <summary>
+        /// Запрашиваемая высота дочерних элементов.
+        /// </summary>
         public double RequestItemHeight
         {
             get => (double)GetValue(RequestItemHeightProperty);
@@ -21,12 +30,12 @@ namespace EWallet.Components
         #region Dependency properties
         public static readonly DependencyProperty RequestItemWidthProperty =
             DependencyProperty.Register("RequestItemWidth", typeof(double), typeof(FlexWrapPanel), new PropertyMetadata(double.NaN));
-
         public static readonly DependencyProperty RequestItemHeightProperty =
             DependencyProperty.Register("RequestItemHeight", typeof(double), typeof(FlexWrapPanel), new PropertyMetadata(double.NaN));
         #endregion
 
         #region Methods
+        /// <inheritdoc cref="WrapPanel.MeasureOverride(Size)"/>
         protected override Size MeasureOverride(Size constraint)
         {
             ProcessRequestedWidth(constraint);
@@ -35,6 +44,10 @@ namespace EWallet.Components
             return base.MeasureOverride(constraint);
         }
 
+        /// <summary>
+        /// Обрабатывает запрашиваемую ширину дочерних элементов.
+        /// </summary>
+        /// <param name="constraint">Верхний предел размера <see cref="Size"/>.</param>
         private void ProcessRequestedWidth(Size constraint)
         {
             if (!double.IsNaN(RequestItemWidth))
@@ -54,6 +67,10 @@ namespace EWallet.Components
                 }
             }
         }
+        /// <summary>
+        /// Обрабатывает запрашиваемую высоту дочерних элементов.
+        /// </summary>
+        /// <param name="constraint">Верхний предел размера <see cref="Size"/>.</param>
         private void ProcessRequestedHeight(Size constraint)
         {
             if (!double.IsNaN(RequestItemHeight))

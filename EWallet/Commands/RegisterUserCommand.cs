@@ -1,4 +1,5 @@
 ﻿using EWallet.Components;
+using EWallet.Exceptions;
 using EWallet.Helpers;
 using EWallet.Models;
 using EWallet.Services;
@@ -24,10 +25,14 @@ namespace EWallet.Commands
 
         #region Constructors
         /// <summary>
-        /// Инициализирует команду регистрации пользователя.
+        /// Инициализирует новый экземпляр класса <see cref="RegisterUserCommand"/>.
         /// </summary>
-        /// <param name="registrationViewModel">ViewModel страницы регистрации пользователя.</param>
-        /// <param name="accountNavigationService">Сервис навигации, привязанный к AccountViewModel.</param>
+        /// <param name="registrationViewModel"><see cref="RegistrationViewModel"/>,
+        /// содержащая данные для регистрации пользователя.</param>
+        /// <param name="accountNavigationService"><see cref="INavigationService"/>,
+        /// совершающий переход на <see cref="AccountViewModel"/>.</param>
+        /// <param name="userStore"><see cref="UserStore"/>,
+        /// содержащий информацию о текущем пользователе.</param>
         public RegisterUserCommand(RegistrationViewModel registrationViewModel, 
             INavigationService accountNavigationService, 
             UserStore userStore)
@@ -43,6 +48,10 @@ namespace EWallet.Commands
         public override void Execute(object parameter) 
             => Task.Run(RegisterUserInDatabase);
 
+        /// <summary>
+        /// Регистрирует пользователя в базе данных.
+        /// </summary>
+        /// <returns>Задача <see cref="Task"/>, представляющая асинхронную операцию.</returns>
         public async Task RegisterUserInDatabase()
         {
             registrationViewModel.IsUserAuthorizing = true;
@@ -63,20 +72,38 @@ namespace EWallet.Commands
                         await AddPassportToDatabase(database);
                     }
                     else
-                        throw new Exception("Пользователь уже зарегистрирован в системе!");
+                        throw new UserAlreadyRegistredException("Пользователь уже зарегистрирован в системе!");
 
                     var registredUser = await FetchUser(database);
                     userStore.CurrentUser = registredUser;
                     accountNavigationService?.Navigate();
                 }
             }
-            catch (Exception ex) { ErrorMessageBox.Show(ex); }
-            finally { registrationViewModel.IsUserAuthorizing = false; }
+            catch (Exception ex) 
+            { 
+                ErrorMessageBox.Show(ex); 
+            }
+            finally 
+            { 
+                registrationViewModel.IsUserAuthorizing = false; 
+            }
         }
 
+        /// <summary>
+        /// Получает пользователя по логину из базы данных.
+        /// </summary>
+        /// <param name="database">Экземпляр базы данных <see cref="WalletEntities"/>.</param>
+        /// <returns>Экземпляр класса <see cref="User"/> при наличии в базе данных 
+        /// или значение <see langword="null"/> при отсутствии в базе данных.</returns>
         private async Task<User> FetchUser(WalletEntities database)
             => await database.User.AsNoTracking().FirstOrDefaultAsync(
                 u => u.Login == registrationViewModel.Login);
+        /// <summary>
+        /// Добавляет пользователя в базу данных.
+        /// </summary>
+        /// <param name="database">Экземпляр базы данных <see cref="WalletEntities"/>.</param>
+        /// <param name="length">Длина хэширования пароля для метода <see cref="HashHelper.GetHash(string, int)"/></param>
+        /// <returns>Задача <see cref="Task"/>, представляющая асинхронную операцию.</returns>
         private async Task AddUserToDatabase(WalletEntities database, int length)
         {
             var user = new User()
@@ -89,6 +116,11 @@ namespace EWallet.Commands
             database.User.Add(user);
             await database.SaveChangesAsync();
         }
+        /// <summary>
+        /// Добавляет связанный с пользователем паспорт в базу данных.
+        /// </summary>
+        /// <param name="database">Экземпляр базы данных <see cref="WalletEntities"/>.</param>
+        /// <returns>Задача <see cref="Task"/>, представляющая асинхронную операцию.</returns>
         private async Task AddPassportToDatabase(WalletEntities database)
         {
             var user = await FetchUser(database);

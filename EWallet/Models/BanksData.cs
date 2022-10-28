@@ -3,9 +3,16 @@ using System.Windows.Media;
 
 namespace EWallet.Models
 {
+    /// <summary>
+    /// Статический класс, предоставляющий 
+    /// доступ к данным о банках.
+    /// </summary>
     public static class BanksData
     {
         #region Enums
+        /// <summary>
+        /// Список доступных банков.
+        /// </summary>
         public enum Banks
         {
             Tinkoff,
@@ -16,6 +23,9 @@ namespace EWallet.Models
         #endregion
 
         #region Constructors
+        /// <summary>
+        /// Инициализирует статические поля класса <see cref="BanksData"/>.
+        /// </summary>
         static BanksData()
         {
             BankColors = new Dictionary<Banks, Brush>()
@@ -43,8 +53,17 @@ namespace EWallet.Models
         #endregion
 
         #region Properties
+        /// <summary>
+        /// Основные цвета банков.
+        /// </summary>
         public static Dictionary<Banks, Brush> BankColors { get; private set; }
+        /// <summary>
+        /// Цвета шрифтов банков.
+        /// </summary>
         public static Dictionary<Banks, Brush> BankForegrounds { get; private set; }
+        /// <summary>
+        /// Относительные пути к логотипам банков.
+        /// </summary>
         public static Dictionary<Banks, string> BankLogos { get; private set; }
         #endregion
     }

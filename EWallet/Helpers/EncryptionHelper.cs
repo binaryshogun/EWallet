@@ -5,16 +5,28 @@ using System.Text;
 
 namespace EWallet.Helpers
 {
+    /// <summary>
+    /// Статический класс, содержащий 
+    /// методы для шифрования и дешифрования строк.
+    /// </summary>
     public static class EncryptionHelper
     {
+        #region Constants
+        const string encryptionKey = "wpf-pet";
+        #endregion
+
         #region Methods
+        /// <summary>
+        /// Шифрует строку, используя <see cref="Rfc2898DeriveBytes"/>.
+        /// </summary>
+        /// <param name="clearText">Строка для шифрования.</param>
+        /// <returns>Зашифрованный экземпляр <see cref="string"/>.</returns>
         public static string Encrypt(string clearText)
         {
-            string EncryptionKey = "wpf-pet";
             byte[] clearBytes = Encoding.Unicode.GetBytes(clearText);
             using (Aes encryptor = Aes.Create())
             {
-                Rfc2898DeriveBytes pdb = new Rfc2898DeriveBytes(EncryptionKey, 
+                Rfc2898DeriveBytes pdb = new Rfc2898DeriveBytes(encryptionKey, 
                     new byte[] 
                     { 
                         0x49, 0x76, 0x61, 0x6e, 0x20, 0x4d, 
@@ -35,14 +47,18 @@ namespace EWallet.Helpers
             }
             return clearText;
         }
+        /// <summary>
+        /// Расшифровывает строку, используя <see cref="Rfc2898DeriveBytes"/>.
+        /// </summary>
+        /// <param name="cipherText">Зашифрованный текст.</param>
+        /// <returns>Расшифрованный экземпляр <see cref="string"/>.</returns>
         public static string Decrypt(string cipherText)
         {
-            string EncryptionKey = "wpf-pet";
             cipherText = cipherText.Replace(" ", "+");
             byte[] cipherBytes = Convert.FromBase64String(cipherText);
             using (Aes encryptor = Aes.Create())
             {
-                Rfc2898DeriveBytes pdb = new Rfc2898DeriveBytes(EncryptionKey, 
+                Rfc2898DeriveBytes pdb = new Rfc2898DeriveBytes(encryptionKey, 
                     new byte[] 
                     { 
                         0x49, 0x76, 0x61, 0x6e, 0x20, 0x4d, 
@@ -61,7 +77,7 @@ namespace EWallet.Helpers
                     cipherText = Encoding.Unicode.GetString(ms.ToArray());
                 }
             }
-            return cipherText.Substring(0, 16);
+            return cipherText;
         }
         #endregion
     }

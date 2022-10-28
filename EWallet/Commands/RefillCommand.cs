@@ -10,6 +10,9 @@ using System.Threading.Tasks;
 
 namespace EWallet.Commands
 {
+    /// <summary>
+    /// Команда проведения операции пополнения баланса пользователя.
+    /// </summary>
     public sealed class RefillCommand : CommandBase
     {
         #region Fields
@@ -19,6 +22,15 @@ namespace EWallet.Commands
         #endregion
 
         #region Constructors
+        /// <summary>
+        /// Инициализирует новый экземпляр класса <see cref="RefillCommand"/>.
+        /// </summary>
+        /// <param name="userStore"><see cref="UserStore"/>, 
+        /// содержащий данные о текущем пользователе.</param>
+        /// <param name="refillViewModel"><see cref="RefillViewModel"/>,
+        /// содержащая данные для проведения операции.</param>
+        /// <param name="accountNavigationService"><see cref="INavigationService"/>,
+        /// совершающий переход на <see cref="AccountViewModel"/>.</param>
         public RefillCommand(UserStore userStore, RefillViewModel refillViewModel, INavigationService accountNavigationService)
         {
             this.userStore = userStore;
@@ -28,9 +40,14 @@ namespace EWallet.Commands
         #endregion
 
         #region Methods
+        /// <inheritdoc cref="CommandBase.Execute(object)"/>
         public override void Execute(object parameter)
             => Task.Run(ProvideRefill);
 
+        /// <summary>
+        /// Осуществляет проведение операции пополнения баланса пользователя.
+        /// </summary>
+        /// <returns>Задача <see cref="Task"/>, представляющая асинхронную операцию.</returns>
         private async Task ProvideRefill()
         {
             refillViewModel.IsOperationBeingProvided = true;
@@ -46,7 +63,7 @@ namespace EWallet.Commands
                     double sum = SetSum();
                     OperationsHelper.TryUpdateBalance(user, userStore, sum);
 
-                    Service service = await OperationsHelper.FetchService(database, "Пополнение баланса");
+                    Service service = await OperationsHelper.FetchServiceByName(database, "Пополнение баланса");
                     Operation operation = OperationsHelper.GenerateSingleUserOperation(database, user, sum, service);
 
                     database.User.AddOrUpdate(user);
@@ -54,7 +71,10 @@ namespace EWallet.Commands
                     await database.SaveChangesAsync();
                 }
             }
-            catch (Exception e) { ErrorMessageBox.Show(e); }
+            catch (Exception e) 
+            { 
+                ErrorMessageBox.Show(e); 
+            }
             finally
             {
                 refillViewModel.IsOperationBeingProvided = false;
@@ -62,10 +82,15 @@ namespace EWallet.Commands
             }
         }
 
+        /// <summary>
+        /// Сохраняет данные о карте в базе данных.
+        /// </summary>
+        /// <param name="database">Экземпляр базы данных <see cref="WalletEntities"/>.</param>
+        /// <returns>Задача <see cref="Task"/>, представляющая асинхронную операцию.</returns>
         private async Task SaveCardData(WalletEntities database)
         {
             string cardNumber = EncryptionHelper.Encrypt(refillViewModel.CardNumber);
-            Card card = await OperationsHelper.FetchCard(database, cardNumber);
+            Card card = await OperationsHelper.FetchCardByNumber(database, cardNumber);
             if (card == null)
             {
                 int.TryParse(refillViewModel.ValidThruYear, out int year);
@@ -80,7 +105,10 @@ namespace EWallet.Commands
             }
             await database.SaveChangesAsync();
         }
-
+        /// <summary>
+        /// Устанавливает сумму операции с учётом комиссии.
+        /// </summary>
+        /// <returns>Сумма операции с прибавленным комиссионным взносом.</returns>
         private double SetSum()
         {
             double.TryParse(refillViewModel.OperationSum, out double sum);

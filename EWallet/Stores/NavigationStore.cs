@@ -4,7 +4,8 @@ using System;
 namespace EWallet.Stores
 {
     /// <summary>
-    /// Навигационное хранилище для хранения данных о текущей VieModel.
+    /// Навигационное хранилище для 
+    /// хранения данных о текущей ViewModel.
     /// </summary>
     public sealed class NavigationStore
     {
@@ -23,11 +24,6 @@ namespace EWallet.Stores
         /// <summary>
         /// Текущая ViewModel.
         /// </summary>
-        /// <value>
-        /// Содержит текущую ViewModel,
-        /// отображаемую при работе приложения
-        /// в главном окне.
-        /// </value>
         public ViewModelBase CurrentViewModel 
         {
             get => currentViewModel;

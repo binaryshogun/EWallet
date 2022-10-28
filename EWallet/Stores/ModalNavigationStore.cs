@@ -3,6 +3,10 @@ using System;
 
 namespace EWallet.Stores
 {
+    /// <summary>
+    /// Хранилище, содержащее данные 
+    /// о модальном окне.
+    /// </summary>
     public sealed class ModalNavigationStore
     {
         #region Fields
@@ -20,11 +24,6 @@ namespace EWallet.Stores
         /// <summary>
         /// Текущая ViewModel.
         /// </summary>
-        /// <value>
-        /// Содержит текущую ViewModel,
-        /// отображаемую при работе приложения
-        /// в главном окне.
-        /// </value>
         public ViewModelBase CurrentViewModel
         {
             get => currentViewModel;
@@ -35,6 +34,9 @@ namespace EWallet.Stores
                 OnCurrentViewModelChanged();
             }
         }
+        /// <summary>
+        /// Показывает, открыто ли модальное окно.
+        /// </summary>
         public bool IsOpen 
             => CurrentViewModel != null;
         #endregion
@@ -45,6 +47,9 @@ namespace EWallet.Stores
         /// </summary>
         private void OnCurrentViewModelChanged() 
             => CurrentViewModelChanged?.Invoke();
+        /// <summary>
+        /// Закрывает модальное окно.
+        /// </summary>
         public void Close() 
             => CurrentViewModel = null;
         #endregion

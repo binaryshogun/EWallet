@@ -13,6 +13,9 @@ namespace EWallet.Stores
         #endregion
 
         #region Events
+        /// <summary>
+        /// Событие при изменении текущего пользователя.
+        /// </summary>
         public event Action CurrentUserChanged;
         #endregion
 
@@ -20,9 +23,6 @@ namespace EWallet.Stores
         /// <summary>
         /// Текущий пользователь.
         /// </summary>
-        /// <value>
-        /// Хранит текущего пользователя в системе.
-        /// </value>
         public User CurrentUser
         {
             get => currentUser;
@@ -32,14 +32,22 @@ namespace EWallet.Stores
                 CurrentUserChanged?.Invoke();
             }
         }
-
+        /// <summary>
+        /// Указывает, что пользователь авторизован.
+        /// </summary>
         public bool IsLoggedIn 
             => currentUser != null;
+        /// <summary>
+        /// Указывает, что пользователь не авторизован.
+        /// </summary>
         public bool IsLoggedOut 
             => currentUser == null;
         #endregion
 
         #region Methods
+        /// <summary>
+        /// Сбрасывает текущего пользователя.
+        /// </summary>
         public void Logout() 
             => CurrentUser = null;
         #endregion

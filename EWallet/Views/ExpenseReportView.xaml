@@ -51,7 +51,7 @@
                         FontSize="14"
                         VerticalAlignment="Center"
                         IsHitTestVisible="False"
-                        Visibility="{Binding IsServiceselected, 
+                        Visibility="{Binding IsServiceSelected, 
                             Converter={StaticResource InversedConverter}}" />
                 </Grid>
                 <Grid.ColumnDefinitions>

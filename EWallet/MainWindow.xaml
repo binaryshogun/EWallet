@@ -1,19 +1,22 @@
-﻿<Window x:Class="EWallet.MainWindow"
-        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:EWallet" 
-        xmlns:viewmodels="clr-namespace:EWallet.ViewModels"
-        xmlns:views="clr-namespace:EWallet.Views"
-        xmlns:components="clr-namespace:EWallet.Components"
-        mc:Ignorable="d"
-        Title="EWallet" 
-        MinHeight="800" MinWidth="1024"
-        MaxHeight="1100" MaxWidth="2000"
-        WindowState="Normal"
-        WindowStartupLocation="CenterOwner" 
-        WindowStyle="SingleBorderWindow">
+﻿<Window
+    x:Class="EWallet.MainWindow"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:local="clr-namespace:EWallet"
+    xmlns:viewmodels="clr-namespace:EWallet.ViewModels"
+    xmlns:views="clr-namespace:EWallet.Views"
+    xmlns:components="clr-namespace:EWallet.Components"
+    d:DataContext="{d:DesignInstance Type=viewmodels:MainViewModel}"
+    mc:Ignorable="d"
+    Title="EWallet"
+    MinHeight="800"
+    MinWidth="1024"
+    MaxHeight="1100"
+    MaxWidth="2000"
+    WindowState="Normal"
+    WindowStyle="SingleBorderWindow">
     <Grid>
         <Grid.Resources>
             <DataTemplate

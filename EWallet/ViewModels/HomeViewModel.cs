@@ -10,6 +10,15 @@ namespace EWallet.ViewModels
     public sealed class HomeViewModel : ViewModelBase
     {
         #region Constructors
+        /// <summary>
+        /// Инициализирует новый экземпляр класса <see cref="HomeViewModel"/>.
+        /// </summary>
+        /// <param name="authorizationNavigationService">
+        /// <see cref="INavigationService"/>, совершающий переход
+        /// на <see cref="AuthorizationViewModel"/>.</param>
+        /// <param name="registrationNavigationService">
+        /// <see cref="INavigationService"/>, совершающий переход
+        /// на <see cref="RegistrationViewModel"/>.</param>
         public HomeViewModel(INavigationService authorizationNavigationService,
             INavigationService registrationNavigationService)
         {
@@ -21,11 +30,18 @@ namespace EWallet.ViewModels
         #endregion
 
         #region Commands
+        /// <summary>
+        /// Команда перехода на страницу регистрации.
+        /// </summary>
         public ICommand NavigateRegistrationCommand { get; }
+        /// <summary>
+        /// Команда перехода на страницу авторизации.
+        /// </summary>
         public ICommand NavigateAuthorizationCommand { get; }
         #endregion
 
         #region Methods
+        /// <inheritdoc cref="ViewModelBase.Dispose"/>
         public override void Dispose() => base.Dispose();
         #endregion
     }

@@ -25,18 +25,26 @@ namespace EWallet.ViewModels
 
         #region Constructors
         /// <summary>
-        /// Инициализирует объект класса RegistrationViewModel.
+        /// Инициализирует новый экземпляр класса <see cref="RegistrationViewModel"/>.
         /// </summary>
-        /// <param name="navigationStore">Навигационное хранилище.</param>
+        /// <param name="userStore"><see cref="UserStore"/>,
+        /// содержащий данные о текущем пользователе.</param>
+        /// <param name="authorizationNavigationService">
+        /// <see cref="INavigationService"/>, совершающий
+        /// переход на <see cref="AuthorizationViewModel"/>.</param>
+        /// <param name="accountNavigationService">
+        /// <see cref="INavigationService"/>, совершающий
+        /// переход на <see cref="AccountViewModel"/>.</param>
+        /// <param name="homeNavigationService">
+        /// <see cref="INavigationService"/>, совершающий
+        /// переход на <see cref="HomeViewModel"/>.</param>
         public RegistrationViewModel(UserStore userStore, INavigationService authorizationNavigationService, 
             INavigationService accountNavigationService, 
             INavigationService homeNavigationService)
         {
             NavigateCommand = new NavigateCommand(authorizationNavigationService);
-            NavigateAccountCommand = new NavigateCommand(accountNavigationService);
             NavigateHomeCommand = new NavigateCommand(homeNavigationService);
             RegisterUserCommand = new RegisterUserCommand(this, accountNavigationService, userStore);
-            ExitAppCommand = new ExitAppCommand();
         }
         #endregion
 
@@ -44,9 +52,6 @@ namespace EWallet.ViewModels
         /// <summary>
         /// Логин пользователя.
         /// </summary>
-        /// <value>
-        /// Строковое представление логина пользователя.
-        /// </value>
         public string Login
         {
             get => login;
@@ -57,13 +62,9 @@ namespace EWallet.ViewModels
                 IsRegistrationButtonEnabled = EnableRegistrationButton();
             }
         }
-
         /// <summary>
         /// Пароль пользователя.
         /// </summary>
-        /// <value>
-        /// Строковое представление пароля пользователя.
-        /// </value>
         public string Password
         {
             get => password;
@@ -74,13 +75,9 @@ namespace EWallet.ViewModels
                 IsRegistrationButtonEnabled = EnableRegistrationButton();
             }
         }
-
         /// <summary>
         /// Повторно введённый пароль пользователя.
         /// </summary>
-        /// <value>
-        /// Строковое представление повторного пароля пользователя.
-        /// </value>
         public string RepeatedPassword
         {
             get => repeatedPassword;
@@ -91,7 +88,9 @@ namespace EWallet.ViewModels
                 IsRegistrationButtonEnabled = EnableRegistrationButton();
             }
         }
-
+        /// <summary>
+        /// Отчество пользователя.
+        /// </summary>
         public string Patronymic
         {
             get => patronymic;
@@ -101,7 +100,9 @@ namespace EWallet.ViewModels
                 OnPropertyChanged(nameof(Patronymic));
             }
         }
-
+        /// <summary>
+        /// Фамилия пользователя.
+        /// </summary>
         public string LastName
         {
             get => lastName;
@@ -111,7 +112,9 @@ namespace EWallet.ViewModels
                 OnPropertyChanged(nameof(LastName));
             }
         }
-
+        /// <summary>
+        /// Имя пользователя.
+        /// </summary>
         public string FirstName
         {
             get => firstName;
@@ -121,7 +124,9 @@ namespace EWallet.ViewModels
                 OnPropertyChanged(nameof(FirstName));
             }
         }
-
+        /// <summary>
+        /// Указывает, есть ли у пользователя отчество.
+        /// </summary>
         public bool DoesUserHavePatronymic
         {
             get => doesUserHavePatronymic;
@@ -131,13 +136,9 @@ namespace EWallet.ViewModels
                 OnPropertyChanged(nameof(DoesUserHavePatronymic));
             }
         }
-
         /// <summary>
-        /// Флаг, отвечающий за включение и отключение кнопки регистрации.
+        /// Указывает, доступна ли кнопка регистрации.
         /// </summary>
-        /// <value>
-        /// Булева переменная, содержащая состояние кнопки регистрации.
-        /// </value>
         public bool IsRegistrationButtonEnabled
         {
             get => isRegistrationButtonEnabled;
@@ -147,7 +148,9 @@ namespace EWallet.ViewModels
                 OnPropertyChanged(nameof(IsRegistrationButtonEnabled));
             }
         }
-
+        /// <summary>
+        /// Указывает, проходит ли пользователь процедуру регистрации.
+        /// </summary>
         public bool IsUserAuthorizing
         {
             get => isUserAuthorizing;
@@ -160,25 +163,31 @@ namespace EWallet.ViewModels
         #endregion
 
         #region Commands
+        /// <summary>
+        /// Команда регистрации пользователя.
+        /// </summary>
         public ICommand RegisterUserCommand { get; }
+        /// <summary>
+        /// Комманда перехода на страницу авторизации.
+        /// </summary>
         public ICommand NavigateCommand { get; }
+        /// <summary>
+        /// Команда перехода на домашнюю страницу.
+        /// </summary>
         public ICommand NavigateHomeCommand { get; }
-        public ICommand NavigateAccountCommand { get; }
-        public ICommand ExitAppCommand { get; }
         #endregion
 
         #region Methods
 
         /// <summary>
-        /// Метод, получающий значение, ответственное за включение 
-        /// кнопки регистрации.
+        /// Обновляет доступность кнопки регистрации.
         /// </summary>
-        /// <returns>Булево значение, показывающее, необходимо ли 
-        /// активировать кнопку регистрации.</returns>
+        /// <returns><see langword="true"/> при заполненных полях ввода; 
+        /// в обратном случае - <see langword="false"/>.</returns>
         private bool EnableRegistrationButton()
             => login != "" && password != "" &&
                 repeatedPassword != "" && password == repeatedPassword;
-
+        /// <inheritdoc cref="ViewModelBase.Dispose"/>
         public override void Dispose() 
             => base.Dispose();
         #endregion

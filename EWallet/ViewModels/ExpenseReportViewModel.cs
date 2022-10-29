@@ -13,6 +13,9 @@ using System.Windows.Input;
 
 namespace EWallet.ViewModels
 {
+    /// <summary>
+    /// ViewModel страницы с отчетом о расходах.
+    /// </summary>
     public sealed class ExpenseReportViewModel : ViewModelBase
     {
         #region Fields
@@ -38,6 +41,13 @@ namespace EWallet.ViewModels
         #endregion
 
         #region Constructors
+        /// <summary>
+        /// Инициализирует новый экземпляр класса <see cref="ExpenseReportViewModel"/>.
+        /// </summary>
+        /// <param name="userStore"><see cref="UserStore"/>,
+        /// содержащий данные о текущем пользователе.</param>
+        /// <param name="accountNavigationService"><see cref="INavigationService"/>,
+        /// совершающий переход на <see cref="AccountViewModel"/>.</param>
         public ExpenseReportViewModel(UserStore userStore, INavigationService accountNavigationService)
         {
             this.userStore = userStore;
@@ -62,6 +72,9 @@ namespace EWallet.ViewModels
         #endregion
 
         #region Properties
+        /// <summary>
+        /// Список месяцев для выбора.
+        /// </summary>
         public List<DateTime> Months
         {
             get => months;
@@ -71,6 +84,9 @@ namespace EWallet.ViewModels
                 OnPropertyChanged(nameof(Months));
             }
         }
+        /// <summary>
+        /// Выбранный пользователем месяц.
+        /// </summary>
         public DateTime SelectedMonth
         {
             get => selectedMonth;
@@ -83,7 +99,9 @@ namespace EWallet.ViewModels
                 OnPropertyChanged(nameof(SelectedMonth));
             }
         }
-
+        /// <summary>
+        /// Список услуг.
+        /// </summary>
         public List<Service> Services
 		{
 			get => services;
@@ -93,6 +111,9 @@ namespace EWallet.ViewModels
 				OnPropertyChanged(nameof(Services));
 			}
 		}
+        /// <summary>
+        /// Выбранная пользователем услуга.
+        /// </summary>
         public Service SelectedService
         {
             get => selectedService;
@@ -105,7 +126,9 @@ namespace EWallet.ViewModels
                 OnPropertyChanged(nameof(SelectedService));
             }
         }
-
+        /// <summary>
+        /// Список операций.
+        /// </summary>
         public List<Operation> Operations
 		{
 			get => operations;
@@ -117,7 +140,9 @@ namespace EWallet.ViewModels
 				OnPropertyChanged(nameof(Operations));
 			}
 		}
-
+        /// <summary>
+        /// Общая сумма расходов.
+        /// </summary>
         public double? SumOfExpenses
         {
             get => sumOfExpenses;
@@ -127,7 +152,9 @@ namespace EWallet.ViewModels
                 OnPropertyChanged(nameof(SumOfExpenses));
             }
         }
-
+        /// <summary>
+        /// Серии графика о расходах.
+        /// </summary>
         public SeriesCollection OperationsSeries
         {
             get => operationSeries;
@@ -137,6 +164,9 @@ namespace EWallet.ViewModels
                 OnPropertyChanged(nameof(OperationsSeries));
             }
         }
+        /// <summary>
+        /// Указывает на наличие операций.
+        /// </summary>
         public bool IsThereOperations
         {
             get => isThereOperations;
@@ -146,16 +176,21 @@ namespace EWallet.ViewModels
                 OnPropertyChanged(nameof(IsThereOperations));
             }
         }
-
-        public bool IsServiceselected
+        /// <summary>
+        /// Указывает, выбрана ли тип услуга.
+        /// </summary>
+        public bool IsServiceSelected
         {
             get => isServiceSelected;
             set
             {
                 isServiceSelected = value;
-                OnPropertyChanged(nameof(IsServiceselected));
+                OnPropertyChanged(nameof(IsServiceSelected));
             }
         }
+        /// <summary>
+        /// Указывает, выбран ли месяц.
+        /// </summary>
         public bool IsMonthSelected
         {
             get => isMonthSelected;
@@ -168,10 +203,17 @@ namespace EWallet.ViewModels
         #endregion
 
         #region Commands
+        /// <summary>
+        /// Комманда перехода на <see cref="AccountViewModel"/>.
+        /// </summary>
         public ICommand NavigateAccountCommand { get; }
         #endregion
 
         #region Methods
+        /// <summary>
+        /// Заполняет <see cref="Months"/> значениями от января до декабря.
+        /// </summary>
+        /// <returns><see cref="List{T}"/>, содержащий 12 месяцев с января до декабря.</returns>
         private List<DateTime> SetUpMonths()
         {
             List<DateTime> months = new List<DateTime>();
@@ -179,11 +221,18 @@ namespace EWallet.ViewModels
                 months.Add(new DateTime(DateTime.Now.Year, i, 1));
             return months;
         }
+        /// <summary>
+        /// Заполняет список услуг из базы данных.
+        /// </summary>
+        /// <returns><see cref="List{T}"/>, содержащий услуги <see cref="Service"/>.</returns>
         private List<Service> SetUpServices()
         {
             List<Service> servicesList = database.Service.Where(s => s.Name == "Перевод" || s.Name == "Вывод средств").ToList();
             return servicesList.Count != 0 ? servicesList : null;
         }
+        /// <summary>
+        /// Устанавливает <see cref="Operations"/> и настраивает отображение графика.
+        /// </summary>
         private void SetUpViewModel()
         {
             List<Operation> operationsList = database.Operation.Where(
@@ -208,7 +257,9 @@ namespace EWallet.ViewModels
 
             UpdateChart();
         }
-
+        /// <summary>
+        /// Обновляет график.
+        /// </summary>
         private void UpdateChart()
         {
             OperationsSeries = new SeriesCollection();
@@ -219,6 +270,10 @@ namespace EWallet.ViewModels
             else
                 SetSeries(SelectedService);
         }
+        /// <summary>
+        /// Добавляет серию для услуги на график.
+        /// </summary>
+        /// <param name="service">Сущность <see cref="Service"/>, добавляемая на график в качестве серии.</param>
         private void SetSeries(Service service)
         {
             ObservableValue observableValue = new ObservableValue(0);
@@ -237,7 +292,12 @@ namespace EWallet.ViewModels
             };
             OperationsSeries.Add(series);
         }
-
+        /// <summary>
+        /// Изменяет свойство <see cref="IsMonthSelected"/> 
+        /// в зависимости от <paramref name="value"/>.
+        /// </summary>
+        /// <param name="value">Значение <see cref="DateTime"/>, 
+        /// определяющее свойство <see cref="IsMonthSelected"/>.</param>
         private void ChangeIsMonthSelected(DateTime value)
         {
             if (value != DateTime.MinValue)
@@ -245,14 +305,22 @@ namespace EWallet.ViewModels
             else
                 IsMonthSelected = false;
         }
+        /// <summary>
+        /// Изменяет свойство <see cref="IsServiceSelected"/> 
+        /// в зависимости от <paramref name="selectedService"/>.
+        /// </summary>
+        /// <param name="selectedService">Значение <see cref="Service"/>,
+        /// определяющее свойство <see cref="IsServiceSelected"/>.</param>
         private void ChangeIsSelectedService(Service selectedService)
         {
             if (selectedService != null)
-                IsServiceselected = true;
+                IsServiceSelected = true;
             else
-                IsServiceselected = false;
+                IsServiceSelected = false;
         }
-
+        /// <summary>
+        /// Освобождает ресурсы <see cref="ExpenseReportViewModel"/>.
+        /// </summary>
         public override void Dispose()
         {
             database.Dispose();

@@ -8,13 +8,15 @@ using System.Windows.Media;
 
 namespace EWallet.ViewModels
 {
+    /// <summary>
+    /// ViewModel страницы добавления или редактирования карт.
+    /// </summary>
     public sealed class CardViewModel : ViewModelBase
     {
         #region Fields
         private readonly CardStore cardStore;
 
         private Banks currentBank;
-        private Brush bankBorderBrush;
         private Brush bankBackground;
         private Brush bankForeground;
         private string bankLogoPath;
@@ -29,6 +31,19 @@ namespace EWallet.ViewModels
         #endregion
 
         #region Constructors
+        /// <summary>
+        /// Инициализирует новый экземпляр класса <see cref="CardViewModel"/>.
+        /// </summary>
+        /// <param name="userStore"><see cref="UserStore"/>,
+        /// содержащий информацию о текущем пользователе.</param>
+        /// <param name="cardStore"><see cref="CardStore"/>,
+        /// содержащий информацию о карте при редактировании.</param>
+        /// <param name="cardManagmentNavigationService">
+        /// <see cref="INavigationService"/>, совершающий переход
+        /// на <see cref="CardManagmentViewModel"/>.</param>
+        /// <param name="accountNavigationService">
+        /// <see cref="INavigationService"/>, совершающий переход
+        /// на <see cref="AccountViewModel"/>.</param>
         public CardViewModel(UserStore userStore, 
 			CardStore cardStore, 
 			INavigationService cardManagmentNavigationService, 
@@ -48,6 +63,9 @@ namespace EWallet.ViewModels
 
         #region Properties
         #region CardData
+        /// <summary>
+        /// Номер карты.
+        /// </summary>
         public string CardNumber
         {
             get => cardNumber;
@@ -61,6 +79,9 @@ namespace EWallet.ViewModels
                 OnPropertyChanged(nameof(CardNumber));
             }
         }
+        /// <summary>
+        /// Месяц срока годности карты.
+        /// </summary>
         public string ValidThruMonth
         {
             get => validThruMonth;
@@ -72,6 +93,9 @@ namespace EWallet.ViewModels
                 OnPropertyChanged(nameof(ValidThruMonth));
             }
         }
+        /// <summary>
+        /// Год срока годности карты.
+        /// </summary>
         public string ValidThruYear
         {
             get => validThruYear;
@@ -83,6 +107,9 @@ namespace EWallet.ViewModels
                 OnPropertyChanged(nameof(ValidThruYear));
             }
         }
+        /// <summary>
+        /// Секретный код карты.
+        /// </summary>
         public string CVV
         {
             get => cvv;
@@ -97,13 +124,15 @@ namespace EWallet.ViewModels
         #endregion
 
         #region BankData
+        /// <summary>
+        /// Текущий банк, определяющийся по номеру карты.
+        /// </summary>
         private Banks CurrentBank
         {
             set
             {
                 currentBank = value;
 
-                BankBorderBrush = BankColors[currentBank];
                 BankBackground = BankColors[currentBank];
                 BankForeground = BankForegrounds[currentBank];
                 BankLogoPath = BankLogos[currentBank];
@@ -111,15 +140,9 @@ namespace EWallet.ViewModels
                 OnPropertyChanged(nameof(CurrentBank));
             }
         }
-        public Brush BankBorderBrush
-        {
-            get => bankBorderBrush;
-            set
-            {
-                bankBorderBrush = value;
-                OnPropertyChanged(nameof(BankBorderBrush));
-            }
-        }
+        /// <summary>
+        /// Цвет фона банка.
+        /// </summary>
         public Brush BankBackground
         {
             get => bankBackground;
@@ -129,6 +152,9 @@ namespace EWallet.ViewModels
                 OnPropertyChanged(nameof(BankBackground));
             }
         }
+        /// <summary>
+        /// Цвет шрифта банка.
+        /// </summary>
         public Brush BankForeground
         {
             get => bankForeground;
@@ -138,6 +164,9 @@ namespace EWallet.ViewModels
                 OnPropertyChanged(nameof(BankForeground));
             }
         }
+        /// <summary>
+        /// Путь к логотипу банка.
+        /// </summary>
         public string BankLogoPath
         {
             get => bankLogoPath;
@@ -150,6 +179,9 @@ namespace EWallet.ViewModels
         #endregion
 
         #region VisualProperties
+        /// <summary>
+        /// Указывает, сохраняются ли данные в текущий момент.
+        /// </summary>
         public bool IsDataBeingSaved
         {
             get => isDataBeingSaved;
@@ -159,6 +191,9 @@ namespace EWallet.ViewModels
                 OnPropertyChanged(nameof(IsDataBeingSaved));
             }
         }
+        /// <summary>
+        /// Указывает, доступна ли кнопка сохранения данных.
+        /// </summary>
         public bool IsSaveButtonEnabled
         {
             get => isSaveButtonEnabled;
@@ -168,12 +203,20 @@ namespace EWallet.ViewModels
                 OnPropertyChanged(nameof(IsSaveButtonEnabled));
             }
         }
+        /// <summary>
+        /// Указывает, доступны ли дополнительные поля для ввода.
+        /// </summary>
         public bool AreExtraInputsAvailable => true;
 
         #endregion
         #endregion
 
         #region Methods
+        /// <summary>
+        /// Устанавливает существующие данные 
+        /// карты при наличии свойства <see cref="CardStore.CurrentCard"/> 
+        /// отличного от <see langword="null"/>.
+        /// </summary>
         private void SetExistingCardData()
         {
             if (cardStore.CurrentCard != null)
@@ -188,7 +231,9 @@ namespace EWallet.ViewModels
                 cardStore.CurrentCard = null;
             }
         }
-
+        /// <summary>
+        /// Идентифицирует банк по номеру карты.
+        /// </summary>
         private void IdentifyBank()
         {
             if (CardNumber.Length > 0)
@@ -203,7 +248,9 @@ namespace EWallet.ViewModels
             }
             else { CurrentBank = Banks.Default; }
         }
-
+        /// <summary>
+        /// Обновляет свойство <see cref="IsSaveButtonEnabled"/>.
+        /// </summary>
         private void UpdateConfirmButton()
         {
             if (!string.IsNullOrEmpty(CardNumber) && CardNumber.Length == 16
@@ -213,14 +260,23 @@ namespace EWallet.ViewModels
             else
                 IsSaveButtonEnabled = false;
         }
-
+        /// <inheritdoc cref="ViewModelBase.Dispose"/>
         public override void Dispose() 
             => base.Dispose();
         #endregion
 
         #region Commands
+        /// <summary>
+        /// Команда перехода на страницу управления картами.
+        /// </summary>
         public ICommand NavigateCommand { get; }
+        /// <summary>
+        /// Команда перехода на страницу аккаунта пользователя.
+        /// </summary>
         public ICommand NavigateAccountCommand { get; }
+        /// <summary>
+        /// Команда сохранения данных карты.
+        /// </summary>
         public ICommand SaveCardDataCommand { get; }
         #endregion
     }

@@ -11,6 +11,9 @@ using System.Windows.Input;
 
 namespace EWallet.ViewModels
 {
+    /// <summary>
+    /// ViewModel страницы управления картами.
+    /// </summary>
     public sealed class CardManagmentViewModel : ViewModelBase
     {
         #region Fields
@@ -23,6 +26,17 @@ namespace EWallet.ViewModels
         #endregion
 
         #region Constructors
+        /// <summary>
+        /// Инициализирует новый экземпляр класса <see cref="CardManagmentViewModel"/>.
+        /// </summary>
+        /// <param name="userStore"><see cref="UserStore"/>,
+        /// содержащий данные о текущем пользователе.</param>
+        /// <param name="cardStore"><see cref="CardStore"/>,
+        /// содержащий данные о карте пользователя.</param>
+        /// <param name="accountNavigatonService"><see cref="INavigationService"/>,
+        /// совершающий переход на <see cref="AccountViewModel"/>.</param>
+        /// <param name="cardNavigationService"><see cref="INavigationService"/>,
+        /// совершающий переход на <see cref="CardViewModel"/>.</param>
         public CardManagmentViewModel(UserStore userStore,
             CardStore cardStore,
             INavigationService accountNavigatonService, 
@@ -49,6 +63,9 @@ namespace EWallet.ViewModels
         #endregion
 
         #region Properties
+        /// <summary>
+        /// Список карт, привязанных к пользователю.
+        /// </summary>
         public ListCollectionView Cards
         {
             get => cards;
@@ -58,7 +75,9 @@ namespace EWallet.ViewModels
                 OnPropertyChanged(nameof(Cards));
             }
         }
-
+        /// <summary>
+        /// Указывает, есть ли у пользователя привязанные карты.
+        /// </summary>
         public bool IsThereCards
         {
             get => isThereCards;
@@ -68,6 +87,9 @@ namespace EWallet.ViewModels
                 OnPropertyChanged(nameof(IsThereCards));
             }
         }
+        /// <summary>
+        /// Указывает, загружается ли список привязанных карт.
+        /// </summary>
         public bool AreCardsLoading
         {
             get => areCardsLoading;
@@ -80,6 +102,9 @@ namespace EWallet.ViewModels
         #endregion
 
         #region Methods
+        /// <summary>
+        /// Получает и задает список привязанных карт <see cref="Cards"/>.
+        /// </summary>
         public void FetchCards()
         {
             AreCardsLoading = true;
@@ -106,7 +131,9 @@ namespace EWallet.ViewModels
                 AreCardsLoading = false; 
             }
         }
-
+        /// <summary>
+        /// Проверяет количество привязанных карт.
+        /// </summary>
         private void CheckCardsCount()
         {
             try
@@ -118,7 +145,9 @@ namespace EWallet.ViewModels
             }
             catch (Exception e) { ErrorMessageBox.Show(e); }
         }
-
+        /// <summary>
+        /// Освобождает ресурсы <see cref="CardManagmentViewModel"/>.
+        /// </summary>
         public override void Dispose()
         {
             database.Dispose();
@@ -128,9 +157,17 @@ namespace EWallet.ViewModels
         #endregion
 
         #region Commands
+        /// <summary>
+        /// Команда перехода на <see cref="AccountViewModel"/>.
+        /// </summary>
         public ICommand NavigateAccountCommand { get; }
+        /// <summary>
+        /// Команда перехода на <see cref="CardViewModel"/>.
+        /// </summary>
         public ICommand NavigateCardCommand { get; }
-        public ICommand EditCardCommand { get; }
+        /// <summary>
+        /// Команда для удаления карты из списка привязанных карт.
+        /// </summary>
         public ICommand DeleteCardCommand { get; }
         #endregion
     }

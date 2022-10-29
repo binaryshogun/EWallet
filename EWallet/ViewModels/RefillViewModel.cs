@@ -13,6 +13,9 @@ using System.Threading.Tasks;
 
 namespace EWallet.ViewModels
 {
+    /// <summary>
+    /// ViewModel страницы пополнения баланса.
+    /// </summary>
     public sealed class RefillViewModel : ViewModelBase
     {
         #region Fields
@@ -20,7 +23,6 @@ namespace EWallet.ViewModels
         private readonly double percent;
 
         private Banks currentBank;
-        private Brush bankBorderBrush;
         private Brush bankBackground;
         private Brush bankForeground;
         private string bankLogoPath;
@@ -39,6 +41,13 @@ namespace EWallet.ViewModels
         #endregion
 
         #region Constructors
+        /// <summary>
+        /// Инициализирует новый экземпляр класса <see cref="RefillViewModel"/>.
+        /// </summary>
+        /// <param name="userStore"><see cref="UserStore"/>,
+        /// содержащий данные о текущем пользователе.</param>
+        /// <param name="accountNavigationService"><see cref="INavigationService"/>,
+        /// совершающий переход на <see cref="AccountViewModel"/>.</param>
         public RefillViewModel(UserStore userStore, INavigationService accountNavigationService)
         {
             this.userStore = userStore;
@@ -69,6 +78,9 @@ namespace EWallet.ViewModels
 
         #region Properties
         #region CardData
+        /// <summary>
+        /// Номер карты.
+        /// </summary>
         public string CardNumber
         {
             get => cardNumber;
@@ -82,6 +94,9 @@ namespace EWallet.ViewModels
                 OnPropertyChanged(nameof(CardNumber));
             }
         }
+        /// <summary>
+        /// Месяц срока годности карты.
+        /// </summary>
         public string ValidThruMonth
         {
             get => validThruMonth;
@@ -93,6 +108,9 @@ namespace EWallet.ViewModels
                 OnPropertyChanged(nameof(ValidThruMonth));
             }
         }
+        /// <summary>
+        /// Год срока годности карты.
+        /// </summary>
         public string ValidThruYear
         {
             get => validThruYear;
@@ -104,6 +122,9 @@ namespace EWallet.ViewModels
                 OnPropertyChanged(nameof(ValidThruYear));
             }
         }
+        /// <summary>
+        /// Секретный код карты.
+        /// </summary>
         public string CVV
         {
             get => cvv;
@@ -115,6 +136,9 @@ namespace EWallet.ViewModels
                 OnPropertyChanged(nameof(CVV));
             }
         }
+        /// <summary>
+        /// Указывает, необходимо ли сохранять данные карты.
+        /// </summary>
         public bool SaveCardData
         {
             get => saveCardData;
@@ -127,6 +151,9 @@ namespace EWallet.ViewModels
         #endregion
 
         #region OperationData
+        /// <summary>
+        /// Сумма операции.
+        /// </summary>
         public string OperationSum
         {
             get => operationSum;
@@ -140,6 +167,9 @@ namespace EWallet.ViewModels
                 OnPropertyChanged(nameof(OperationSum));
             }
         }
+        /// <summary>
+        /// Комиссионный взнос за проведение операции.
+        /// </summary>
         public string Comission
         {
             get => comission;
@@ -152,13 +182,15 @@ namespace EWallet.ViewModels
         #endregion
 
         #region BankData
+        /// <summary>
+        /// Текущий банк, определяющийся по номеру карты.
+        /// </summary>
         private Banks CurrentBank
         {
             set
             {
                 currentBank = value;
 
-                BankBorderBrush = BankColors[currentBank];
                 BankBackground = BankColors[currentBank];
                 BankForeground = BankForegrounds[currentBank];
                 BankLogoPath = BankLogos[currentBank];
@@ -166,15 +198,9 @@ namespace EWallet.ViewModels
                 OnPropertyChanged(nameof(CurrentBank));
             }
         }
-        public Brush BankBorderBrush
-        {
-            get => bankBorderBrush;
-            set
-            {
-                bankBorderBrush = value;
-                OnPropertyChanged(nameof(BankBorderBrush));
-            }
-        }
+        /// <summary>
+        /// Цвет фона банка.
+        /// </summary>
         public Brush BankBackground
         {
             get => bankBackground;
@@ -184,6 +210,9 @@ namespace EWallet.ViewModels
                 OnPropertyChanged(nameof(BankBackground));
             }
         }
+        /// <summary>
+        /// Цвет шрифта банка.
+        /// </summary>
         public Brush BankForeground
         {
             get => bankForeground;
@@ -193,6 +222,9 @@ namespace EWallet.ViewModels
                 OnPropertyChanged(nameof(BankForeground));
             }
         }
+        /// <summary>
+        /// Путь к логотипу банка.
+        /// </summary>
         public string BankLogoPath
         {
             get => bankLogoPath;
@@ -205,6 +237,9 @@ namespace EWallet.ViewModels
         #endregion
 
         #region VisualProperties
+        /// <summary>
+        /// Указывает, проводится ли операция в текущий момент времени.
+        /// </summary>
         public bool IsOperationBeingProvided
         {
             get => isOperationBeingProvided;
@@ -214,6 +249,9 @@ namespace EWallet.ViewModels
                 OnPropertyChanged(nameof(IsOperationBeingProvided));
             }
         }
+        /// <summary>
+        /// Указывает, доступна ли кнопка проведения операции.
+        /// </summary>
         public bool IsConfirmButtonEnabled
         {
             get => isConfirmButtonEnabled;
@@ -223,15 +261,25 @@ namespace EWallet.ViewModels
                 OnPropertyChanged(nameof(IsConfirmButtonEnabled));
             }
         }
+        /// <summary>
+        /// Строка текущего баланса пользователя.
+        /// </summary>
         public string UserBalance => userStore.CurrentUser.Balance.ToString();
+        /// <summary>
+        /// Содержание кнопки проведения операции.
+        /// </summary>
         public string ButtonContent => "Пополнить";
+        /// <summary>
+        /// Указывает, доступны ли дополнительные поля ввода.
+        /// </summary>
         public bool AreExtraInputsAvailable => true;
-        
         #endregion
-
         #endregion
 
         #region Methods
+        /// <summary>
+        /// Устанавливает сохраненной карты в поля ввода.
+        /// </summary>
         private void SetExistingCardData()
         {
             try
@@ -253,7 +301,9 @@ namespace EWallet.ViewModels
             }
             catch (Exception e) { ErrorMessageBox.Show(e); }
         }
-
+        /// <summary>
+        /// Идентифицирует банк по номеру карты.
+        /// </summary>
         private void IdentifyBank()
         {
             if (CardNumber.Length > 0)
@@ -270,13 +320,18 @@ namespace EWallet.ViewModels
             else
                 CurrentBank = Banks.Default;
         }
-
+        /// <summary>
+        /// Рассчитывает комиссию за операцию.
+        /// </summary>
+        /// <returns>Строковое представление комиссии за операцию.</returns>
         private string GetComission()
         {
             double.TryParse(OperationSum, out double sum);
             return string.Format("{0:f2}", sum * percent);
         }
-
+        /// <summary>
+        /// Обновляет свойство <see cref="IsConfirmButtonEnabled"/>.
+        /// </summary>
         private void UpdateConfirmButton()
         {
             if (!string.IsNullOrEmpty(CardNumber) && CardNumber.Length == 16 
@@ -286,13 +341,19 @@ namespace EWallet.ViewModels
             else
                 IsConfirmButtonEnabled = false;
         }
-
+        /// <inheritdoc cref="ViewModelBase.Dispose"/>
         public override void Dispose() 
             => base.Dispose();
         #endregion
 
         #region Commands
+        /// <summary>
+        /// Команда проведения операции.
+        /// </summary>
         public ICommand ProvideOperationCommand { get; }
+        /// <summary>
+        /// Команда перехода на страницу аккаунта пользователя.
+        /// </summary>
         public ICommand NavigateAccountCommand { get; }
         #endregion
     }

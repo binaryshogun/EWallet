@@ -22,6 +22,9 @@ namespace EWallet.ViewModels
         public void OnPropertyChanged([CallerMemberName] string property = null) 
             => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(property));
 
+        /// <summary>
+        /// Освобождает ресурсы ViewModel.
+        /// </summary>
         public virtual void Dispose() { }
         #endregion
     }

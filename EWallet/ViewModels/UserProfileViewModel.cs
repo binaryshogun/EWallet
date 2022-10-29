@@ -9,6 +9,9 @@ using System;
 
 namespace EWallet.ViewModels
 {
+    /// <summary>
+    /// ViewModel для страницы профиля пользователя.
+    /// </summary>
     public sealed class UserProfileViewModel : ViewModelBase
     {
         #region Fields
@@ -27,10 +30,18 @@ namespace EWallet.ViewModels
         #endregion
 
         #region Constructors
+        /// <summary>
+        /// Инициализирует новый экземпляр 
+        /// класса <see cref="UserProfileViewModel"/>.
+        /// </summary>
+        /// <param name="userStore"><see cref="UserStore"/>,
+        /// хранящий данные о текущем пользователе.</param>
+        /// <param name="accountNavigationService">
+        /// <see cref="INavigationService"/>, совершающий
+        /// переход на <see cref="AccountViewModel"/>.</param>
         public UserProfileViewModel(UserStore userStore, 
             INavigationService accountNavigationService)
         {
-
             try
             {
                 using (var dataBase = new WalletEntities())
@@ -39,7 +50,10 @@ namespace EWallet.ViewModels
                         Where(p => p.UserID == userStore.CurrentUser.ID).FirstOrDefault();
                 }
             }
-            catch (Exception e) { ErrorMessageBox.Show(e); }
+            catch (Exception e) 
+            { 
+                ErrorMessageBox.Show(e); 
+            }
 
             if (passport != null)
             {
@@ -59,6 +73,9 @@ namespace EWallet.ViewModels
         #endregion
 
         #region Properties
+        /// <summary>
+        /// Имя пользователя.
+        /// </summary>
         public string FirstName
         {
             get => firstName;
@@ -68,7 +85,9 @@ namespace EWallet.ViewModels
                 OnPropertyChanged(nameof(FirstName));
             }
         }
-
+        /// <summary>
+        /// Фамилия пользователя.
+        /// </summary>
         public string LastName
         {
             get => lastName;
@@ -78,7 +97,9 @@ namespace EWallet.ViewModels
                 OnPropertyChanged(nameof(LastName));
             }
         }
-
+        /// <summary>
+        /// Отчество пользователя.
+        /// </summary>
         public string Patronymic
         {
             get => patronymic;
@@ -88,7 +109,10 @@ namespace EWallet.ViewModels
                 OnPropertyChanged(nameof(Patronymic));
             }
         }
-
+        /// <summary>
+        /// Сообщает пользователю о 
+        /// статусе сохранения.
+        /// </summary>
         public string SaveDataMessage
         {
             get => saveDataMessage;
@@ -98,7 +122,9 @@ namespace EWallet.ViewModels
                 OnPropertyChanged(nameof(SaveDataMessage));
             }
         }
-
+        /// <summary>
+        /// Серия паспорта.
+        /// </summary>
         public string SerialNumber
         {
             get => serialNumber;
@@ -108,7 +134,9 @@ namespace EWallet.ViewModels
                 OnPropertyChanged(nameof(SerialNumber));
             }
         }
-
+        /// <summary>
+        /// Номер паспорта.
+        /// </summary>
         public string Number
         {
             get => number;
@@ -118,7 +146,9 @@ namespace EWallet.ViewModels
                 OnPropertyChanged(nameof(Number));
             }
         }
-
+        /// <summary>
+        /// Код подразделения паспорта.
+        /// </summary>
         public string DivisionCode
         {
             get => divisionCode;
@@ -128,7 +158,9 @@ namespace EWallet.ViewModels
                 OnPropertyChanged(nameof(DivisionCode));
             }
         }
-
+        /// <summary>
+        /// Указывает, есть ли у пользователя отчество.
+        /// </summary>
         public bool DoesUserHavePatronymic
         {
             get => Patronymic != null;
@@ -138,7 +170,9 @@ namespace EWallet.ViewModels
                 OnPropertyChanged(nameof(DoesUserHavePatronymic));
             }
         }
-
+        /// <summary>
+        /// Указывает, сохраняются ли данные в текущий момент.
+        /// </summary>
         public bool IsDataSave
         {
             get => isDataSave;
@@ -148,6 +182,9 @@ namespace EWallet.ViewModels
                 OnPropertyChanged(nameof(IsDataSave));
             }
         }
+        /// <summary>
+        /// Указывает, сохранены ли данные.
+        /// </summary>
         public bool IsDataSaved
         {
             get => isDataSaved;
@@ -160,11 +197,18 @@ namespace EWallet.ViewModels
         #endregion
 
         #region Methods
+        /// <inheritdoc cref="ViewModelBase.Dispose"/>
         public override void Dispose() => base.Dispose();
         #endregion
 
         #region Commands
+        /// <summary>
+        /// Команда перехода на страницу аккаунта.
+        /// </summary>
         public ICommand NavigateAccountCommand { get; }
+        /// <summary>
+        /// Команда сохранения данных пользователя.
+        /// </summary>
         public ICommand SaveCommand { get; }
         #endregion
     }

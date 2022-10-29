@@ -31,10 +31,24 @@ namespace EWallet.ViewModels
 
         #region Constructors
         /// <summary>
-        /// Инициализирует новый объект типа AccounViewModel.
+        /// Инициализирует новый экземпляр класса <see cref="AccountViewModel"/>.
         /// </summary>
-        /// <param name="user">Пользователь, прошедший авторизацию в системе.</param>
-        /// <param name="navigationStore">Хранилище данных, содержащее данные о текущей ViewModel.</param>
+        /// <param name="userStore"><see cref="UserStore"/>, 
+        /// хранящий данные о текущем пользователе.</param>
+        /// <param name="homeNavigationService"><see cref="INavigationService"/> 
+        /// совершающий переход на <see cref="HomeViewModel"/>.</param>
+        /// <param name="userProfileNavigationService"><see cref="INavigationService"/> 
+        /// совершающий переход на <see cref="UserProfileViewModel"/>.</param>
+        /// <param name="transferNavigationService"><see cref="INavigationService"/> 
+        /// совершающий переход на <see cref="TransferViewModel"/>.</param>
+        /// <param name="withdrawNavigationService"><see cref="INavigationService"/> 
+        /// совершающий переход на <see cref="WithdrawViewModel"/>.</param>
+        /// <param name="refillNavigationService"><see cref="INavigationService"/> 
+        /// совершающий переход на <see cref="RefillViewModel"/>.</param>
+        /// <param name="cardManagmentNavigationService"><see cref="INavigationService"/> 
+        /// совершающий переход на <see cref="CardManagmentViewModel"/>.</param>
+        /// <param name="expenseReportNavigationService"><see cref="INavigationService"/> 
+        /// совершающий переход на <see cref="ExpenseReportViewModel"/>.</param>
         public AccountViewModel(UserStore userStore, 
             INavigationService homeNavigationService, 
             INavigationService userProfileNavigationService,
@@ -60,17 +74,18 @@ namespace EWallet.ViewModels
 
         #region Properties
         /// <summary>
-        /// Строка отображения баланса пользователя во View.
+        /// Строка для отображения баланса пользователя.
         /// </summary>
-        /// <value>
-        /// Строковое представление баланса пользователя.
-        /// </value>
         public string StringBalance 
             => string.Format($"Баланс: {userStore.CurrentUser.Balance} руб.");
-
+        /// <summary>
+        /// Строковое отображение логина пользователя.
+        /// </summary>
         public string Login 
             => userStore.CurrentUser.Login;
-
+        /// <summary>
+        /// Указывает, загружается ли список услуг в текущий момент.
+        /// </summary>
         public bool AreServicesLoading
         {
             get => areServicesLoading;
@@ -80,8 +95,9 @@ namespace EWallet.ViewModels
                 OnPropertyChanged(nameof(AreServicesLoading));
             }
         }
-
-        //Перевод
+        /// <summary>
+        /// Строковое представление названия услуги.
+        /// </summary>        
         public string Transfer
         {
             get => transfer;
@@ -91,6 +107,9 @@ namespace EWallet.ViewModels
                 OnPropertyChanged(nameof(Transfer));
             }
         }
+        /// <summary>
+        /// Описание услуги.
+        /// </summary>
         public string TransferDescription
         {
             get => transferDescription;
@@ -100,8 +119,9 @@ namespace EWallet.ViewModels
                 OnPropertyChanged(nameof(TransferDescription));
             }
         }
-
-        //Вывод
+        /// <summary>
+        /// Строковое представление названия услуги.
+        /// </summary>   
         public string Withdraw
         {
             get => withdraw;
@@ -111,6 +131,9 @@ namespace EWallet.ViewModels
                 OnPropertyChanged(nameof(Withdraw));
             }
         }
+        /// <summary>
+        /// Описание услуги.
+        /// </summary>
         public string WithdrawDescription
         {
             get => withdrawDescription;
@@ -120,8 +143,9 @@ namespace EWallet.ViewModels
                 OnPropertyChanged(nameof(WithdrawDescription));
             }
         }
-
-        //Пополнение баланса
+        /// <summary>
+        /// Строковое представление названия услуги.
+        /// </summary> 
         public string Refill
         {
             get => refill;
@@ -131,6 +155,9 @@ namespace EWallet.ViewModels
                 OnPropertyChanged(nameof(Refill));
             }
         }
+        /// <summary>
+        /// Описание услуги.
+        /// </summary>
         public string RefillDescription
         {
             get => refillDescription;
@@ -143,16 +170,40 @@ namespace EWallet.ViewModels
         #endregion
 
         #region Commands
+        /// <summary>
+        /// Команда выхода из аккаунта.
+        /// </summary>
         public ICommand ExitAccountCommand { get; }
+        /// <summary>
+        /// Команда перехода в профиль пользователя.
+        /// </summary>
         public ICommand NavigateUserProfileCommand { get; }
+        /// <summary>
+        /// Команда перехода на страницу перевода.
+        /// </summary>
         public ICommand NavigateTransferCommand { get; }
+        /// <summary>
+        /// Команда перехода на страницу вывода средств.
+        /// </summary>
         public ICommand NavigateWithdrawCommand { get; }
+        /// <summary>
+        /// Команда перехода на страницу пополнения баланса.
+        /// </summary>
         public ICommand NavigateRefillCommand { get; }
+        /// <summary>
+        /// Команда перехода на страницу управления картами.
+        /// </summary>
         public ICommand NavigateManagmentCommand { get; }
+        /// <summary>
+        /// Команда перехода на страницу отчета о расходах.
+        /// </summary>
         public ICommand NavigateExpenseReportCommand { get; }
         #endregion
 
         #region Methods
+        /// <summary>
+        /// Получает список услуг из базы данных.
+        /// </summary>
         public void FetchServices()
         {
             AreServicesLoading = true;
@@ -176,6 +227,7 @@ namespace EWallet.ViewModels
             }
         }
         
+        /// <inheritdoc cref="ViewModelBase.Dispose"/>
         public override void Dispose() 
             => base.Dispose();
         #endregion

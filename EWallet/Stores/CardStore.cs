@@ -1,6 +1,6 @@
 ﻿using EWallet.Models;
 
-namespace EWallet.Commands
+namespace EWallet.Stores
 {
     public sealed class CardStore
     {

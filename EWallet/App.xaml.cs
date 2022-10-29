@@ -4,7 +4,6 @@ using EWallet.Services;
 using System.Windows;
 using Microsoft.Extensions.DependencyInjection;
 using System;
-using EWallet.Commands;
 
 namespace EWallet
 {
@@ -23,17 +22,30 @@ namespace EWallet
         /// </summary>
         public App()
         {
+            // ServiceCollection для корректной генерации классов
+            // во время исполнения программы
             IServiceCollection services = new ServiceCollection();
 
+            // Добавление хранилищ в единственном
+            // экземпляре в коллекцию сервисов
             services.AddSingleton<UserStore>();
             services.AddSingleton<CardStore>();
             services.AddSingleton<NavigationStore>();
             services.AddSingleton<ModalNavigationStore>();
 
+            // Добавление навигационных сервисов в
+            // единственном экземпляре в коллекцию
+            // сервисов
             services.AddSingleton(CreateHomeNavigationService);
             services.AddSingleton<CloseModalNavigationService>();
 
+            // Добавление основной ViewModel в
+            // единственном экземпляре в коллекцию
+            // сервисов
             services.AddSingleton<MainViewModel>();
+
+            // Добавление сменяющих друг друга
+            // ViewModel-ей в коллекцию сервисов
             services.AddTransient(CreateNavigationBarViewModel);
             services.AddTransient(CreateHomeViewModel);
             services.AddTransient(CreateAuthorizationViewModel);
@@ -47,11 +59,17 @@ namespace EWallet
             services.AddTransient(CreateExpenseReportViewModel);
             services.AddTransient(CreateCardViewModel);
 
+            // Добавление в коллекцию сервисов
+            // единственного экземпляра MainWindow
             services.AddSingleton(s => new MainWindow()
             {
+                // Задание уже добавленной в коллекцию
+                // сервисов MainViewModel в качестве
+                // DataContext для MainWindow
                 DataContext = s.GetRequiredService<MainViewModel>()
             });
 
+            // Построение IServiceProvider
             serviceProvider = services.BuildServiceProvider();
         }
         #endregion
@@ -71,8 +89,14 @@ namespace EWallet
         #endregion
 
         #region Methods
-
         #region NavigationBar
+        /// <summary>
+        /// Создает экземпляр <see cref="NavigationBarViewModel"/>.
+        /// </summary>
+        /// <param name="serviceProvider">Позволяет корректно 
+        /// извлекать объекты службы (классы) во время работы
+        /// приложения.</param>
+        /// <returns>Настроенный экземпляр <see cref="NavigationBarViewModel"/>.</returns>
         private NavigationBarViewModel CreateNavigationBarViewModel(IServiceProvider serviceProvider)
             => new NavigationBarViewModel(
                         serviceProvider.GetRequiredService<UserStore>(),
@@ -84,14 +108,25 @@ namespace EWallet
         #endregion
 
         #region Home
+        /// <summary>
+        /// Создает экземпляр <see cref="HomeViewModel"/>.
+        /// </summary>
+        /// <param name="serviceProvider">Позволяет корректно 
+        /// извлекать объекты службы (классы) во время работы
+        /// приложения.</param>
+        /// <returns>Настроенный экземпляр <see cref="HomeViewModel"/>.</returns>
         public HomeViewModel CreateHomeViewModel(IServiceProvider serviceProvider)
             => new HomeViewModel(CreateAuthorizationNavigationService(serviceProvider),
                     CreateRegistrationNavigationService(serviceProvider));
-
         /// <summary>
-        /// Метод, создающий NavigationService, привязанный к HomeViewModel.
+        /// Создает экземпляр <see cref="INavigationService"/> 
+        /// с переходом на <see cref="HomeViewModel"/>.
         /// </summary>
-        /// <returns>Навигационный сервис, привязанный к ViewModel домашней страницы.</returns>
+        /// <param name="serviceProvider">Позволяет корректно 
+        /// извлекать объекты службы (классы) во время работы
+        /// приложения.</param>
+        /// <returns>Настроенный экземпляр <see cref="INavigationService"/>
+        /// с привязкой к <see cref="HomeViewModel"/></returns>
         public INavigationService CreateHomeNavigationService(IServiceProvider serviceProvider)
             => new LayoutNavigationService<HomeViewModel>(serviceProvider.GetRequiredService<NavigationStore>(),
                 () => serviceProvider.GetRequiredService<NavigationBarViewModel>(),
@@ -99,6 +134,13 @@ namespace EWallet
         #endregion
 
         #region Authorization
+        /// <summary>
+        /// Создает экземпляр <see cref="AuthorizationViewModel"/>.
+        /// </summary>
+        /// <param name="serviceProvider">Позволяет корректно 
+        /// извлекать объекты службы (классы) во время работы
+        /// приложения.</param>
+        /// <returns>Настроенный экземпляр <see cref="AuthorizationViewModel"/>.</returns>
         public AuthorizationViewModel CreateAuthorizationViewModel(IServiceProvider serviceProvider)
         {
             var closeModalNavigationService = serviceProvider.GetRequiredService<CloseModalNavigationService>();
@@ -111,11 +153,15 @@ namespace EWallet
                 CreateRegistrationNavigationService(serviceProvider),
                 closeModalNavigationService);
         }
-
         /// <summary>
-        /// Метод, создающий NavigationService, привязанный к AuthorizationViewModel.
+        /// Создает экземпляр <see cref="INavigationService"/> 
+        /// с переходом на <see cref="AuthorizationViewModel"/>.
         /// </summary>
-        /// <returns>Навигационный сервис, привязанный к ViewModel страницы авторизации.</returns>
+        /// <param name="serviceProvider">Позволяет корректно 
+        /// извлекать объекты службы (классы) во время работы
+        /// приложения.</param>
+        /// <returns>Настроенный экземпляр <see cref="INavigationService"/>
+        /// с привязкой к <see cref="AuthorizationViewModel"/></returns>
         public INavigationService CreateAuthorizationNavigationService(IServiceProvider serviceProvider)
         {
             var modalNavigationStore = serviceProvider.GetRequiredService<ModalNavigationStore>();
@@ -125,6 +171,13 @@ namespace EWallet
         #endregion
 
         #region Registration
+        /// <summary>
+        /// Создает экземпляр <see cref="RegistrationViewModel"/>.
+        /// </summary>
+        /// <param name="serviceProvider">Позволяет корректно 
+        /// извлекать объекты службы (классы) во время работы
+        /// приложения.</param>
+        /// <returns>Настроенный экземпляр <see cref="RegistrationViewModel"/>.</returns>
         public RegistrationViewModel CreateRegistrationViewModel(IServiceProvider serviceProvider)
         {
             var closeModalNavigationService = serviceProvider.GetRequiredService<CloseModalNavigationService>();
@@ -134,11 +187,15 @@ namespace EWallet
             return new RegistrationViewModel(serviceProvider.GetRequiredService<UserStore>(),
                 CreateAuthorizationNavigationService(serviceProvider), accountNavigationService, closeModalNavigationService);
         }
-
         /// <summary>
-        /// Метод, создающий NavigationService, привязанный к RegistrationViewModel.
+        /// Создает экземпляр <see cref="INavigationService"/> 
+        /// с переходом на <see cref="RegistrationViewModel"/>.
         /// </summary>
-        /// <returns>Навигационный сервис, привязанный к ViewModel страницы регистрации.</returns>
+        /// <param name="serviceProvider">Позволяет корректно 
+        /// извлекать объекты службы (классы) во время работы
+        /// приложения.</param>
+        /// <returns>Настроенный экземпляр <see cref="INavigationService"/>
+        /// с привязкой к <see cref="RegistrationViewModel"/></returns>
         public INavigationService CreateRegistrationNavigationService(IServiceProvider serviceProvider)
         {
             var modalNavigationStore = serviceProvider.GetRequiredService<ModalNavigationStore>();
@@ -149,17 +206,28 @@ namespace EWallet
         #endregion
 
         #region Account
+        /// <summary>
+        /// Создает экземпляр <see cref="AccountViewModel"/>.
+        /// </summary>
+        /// <param name="serviceProvider">Позволяет корректно 
+        /// извлекать объекты службы (классы) во время работы
+        /// приложения.</param>
+        /// <returns>Настроенный экземпляр <see cref="AccountViewModel"/>.</returns>
         public AccountViewModel CreateAccountViewModel(IServiceProvider serviceProvider)
             => new AccountViewModel(serviceProvider.GetRequiredService<UserStore>(),
                     CreateHomeNavigationService(serviceProvider), CreateUserProfileNavigationService(serviceProvider),
                     CreateTransferNavigationService(serviceProvider), CreateWithdrawNavigationService(serviceProvider),
                     CreateRefillNavigationService(serviceProvider), CreateCardManagmentNavigationService(serviceProvider),
                     CreateExpenseReportNavigationService(serviceProvider));
-
         /// <summary>
-        /// Метод, создающий NavigationService, привязанный к AccountViewModel.
+        /// Создает экземпляр <see cref="INavigationService"/> 
+        /// с переходом на <see cref="AccountViewModel"/>.
         /// </summary>
-        /// <returns>Навигационный сервис, привязанный к ViewModel аккаунта пользователя.</returns>
+        /// <param name="serviceProvider">Позволяет корректно 
+        /// извлекать объекты службы (классы) во время работы
+        /// приложения.</param>
+        /// <returns>Настроенный экземпляр <see cref="INavigationService"/>
+        /// с привязкой к <see cref="AccountViewModel"/></returns>
         public INavigationService CreateAccountNavigationService(IServiceProvider serviceProvider)
             => new LayoutNavigationService<AccountViewModel>(serviceProvider.GetRequiredService<NavigationStore>(),
                 () => serviceProvider.GetRequiredService<NavigationBarViewModel>(),
@@ -167,6 +235,13 @@ namespace EWallet
         #endregion
 
         #region UserProfile
+        /// <summary>
+        /// Создает экземпляр <see cref="UserProfileViewModel"/>.
+        /// </summary>
+        /// <param name="serviceProvider">Позволяет корректно 
+        /// извлекать объекты службы (классы) во время работы
+        /// приложения.</param>
+        /// <returns>Настроенный экземпляр <see cref="UserProfileViewModel"/>.</returns>
         public UserProfileViewModel CreateUserProfileViewModel(IServiceProvider serviceProvider)
         {
             var closeModalNavigationService = serviceProvider.GetRequiredService<CloseModalNavigationService>();
@@ -177,11 +252,15 @@ namespace EWallet
             return new UserProfileViewModel(serviceProvider.GetRequiredService<UserStore>(),
                 accountNavigationService);
         }
-
         /// <summary>
-        /// Метод, создающий NavigationService, привязанный к UserProfileViewModel.
+        /// Создает экземпляр <see cref="INavigationService"/> 
+        /// с переходом на <see cref="UserProfileViewModel"/>.
         /// </summary>
-        /// <returns>Навигационный сервис, привязанный к ViewModel профиля пользователя.</returns>
+        /// <param name="serviceProvider">Позволяет корректно 
+        /// извлекать объекты службы (классы) во время работы
+        /// приложения.</param>
+        /// <returns>Настроенный экземпляр <see cref="INavigationService"/>
+        /// с привязкой к <see cref="UserProfileViewModel"/></returns>
         public INavigationService CreateUserProfileNavigationService(IServiceProvider serviceProvider)
         {
             var modalNavigationStore = serviceProvider.GetRequiredService<ModalNavigationStore>();
@@ -191,6 +270,13 @@ namespace EWallet
         #endregion
 
         #region Transfer
+        /// <summary>
+        /// Создает экземпляр <see cref="TransferViewModel"/>.
+        /// </summary>
+        /// <param name="serviceProvider">Позволяет корректно 
+        /// извлекать объекты службы (классы) во время работы
+        /// приложения.</param>
+        /// <returns>Настроенный экземпляр <see cref="TransferViewModel"/>.</returns>
         public TransferViewModel CreateTransferViewModel(IServiceProvider serviceProvider)
         {
             var closeModalNavigationService = serviceProvider.GetRequiredService<CloseModalNavigationService>();
@@ -201,7 +287,15 @@ namespace EWallet
             return new TransferViewModel(serviceProvider.GetRequiredService<UserStore>(),
                 accountNavigationService);
         }
-
+        /// <summary>
+        /// Создает экземпляр <see cref="INavigationService"/> 
+        /// с переходом на <see cref="TransferViewModel"/>.
+        /// </summary>
+        /// <param name="serviceProvider">Позволяет корректно 
+        /// извлекать объекты службы (классы) во время работы
+        /// приложения.</param>
+        /// <returns>Настроенный экземпляр <see cref="INavigationService"/>
+        /// с привязкой к <see cref="TransferViewModel"/></returns>
         public INavigationService CreateTransferNavigationService(IServiceProvider serviceProvider)
         {
             var modalNavigationStore = serviceProvider.GetRequiredService<ModalNavigationStore>();
@@ -211,6 +305,13 @@ namespace EWallet
         #endregion
 
         #region Withdraw
+        /// <summary>
+        /// Создает экземпляр <see cref="WithdrawViewModel"/>.
+        /// </summary>
+        /// <param name="serviceProvider">Позволяет корректно 
+        /// извлекать объекты службы (классы) во время работы
+        /// приложения.</param>
+        /// <returns>Настроенный экземпляр <see cref="WithdrawViewModel"/>.</returns>
         private WithdrawViewModel CreateWithdrawViewModel(IServiceProvider serviceProvider)
         {
             var closeModalNavigationService = serviceProvider.GetRequiredService<CloseModalNavigationService>();
@@ -221,6 +322,15 @@ namespace EWallet
             return new WithdrawViewModel(serviceProvider.GetRequiredService<UserStore>(),
                 accountNavigationService);
         }
+        /// <summary>
+        /// Создает экземпляр <see cref="INavigationService"/> 
+        /// с переходом на <see cref="WithdrawViewModel"/>.
+        /// </summary>
+        /// <param name="serviceProvider">Позволяет корректно 
+        /// извлекать объекты службы (классы) во время работы
+        /// приложения.</param>
+        /// <returns>Настроенный экземпляр <see cref="INavigationService"/>
+        /// с привязкой к <see cref="WithdrawViewModel"/></returns>
         public INavigationService CreateWithdrawNavigationService(IServiceProvider serviceProvider)
         {
             var modalNavigationStore = serviceProvider.GetRequiredService<ModalNavigationStore>();
@@ -230,6 +340,13 @@ namespace EWallet
         #endregion
 
         #region Refill
+        /// <summary>
+        /// Создает экземпляр <see cref="RefillViewModel"/>.
+        /// </summary>
+        /// <param name="serviceProvider">Позволяет корректно 
+        /// извлекать объекты службы (классы) во время работы
+        /// приложения.</param>
+        /// <returns>Настроенный экземпляр <see cref="RefillViewModel"/>.</returns>
         private RefillViewModel CreateRefillViewModel(IServiceProvider serviceProvider)
         {
             var closeModalNavigationService = serviceProvider.GetRequiredService<CloseModalNavigationService>();
@@ -240,7 +357,15 @@ namespace EWallet
             return new RefillViewModel(serviceProvider.GetRequiredService<UserStore>(),
                 accountNavigationService);
         }
-
+        /// <summary>
+        /// Создает экземпляр <see cref="INavigationService"/> 
+        /// с переходом на <see cref="RefillViewModel"/>.
+        /// </summary>
+        /// <param name="serviceProvider">Позволяет корректно 
+        /// извлекать объекты службы (классы) во время работы
+        /// приложения.</param>
+        /// <returns>Настроенный экземпляр <see cref="INavigationService"/>
+        /// с привязкой к <see cref="RefillViewModel"/></returns>
         public INavigationService CreateRefillNavigationService(IServiceProvider serviceProvider)
         {
             var modalNavigationStore = serviceProvider.GetRequiredService<ModalNavigationStore>();
@@ -250,6 +375,13 @@ namespace EWallet
         #endregion
 
         #region ExpenseReport
+        /// <summary>
+        /// Создает экземпляр <see cref="ExpenseReportViewModel"/>.
+        /// </summary>
+        /// <param name="serviceProvider">Позволяет корректно 
+        /// извлекать объекты службы (классы) во время работы
+        /// приложения.</param>
+        /// <returns>Настроенный экземпляр <see cref="ExpenseReportViewModel"/>.</returns>
         private ExpenseReportViewModel CreateExpenseReportViewModel(IServiceProvider serviceProvider)
         {
             var closeModalNavigationService = serviceProvider.GetService<CloseModalNavigationService>();
@@ -259,7 +391,15 @@ namespace EWallet
             return new ExpenseReportViewModel(serviceProvider.GetRequiredService<UserStore>(),
                 accountNavigationService);
         }
-
+        /// <summary>
+        /// Создает экземпляр <see cref="INavigationService"/> 
+        /// с переходом на <see cref="ExpenseReportViewModel"/>.
+        /// </summary>
+        /// <param name="serviceProvider">Позволяет корректно 
+        /// извлекать объекты службы (классы) во время работы
+        /// приложения.</param>
+        /// <returns>Настроенный экземпляр <see cref="INavigationService"/>
+        /// с привязкой к <see cref="ExpenseReportViewModel"/></returns>
         public INavigationService CreateExpenseReportNavigationService(IServiceProvider serviceProvider) 
             => new ModalNavigationService<ExpenseReportViewModel>(
                 serviceProvider.GetRequiredService<ModalNavigationStore>(),
@@ -267,6 +407,13 @@ namespace EWallet
         #endregion
 
         #region CardManagment
+        /// <summary>
+        /// Создает экземпляр <see cref="CardManagmentViewModel"/>.
+        /// </summary>
+        /// <param name="serviceProvider">Позволяет корректно 
+        /// извлекать объекты службы (классы) во время работы
+        /// приложения.</param>
+        /// <returns>Настроенный экземпляр <see cref="CardManagmentViewModel"/>.</returns>
         private CardManagmentViewModel CreateCardManagmentViewModel(IServiceProvider serviceProvider)
         {
             var closeModalNavigationService = serviceProvider.GetRequiredService<CloseModalNavigationService>();
@@ -277,7 +424,15 @@ namespace EWallet
                 serviceProvider.GetRequiredService<CardStore>(),
                 accountNavigationService, CreateCardNavigationService(serviceProvider));
         }
-
+        /// <summary>
+        /// Создает экземпляр <see cref="INavigationService"/> 
+        /// с переходом на <see cref="CardManagmentViewModel"/>.
+        /// </summary>
+        /// <param name="serviceProvider">Позволяет корректно 
+        /// извлекать объекты службы (классы) во время работы
+        /// приложения.</param>
+        /// <returns>Настроенный экземпляр <see cref="INavigationService"/>
+        /// с привязкой к <see cref="CardManagmentViewModel"/></returns>
         public INavigationService CreateCardManagmentNavigationService(IServiceProvider serviceProvider)
         {
             var modalNavigationStore = serviceProvider.GetRequiredService<ModalNavigationStore>();
@@ -288,6 +443,13 @@ namespace EWallet
         #endregion
 
         #region Card
+        /// <summary>
+        /// Создает экземпляр <see cref="CardManagmentViewModel"/>.
+        /// </summary>
+        /// <param name="serviceProvider">Позволяет корректно 
+        /// извлекать объекты службы (классы) во время работы
+        /// приложения.</param>
+        /// <returns>Настроенный экземпляр <see cref="CardManagmentViewModel"/>.</returns>
         private CardViewModel CreateCardViewModel(IServiceProvider serviceProvider)
         {
             var closeModalNavigationService = serviceProvider.GetService<CloseModalNavigationService>();
@@ -299,13 +461,20 @@ namespace EWallet
                 CreateCardManagmentNavigationService(serviceProvider),
                 accountNavigationService);
         }
-
+        /// <summary>
+        /// Создает экземпляр <see cref="INavigationService"/> 
+        /// с переходом на <see cref="CardManagmentViewModel"/>.
+        /// </summary>
+        /// <param name="serviceProvider">Позволяет корректно 
+        /// извлекать объекты службы (классы) во время работы
+        /// приложения.</param>
+        /// <returns>Настроенный экземпляр <see cref="INavigationService"/>
+        /// с привязкой к <see cref="CardManagmentViewModel"/></returns>
         public INavigationService CreateCardNavigationService(IServiceProvider serviceProvider) 
             => new ModalNavigationService<CardViewModel>(
                 serviceProvider.GetRequiredService<ModalNavigationStore>(),
                 () => serviceProvider.GetRequiredService<CardViewModel>());
         #endregion
-
         #endregion
     }
 }

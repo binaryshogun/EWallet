@@ -2,6 +2,7 @@
 using EWallet.Helpers;
 using EWallet.Models;
 using EWallet.Services;
+using EWallet.Stores;
 using EWallet.ViewModels;
 using System;
 using System.Data.Entity;

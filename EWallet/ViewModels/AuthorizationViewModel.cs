@@ -19,7 +19,7 @@ namespace EWallet.ViewModels
 
         #region Constructors
         /// <summary>
-        /// Инициализирует объект класса AuthorizationViewModel.
+        /// Инициализирует новый экземпляр класса <see cref="AuthorizationViewModel"/>.
         /// </summary>
         /// <param name="navigationBarViewModel">ViewModel страницы регистрации.</param>
         /// <param name="navigationStore">Навигационное хранилище.</param>
@@ -52,7 +52,6 @@ namespace EWallet.ViewModels
                 IsEnterButtonEnabled = EnableEnterButton();
             }
         }
-
         /// <summary>
         /// Пароль пользователя.
         /// </summary>
@@ -69,7 +68,6 @@ namespace EWallet.ViewModels
                 IsEnterButtonEnabled = EnableEnterButton();
             }
         }
-
         /// <summary>
         /// Флаг, отвечающий за включение и отключение кнопки входа.
         /// </summary>
@@ -85,7 +83,9 @@ namespace EWallet.ViewModels
                 OnPropertyChanged(nameof(IsEnterButtonEnabled));
             }
         }
-
+        /// <summary>
+        /// Указывает, находится ли пользователь в процессе авторизации.
+        /// </summary>
         public bool IsUserAuthorizing
         {
             get => isUserAuthorizing;
@@ -98,22 +98,30 @@ namespace EWallet.ViewModels
         #endregion
 
         #region Commands
+        /// <summary>
+        /// Команда перехода на страницу регистрации.
+        /// </summary>
         public ICommand NavigateCommand { get; }
+        /// <summary>
+        /// Команда авторизации пользователя.
+        /// </summary>
         public ICommand AuthorizeUserCommand { get; }
+        /// <summary>
+        /// Команда перехода на начальную страницу.
+        /// </summary>
         public ICommand NavigateHomeCommand { get; }
-        public ICommand ExitAppCommand { get; }
         #endregion
 
         #region Methods
         /// <summary>
-        /// Метод, получающий значение, ответственное 
-        /// за включение кнопки входа.
+        /// Получает значение, указывающее, включена ли кнопка входа.
         /// </summary>
-        /// <returns>Булево значение, показывающее, необходимо ли 
-        /// активировать кнопку входа.</returns>
+        /// <returns><see langword="true"/> при заполненных свойствах 
+        /// <see cref="Login"/> и <see cref="Password"/>; в обратном случае - <see langword="false"/>.</returns>
         private bool EnableEnterButton()
-            => login != "" && password != "";
+            => Login != "" && Password != "";
 
+        /// <inheritdoc cref="ViewModelBase.Dispose"/>
         public override void Dispose() 
             => base.Dispose();
         #endregion

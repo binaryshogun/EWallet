@@ -3,7 +3,7 @@
 namespace EWallet.ViewModels
 {
     /// <summary>
-    /// Основной класс ViewModel.
+    /// ViewModel для <see cref="MainWindow"/>.
     /// </summary>
     public sealed class MainViewModel : ViewModelBase
     {
@@ -14,9 +14,12 @@ namespace EWallet.ViewModels
 
         #region Constructors
         /// <summary>
-        /// Добавить summary
+        /// Инициализирует новый экземпляр класса <see cref="MainViewModel"/>.
         /// </summary>
-        /// <param name="navigationStore">Навигационное хранилище.</param>
+        /// <param name="navigationStore">Навигационное хранилище,
+        /// хранящая <see cref="NavigationStore.CurrentViewModel"/>.</param>
+        /// <param name="modalNavigationStore">Навигационное хранилище модального окна,
+        /// хранящее <see cref="ModalNavigationStore.CurrentViewModel"/>.</param>
         public MainViewModel(NavigationStore navigationStore, ModalNavigationStore modalNavigationStore)
         {
             this.navigationStore = navigationStore;
@@ -32,13 +35,22 @@ namespace EWallet.ViewModels
         /// </summary>
         public ViewModelBase CurrentViewModel
             => navigationStore.CurrentViewModel;
+        /// <summary>
+        /// Текущий ViewModel модального окна.
+        /// </summary>
         public ViewModelBase CurrentModalViewModel
             => modalNavigationStore.CurrentViewModel;
+        /// <summary>
+        /// Указывает, открыто ли модальное окно.
+        /// </summary>
         public bool IsModalOpen
             => modalNavigationStore.IsOpen;
         #endregion
 
         #region Methods
+        /// <summary>
+        /// Оповещает об изменении <see cref="CurrentModalViewModel"/> и <see cref="IsModalOpen"/>.
+        /// </summary>
         private void OnCurrentModalViewModelChanged()
         {
             OnPropertyChanged(nameof(CurrentModalViewModel));

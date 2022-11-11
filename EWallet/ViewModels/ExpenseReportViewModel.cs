@@ -252,9 +252,6 @@ namespace EWallet.ViewModels
                     .ToList();
 
             SumOfExpenses = 0;
-            if (Operations.Count > 0)
-                SumOfExpenses = Math.Round(operationsList.Sum(o => o.Sum), 2);
-
             UpdateChart();
         }
         /// <summary>
@@ -280,6 +277,9 @@ namespace EWallet.ViewModels
             var operationsList = Operations.Where(o => o.ServiceID == service.ID).ToList();
             if (operationsList.Count > 0)
                     observableValue.Value = operationsList.Sum(o => o.Sum);
+
+            if (operationsList.Count > 0)
+                SumOfExpenses += Math.Round(operationsList.Sum(o => o.Sum), 2);
 
             var series = new PieSeries()
             {

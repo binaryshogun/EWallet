@@ -2,7 +2,6 @@
 using EWallet.Stores;
 using EWallet.ViewModels;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System;
 using System.Threading.Tasks;
 
 namespace EWallet.Tests

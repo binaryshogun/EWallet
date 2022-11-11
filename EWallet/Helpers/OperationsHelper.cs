@@ -62,7 +62,7 @@ namespace EWallet.Helpers
         /// недостатке средств на балансе пользователя <see cref="UserStore.CurrentUser"/></exception>
         public static bool TryUpdateBalance(User user, UserStore userStore, double sum)
         {
-            if (sum < 0 && userStore.CurrentUser.Balance < sum)
+            if (sum < 0 && userStore.CurrentUser.Balance < -sum)
                 throw new InsufficientFundsException("Недостаточно денег на счёте!");
 
             userStore.CurrentUser.Balance += sum;
